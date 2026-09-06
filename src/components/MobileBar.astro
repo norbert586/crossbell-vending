@@ -1,0 +1,22 @@
+---
+import { site } from "../data/site";
+
+interface Props {
+  contactHref?: string;
+}
+const { contactHref = "/contact" } = Astro.props;
+---
+
+<div
+  class="fixed inset-x-0 bottom-0 z-50 flex border-t border-line bg-white min-[721px]:hidden"
+>
+  <a
+    href={`tel:${site.phoneTel}`}
+    class="flex-1 border-r border-line py-3.5 text-center text-sm font-semibold text-ink"
+  >
+    Call now
+  </a>
+  <a href={contactHref} class="flex-1 bg-accent py-3.5 text-center text-sm font-semibold text-ink">
+    Contact us
+  </a>
+</div>

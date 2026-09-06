@@ -1,0 +1,150 @@
+---
+import { site } from "../data/site";
+
+interface Props {
+  id?: string;
+  heading?: string;
+  subheading?: string;
+}
+const {
+  id = "contact",
+  heading = "See if your location qualifies",
+  subheading = "Tell us about your site. We'll follow up to schedule a ten-minute walkthrough.",
+} = Astro.props;
+---
+
+<section id={id} class="bg-paper-2">
+  <div class="mx-auto max-w-[1120px] px-5 py-12 sm:px-8 sm:py-16">
+    <div class="mb-9 max-w-[52ch]">
+      <h2 class="font-display text-[clamp(1.85rem,3.2vw,2.4rem)] font-semibold">{heading}</h2>
+      <p class="mt-2 text-muted">{subheading}</p>
+    </div>
+
+    <div class="grid gap-8 lg:grid-cols-[1fr_320px] lg:items-start">
+      <!-- Primary path: business inquiry -->
+      <form
+        name="business-inquiry"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+        class="max-w-[640px] border border-line bg-white p-6 sm:p-10"
+      >
+        <input type="hidden" name="form-name" value="business-inquiry" />
+        <p class="hp-field" aria-hidden="true">
+          <label for="bot-field">Leave this field blank</label>
+          <input id="bot-field" name="bot-field" type="text" tabindex="-1" autocomplete="off" />
+        </p>
+
+        <div class="mb-5 grid gap-5 sm:grid-cols-2">
+          <div class="flex flex-col gap-1.5">
+            <label for="name" class="text-sm font-semibold">Your name</label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              required
+              class="border border-line bg-paper px-3 py-2.5 text-[1.0625rem] focus:border-accent focus:outline-2 focus:outline-accent focus:outline-offset-1"
+            />
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label for="business" class="text-sm font-semibold">Business name</label>
+            <input
+              id="business"
+              name="business"
+              type="text"
+              required
+              class="border border-line bg-paper px-3 py-2.5 text-[1.0625rem] focus:border-accent focus:outline-2 focus:outline-accent focus:outline-offset-1"
+            />
+          </div>
+        </div>
+        <div class="mb-5 grid gap-5 sm:grid-cols-2">
+          <div class="flex flex-col gap-1.5">
+            <label for="phone" class="text-sm font-semibold">Phone</label>
+            <input
+              id="phone"
+              name="phone"
+              type="tel"
+              required
+              class="border border-line bg-paper px-3 py-2.5 text-[1.0625rem] focus:border-accent focus:outline-2 focus:outline-accent focus:outline-offset-1"
+            />
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label for="loctype" class="text-sm font-semibold">Location type</label>
+            <select
+              id="loctype"
+              name="location_type"
+              class="border border-line bg-paper px-3 py-2.5 text-[1.0625rem] focus:border-accent focus:outline-2 focus:outline-accent focus:outline-offset-1"
+            >
+              {site.locationTypes.map((t) => <option>{t}</option>)}
+            </select>
+          </div>
+        </div>
+        <div class="mb-6 flex flex-col gap-1.5">
+          <label for="message" class="text-sm font-semibold">Anything we should know</label>
+          <textarea
+            id="message"
+            name="message"
+            rows="4"
+            class="border border-line bg-paper px-3 py-2.5 text-[1.0625rem] focus:border-accent focus:outline-2 focus:outline-accent focus:outline-offset-1"
+          ></textarea>
+        </div>
+        <button
+          type="submit"
+          class="inline-flex rounded-[3px] bg-accent px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-accent-dim"
+        >
+          Send request
+        </button>
+        <p class="mt-4 text-sm text-muted">We respond within one business day. No spam, no shared lists.</p>
+      </form>
+
+      <!-- Secondary path: feedback from an existing location -->
+      <details class="border border-line bg-paper p-5 lg:sticky lg:top-24">
+        <summary class="cursor-pointer text-sm font-semibold text-ink">
+          Already have a Crossbell cooler at your location?
+        </summary>
+        <p class="mt-2 text-sm text-muted">
+          Send feedback or request an item and we'll pass it to the route driver.
+        </p>
+        <form
+          name="location-feedback"
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="bot-field-2"
+          class="mt-4 flex flex-col gap-4"
+        >
+          <input type="hidden" name="form-name" value="location-feedback" />
+          <p class="hp-field" aria-hidden="true">
+            <label for="bot-field-2">Leave this field blank</label>
+            <input id="bot-field-2" name="bot-field-2" type="text" tabindex="-1" autocomplete="off" />
+          </p>
+          <div class="flex flex-col gap-1.5">
+            <label for="fb-location" class="text-sm font-semibold">Location name or address</label>
+            <input
+              id="fb-location"
+              name="location"
+              type="text"
+              required
+              class="border border-line bg-white px-3 py-2 text-sm focus:border-accent focus:outline-2 focus:outline-accent focus:outline-offset-1"
+            />
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label for="fb-message" class="text-sm font-semibold">Feedback or item request</label>
+            <textarea
+              id="fb-message"
+              name="message"
+              rows="3"
+              required
+              class="border border-line bg-white px-3 py-2 text-sm focus:border-accent focus:outline-2 focus:outline-accent focus:outline-offset-1"
+            ></textarea>
+          </div>
+          <button
+            type="submit"
+            class="inline-flex justify-center border-2 border-ink px-4 py-2 text-sm font-semibold text-ink transition-colors hover:bg-ink hover:text-paper"
+          >
+            Send feedback
+          </button>
+        </form>
+      </details>
+    </div>
+  </div>
+</section>

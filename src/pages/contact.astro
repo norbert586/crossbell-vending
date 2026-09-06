@@ -1,0 +1,46 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ContactSection from "../components/ContactSection.astro";
+import { site } from "../data/site";
+
+const title = "Contact Crossbell Vending | Macomb & Oakland County, MI";
+const description =
+  "Call, email, or request a walkthrough. Crossbell Vending serves Macomb and north Oakland County, Michigan.";
+---
+
+<Layout title={title} description={description} contactHref="#contact">
+  <section class="py-11 sm:py-16">
+    <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
+      <h1 class="text-[clamp(2.1rem,4vw,3rem)] font-bold">Contact us</h1>
+      <p class="mt-3 max-w-[52ch] text-lg text-muted">
+        Call, email, or send the form below. We respond to new requests within one business day.
+      </p>
+
+      <div class="mt-8 grid gap-6 border border-line bg-white p-6 sm:grid-cols-3 sm:p-8">
+        <div>
+          <h2 class="text-sm font-semibold text-muted">Phone</h2>
+          <a href={`tel:${site.phoneTel}`} class="mt-1 block font-mono text-xl font-semibold"
+            >{site.phone}</a
+          >
+        </div>
+        <div>
+          <h2 class="text-sm font-semibold text-muted">Email</h2>
+          <a href={`mailto:${site.email}`} class="mt-1 block break-all text-lg font-semibold"
+            >{site.email}</a
+          >
+        </div>
+        <div>
+          <h2 class="text-sm font-semibold text-muted">Service area</h2>
+          <p class="mt-1 text-[0.95rem]">
+            {site.serviceArea.join(", ")}, {site.serviceAreaNote}.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ContactSection
+    heading="Request a walkthrough"
+    subheading="Tell us about your site and we'll follow up to schedule a ten-minute visit."
+  />
+</Layout>

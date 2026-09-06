@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+@import "@fontsource/barlow-condensed/600.css";
+@import "@fontsource/barlow-condensed/700.css";
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/500.css";
+@import "@fontsource/ibm-plex-sans/600.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+@import "@fontsource/ibm-plex-mono/600.css";
+@import "@fontsource/ibm-plex-mono/700.css";
+
+@theme {
+  --color-ink: #1b2024;
+  --color-steel: #2e3a42;
+  --color-steel-2: #3a4750;
+  --color-paper: #eff1ee;
+  --color-paper-2: #e5e8e3;
+  --color-line: #cbd1cb;
+  --color-muted: #4b555f;
+  --color-accent: #d98a0b;
+  --color-accent-dim: #b5730a;
+
+  --font-display: "Barlow Condensed", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  text-wrap: balance;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--color-accent);
+  color: var(--color-ink);
+  padding: 0.75rem 1.25rem;
+  font-weight: 600;
+  z-index: 100;
+}
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+}
+
+/* Honeypot field: hidden from sighted and pointer users, still in the tab order
+   only for bots that fill every field blindly */
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Clears the fixed mobile call/contact bar so it never covers footer content */
+@media (max-width: 720px) {
+  body {
+    padding-bottom: 56px;
+  }
+}
+
+/* Native details/summary marker cleanup, kept semantic for no-JS + a11y */
+.faq-item summary {
+  list-style: none;
+}
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+.faq-item[open] .faq-chevron {
+  transform: rotate(45deg);
+}

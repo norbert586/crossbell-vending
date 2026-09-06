@@ -1,0 +1,27 @@
+---
+interface Props {
+  question: string;
+  open?: boolean;
+}
+const { question, open = false } = Astro.props;
+---
+
+<details class="faq-item border-t border-line py-4 last-of-type:border-b" open={open}>
+  <summary class="flex cursor-pointer items-center justify-between gap-4 text-base font-semibold sm:text-lg">
+    {question}
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      class="faq-chevron h-[18px] w-[18px] flex-none transition-transform"
+      aria-hidden="true"
+    >
+      <line x1="12" y1="5" x2="12" y2="19"></line>
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+    </svg>
+  </summary>
+  <div class="mt-3 max-w-[60ch] text-[0.98rem] text-muted">
+    <slot />
+  </div>
+</details>

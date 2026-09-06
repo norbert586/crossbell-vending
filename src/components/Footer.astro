@@ -1,0 +1,38 @@
+---
+import { site } from "../data/site";
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-ink text-[#C9CDC7]">
+  <div class="mx-auto grid max-w-[1120px] gap-8 px-5 py-12 sm:px-8 sm:py-14 md:grid-cols-[1.2fr_1fr_1fr]">
+    <div>
+      <h2 class="mb-3 font-body text-base font-semibold text-white">Crossbell Vending</h2>
+      <p class="max-w-[32ch] text-sm text-[#AEB3AA]">
+        AI-powered smart coolers for break rooms, gyms, apartment communities, auto shops, and
+        light industrial sites in Macomb and north Oakland County.
+      </p>
+    </div>
+    <div>
+      <h2 class="mb-3 font-body text-base font-semibold text-white">Contact</h2>
+      <p class="mb-2">
+        <a href={`tel:${site.phoneTel}`} class="hover:text-accent">{site.phone}</a>
+      </p>
+      <p>
+        <a href={`mailto:${site.email}`} class="hover:text-accent break-all">{site.email}</a>
+      </p>
+      <p class="mt-3">
+        <a href="/contact" class="hover:text-accent underline underline-offset-2">Contact page</a>
+      </p>
+    </div>
+    <div>
+      <h2 class="mb-3 font-body text-base font-semibold text-white">Service area</h2>
+      <ul class="columns-2 gap-4 text-sm leading-relaxed">
+        {site.serviceArea.map((city) => <li>{city}</li>)}
+      </ul>
+      <p class="mt-2 text-xs text-[#8A9089]">{site.serviceAreaNote}</p>
+    </div>
+  </div>
+  <div class="mx-auto flex max-w-[1120px] flex-wrap justify-between gap-3 border-t border-[#3A4148] px-5 py-5 text-xs text-[#8A9089] sm:px-8">
+    <span>&copy; {year} {site.legalName}</span>
+  </div>
+</footer>
