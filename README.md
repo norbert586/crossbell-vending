@@ -63,18 +63,26 @@ the `data-netlify` / `netlify-honeypot` attributes and form `action` in
 
 ## Deploying
 
-**Netlify (recommended — this repo is already set up for it):**
+The site is **live at https://crossbellvending.com**, hosted on Netlify, with DNS fronted by
+Cloudflare.
 
-1. In the Netlify dashboard: **Add new site → Import an existing project → GitHub**, select the
-   `crossbell-vending` repo.
-2. Build command: `npm run build`. Publish directory: `dist`. (Already configured in
-   `netlify.toml`, so Netlify should detect this automatically.)
-3. Deploy. Netlify will build and give you a `*.netlify.app` URL immediately.
-4. **Custom domain:** Site settings → Domain management → Add a domain → `crossbellvending.com`.
-   Netlify will show you the DNS records to add at your domain registrar (usually either an
-   `A` record to Netlify's load balancer IP, or delegating nameservers to Netlify). Once DNS
-   propagates, Netlify auto-provisions a free HTTPS certificate.
-5. Every push to `main` auto-deploys.
+**How a change reaches production:**
+
+1. Commit and push to `main`.
+2. GitHub Actions (`.github/workflows/ci.yml`) runs `npm ci && npm run build` and checks that
+   the expected pages were generated. This is a safety net, not the deploy.
+3. Netlify builds from `main` and publishes to `crossbellvending.com`.
+
+That is the whole flow — pushing to `main` is deploying. There is no manual step.
+
+CI and Netlify are pinned to the same Node version (22) via `.github/workflows/ci.yml` and the
+`NODE_VERSION` setting in `netlify.toml`. Keep them in sync with `engines` in `package.json`
+so a green CI run means a green production build.
+
+**Note:** CI does not gate the Netlify deploy — they run in parallel off the same push, so a
+failing CI run will not stop a bad build from being attempted. To make the check blocking, add a
+branch protection rule on `main` requiring the `Build` check, and work through pull requests
+instead of pushing straight to `main`.
 
 ## Notes
 
