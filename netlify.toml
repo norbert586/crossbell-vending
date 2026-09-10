@@ -21,6 +21,15 @@
   status = 302
   force = true
 
+# Generic cooler sticker, for machines with no assigned location slug yet.
+# Must sit ABOVE the /q/:src rule or it would be treated as a marketing
+# placement and dumped on the home page instead of the feedback form.
+[[redirects]]
+  from = "/q/cooler"
+  to = "/contact/?utm_source=cooler&utm_medium=qr"
+  status = 302
+  force = true
+
 # Marketing placements: /q/card, /q/flyer, /q/van, /q/door, /q/sign ...
 # The path segment becomes utm_source, so a new placement needs no new rule.
 [[redirects]]

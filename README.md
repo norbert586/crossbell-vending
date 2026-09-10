@@ -106,12 +106,21 @@ anything already stuck to a machine.
 
 Any word works -- `/q/expo`, `/q/chamber`, `/q/postcard` -- and shows up under that name.
 
+### Cooler stickers
+
+`https://crossbellvending.com/q/cooler` -> contact page with the feedback form already open,
+location blank for the person to fill in. This is the generic sticker to print in bulk before
+machines have assigned location slugs. Print-ready art lives in [`qr/`](qr/).
+
+Note this one is deliberately routed to the **contact page**, not the home page like the marketing
+codes: someone standing at a machine wants to report a problem, not read the sales pitch.
+
 ### Per-cooler stickers
 
 `https://crossbellvending.com/q/c/<location-slug>` -> contact page with the feedback form already
 open and the location filled in, so the person at the machine does not have to type where they are.
 
-Use a lowercase, hyphenated slug: `/q/c/riverbend-fitness`, `/q/c/acme-auto-shop`. The exact slug
+Use this once machines have names. Use a lowercase, hyphenated slug: `/q/c/riverbend-fitness`, `/q/c/acme-auto-shop`. The exact slug
 is recorded in the `location_code` field even if the visitor edits the visible location name.
 
 ### How the source reaches you

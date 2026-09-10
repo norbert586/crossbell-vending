@@ -87,21 +87,30 @@
         setField(forms[i], "landing_page", attr.landing);
       }
 
-      // Per-cooler QR (/q/c/<slug>): name the location for the person, and open
-      // the feedback panel so they are not asked to hunt for it.
+      // Any cooler scan opens the feedback panel: that person is standing at
+      // the machine, not reading the sales pitch. Keyed off the params of THIS
+      // page load rather than stored attribution, so it fires only on the
+      // actual scan landing and not on every later page in the session.
+      if (clean(params.get("utm_source")) !== "cooler") return;
+
+      var input = document.getElementById("fb-location");
+      if (!input) return;
+
+      var panel = input.closest("details");
+      if (panel) panel.open = true;
+
+      // A per-cooler code (/q/c/<slug>) also names the location for them. The
+      // generic /q/cooler sticker leaves the field blank to fill in.
       var loc = clean(params.get("loc"));
       if (!loc) return;
 
       var codeField = document.querySelector('input[name="location_code"]');
       if (codeField) codeField.value = loc;
 
-      var input = document.getElementById("fb-location");
-      if (input && !input.value) {
+      if (!input.value) {
         input.value = loc.replace(/-/g, " ").replace(/\b\w/g, function (c) {
           return c.toUpperCase();
         });
-        var panel = input.closest("details");
-        if (panel) panel.open = true;
       }
     }
 
