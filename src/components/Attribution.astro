@@ -1,0 +1,114 @@
+---
+// Carries "where did this lead come from" from the landing URL through to the
+// Netlify Forms submission.
+//
+// Why this exists: utm_ params only live in the URL of the page that was
+// landed on. A visitor who scans a QR on the home page and then clicks through
+// to /contact/ has lost them by the time they submit. So we stash the
+// attribution in sessionStorage on arrival and stamp it onto the hidden fields
+// of every Netlify form at submit time.
+//
+// The hidden inputs themselves live in the form markup (ContactSection.astro),
+// NOT here -- Netlify discovers a form's fields by parsing the deployed HTML at
+// build time, so a field injected by JS at runtime would be silently dropped.
+//
+// No cookies, no third party, no cross-site identifier: this is first-party
+// data attached to a form the visitor is deliberately submitting.
+---
+
+<script is:inline>
+  (function () {
+    var KEY = "cbv_attr";
+
+    // Attribution values end up in emailed form submissions -- keep them to a
+    // short, boring character set.
+    function clean(v) {
+      return v ? String(v).replace(/[^\w.\- ]/g, "").slice(0, 80) : "";
+    }
+
+    function read() {
+      try {
+        return JSON.parse(sessionStorage.getItem(KEY)) || {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function write(o) {
+      try {
+        sessionStorage.setItem(KEY, JSON.stringify(o));
+      } catch (e) {
+        /* private mode / storage disabled -- attribution is best-effort */
+      }
+    }
+
+    var params = new URLSearchParams(window.location.search);
+    var attr = read();
+    var tagged = clean(params.get("utm_source"));
+
+    if (tagged) {
+      // A fresh scan or tagged link is a deliberate new touch, so it wins over
+      // whatever was stored earlier in the session (last-touch attribution).
+      attr = {
+        source: tagged,
+        medium: clean(params.get("utm_medium")),
+        campaign: clean(params.get("utm_campaign")),
+        landing: window.location.pathname,
+      };
+      write(attr);
+    } else if (!attr.source) {
+      // Untagged arrival: fall back to the referring site so organic and direct
+      // traffic is still labelled rather than showing up blank.
+      var ref = "";
+      try {
+        ref = document.referrer ? new URL(document.referrer).hostname : "";
+      } catch (e) {}
+      var external = ref && ref !== window.location.hostname;
+      attr = {
+        source: external ? ref : "direct",
+        medium: external ? "referral" : "none",
+        campaign: "",
+        landing: window.location.pathname,
+      };
+      write(attr);
+    }
+
+    function setField(form, name, value) {
+      var el = form.querySelector('input[name="' + name + '"]');
+      if (el) el.value = value || "";
+    }
+
+    function apply() {
+      var forms = document.querySelectorAll("form[data-netlify]");
+      for (var i = 0; i < forms.length; i++) {
+        setField(forms[i], "source", attr.source);
+        setField(forms[i], "medium", attr.medium);
+        setField(forms[i], "campaign", attr.campaign);
+        setField(forms[i], "landing_page", attr.landing);
+      }
+
+      // Per-cooler QR (/q/c/<slug>): name the location for the person, and open
+      // the feedback panel so they are not asked to hunt for it.
+      var loc = clean(params.get("loc"));
+      if (!loc) return;
+
+      var codeField = document.querySelector('input[name="location_code"]');
+      if (codeField) codeField.value = loc;
+
+      var input = document.getElementById("fb-location");
+      if (input && !input.value) {
+        input.value = loc.replace(/-/g, " ").replace(/\b\w/g, function (c) {
+          return c.toUpperCase();
+        });
+        var panel = input.closest("details");
+        if (panel) panel.open = true;
+      }
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", apply);
+    } else {
+      apply();
+    }
+  })();
+</script>

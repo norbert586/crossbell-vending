@@ -84,6 +84,59 @@ failing CI run will not stop a bad build from being attempted. To make the check
 branch protection rule on `main` requiring the `Build` check, and work through pull requests
 instead of pushing straight to `main`.
 
+## QR codes and traffic attribution
+
+Printed QR codes must point at a **short /q/ path**, never at a full `utm_` URL. Short URLs make
+a less dense QR that scans faster on a curved cooler door in bad light, and because the /q/ rules
+are 302 redirects (`netlify.toml`), the destination can be changed later without reprinting
+anything already stuck to a machine.
+
+### Marketing placements
+
+`https://crossbellvending.com/q/<placement>` -> home page, tagged `utm_source=<placement>`,
+`utm_medium=qr`. The path segment *becomes* the source, so a new placement needs no code change:
+
+| Print this | Put it on |
+|---|---|
+| `crossbellvending.com/q/card` | Business cards |
+| `crossbellvending.com/q/flyer` | Flyers and leave-behinds |
+| `crossbellvending.com/q/van` | Vehicle decal |
+| `crossbellvending.com/q/door` | Door hangers |
+| `crossbellvending.com/q/sign` | Yard or window signs |
+
+Any word works -- `/q/expo`, `/q/chamber`, `/q/postcard` -- and shows up under that name.
+
+### Per-cooler stickers
+
+`https://crossbellvending.com/q/c/<location-slug>` -> contact page with the feedback form already
+open and the location filled in, so the person at the machine does not have to type where they are.
+
+Use a lowercase, hyphenated slug: `/q/c/riverbend-fitness`, `/q/c/acme-auto-shop`. The exact slug
+is recorded in the `location_code` field even if the visitor edits the visible location name.
+
+### How the source reaches you
+
+`utm_` params only exist in the URL of the page that was landed on -- a visitor who scans on the
+home page and then clicks to /contact/ has lost them by submit time. `src/components/Attribution.astro`
+solves this: it stores the attribution in `sessionStorage` on arrival and stamps it onto hidden
+fields in both forms. **Every Netlify Forms submission now carries `source`, `medium`, `campaign`
+and `landing_page`** (plus `location_code` on the feedback form), visible in the Netlify dashboard
+and in notification emails.
+
+Untagged visitors are still labelled: the referring hostname where there is one, otherwise
+`direct`. Attribution is last-touch -- a fresh scan overrides an earlier one in the same session.
+
+The hidden inputs are declared in `ContactSection.astro` markup on purpose. Netlify discovers a
+form's fields by parsing the **built HTML**, so a field injected by JavaScript would be dropped.
+
+No cookies and no third-party script are involved, so this needs no cookie banner.
+
+### What this does not give you
+
+This attributes **leads**, not pageviews -- you learn which QR produced a form submission, not how
+many people scanned and left. The site has no analytics installed. See Notes if you want scan
+counts too.
+
 ## Notes
 
 - `astro.config.mjs` has `site` set to `https://crossbellvending.com` — required for the sitemap

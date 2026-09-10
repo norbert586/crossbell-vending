@@ -35,6 +35,13 @@ const {
           <input id="bot-field" name="bot-field" type="text" tabindex="-1" autocomplete="off" />
         </p>
 
+        <!-- Populated by Attribution.astro. Declared here because Netlify reads
+             a form's fields from the built HTML, not from the live DOM. -->
+        <input type="hidden" name="source" />
+        <input type="hidden" name="medium" />
+        <input type="hidden" name="campaign" />
+        <input type="hidden" name="landing_page" />
+
         <div class="mb-5 grid gap-5 sm:grid-cols-2">
           <div class="flex flex-col gap-1.5">
             <label for="name" class="text-sm font-semibold">Your name</label>
@@ -117,6 +124,14 @@ const {
             <label for="bot-field-2">Leave this field blank</label>
             <input id="bot-field-2" name="bot-field-2" type="text" tabindex="-1" autocomplete="off" />
           </p>
+
+          <!-- Populated by Attribution.astro. location_code keeps the exact QR
+               slug even if the visitor edits the visible location field. -->
+          <input type="hidden" name="source" />
+          <input type="hidden" name="medium" />
+          <input type="hidden" name="campaign" />
+          <input type="hidden" name="landing_page" />
+          <input type="hidden" name="location_code" />
           <div class="flex flex-col gap-1.5">
             <label for="fb-location" class="text-sm font-semibold">Location name or address</label>
             <input

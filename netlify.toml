@@ -6,6 +6,29 @@
   # Kept in sync with .github/workflows/ci.yml and package.json engines.
   NODE_VERSION = "22"
 
+# --- QR / campaign entry points -------------------------------------------
+# Printed QR codes point at these short paths, never at a full utm_ URL.
+# Two reasons: a shorter URL makes a less dense QR that scans faster in poor
+# light, and a 302 means the destination can change later WITHOUT reprinting
+# anything already stuck to a cooler. Keep these 302 (never 301) so browsers
+# do not cache the target permanently.
+
+# Per-cooler sticker: /q/c/<location-slug> -> contact page, feedback form
+# prefilled and opened for that specific location.
+[[redirects]]
+  from = "/q/c/*"
+  to = "/contact/?utm_source=cooler&utm_medium=qr&loc=:splat"
+  status = 302
+  force = true
+
+# Marketing placements: /q/card, /q/flyer, /q/van, /q/door, /q/sign ...
+# The path segment becomes utm_source, so a new placement needs no new rule.
+[[redirects]]
+  from = "/q/:src"
+  to = "/?utm_source=:src&utm_medium=qr"
+  status = 302
+  force = true
+
 [[headers]]
   for = "/*"
   [headers.values]
