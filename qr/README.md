@@ -4,7 +4,7 @@ Generated codes for print. Regenerate or add new ones rather than editing by han
 
 | File | Use |
 |---|---|
-| `cooler-sticker.svg` | Ready-to-print 3in x 4in cooler sticker. Vector — scales to any size. |
+| `cooler-sticker.svg` | Ready-to-print 3in x 4in cooler sticker. Vector — scales to any size. The crest is embedded inline, so the file is self-contained. |
 | `cooler-plain.svg` | The bare QR, no text. Drop into your own layout. |
 | `cooler-plain.png` | 1200px raster of the bare QR, for anything that won't take SVG. |
 

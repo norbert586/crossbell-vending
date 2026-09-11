@@ -10,15 +10,19 @@
 @import "@fontsource/ibm-plex-mono/700.css";
 
 @theme {
-  --color-ink: #1b2024;
-  --color-steel: #2e3a42;
-  --color-steel-2: #3a4750;
-  --color-paper: #eff1ee;
-  --color-paper-2: #e5e8e3;
-  --color-line: #cbd1cb;
-  --color-muted: #4b555f;
-  --color-accent: #d98a0b;
-  --color-accent-dim: #b5730a;
+  /* Palette is derived from the crest (public/brand/crossbell-crest.svg):
+     gold #C49350, lavender #CDD1FF, black outlines. Indigo is lavender's dark end. */
+  --color-ink: #141420;
+  --color-indigo: #2a2a5c;
+  --color-indigo-2: #3b3b75;
+  --color-paper: #f6f7ff;
+  --color-lavender: #cdd1ff;
+  --color-lavender-tint: #e6e8ff;
+  --color-line: #cfd0e4;
+  --color-muted: #4f5168;
+  --color-accent: #c49350;
+  --color-accent-dim: #96692f;
+  --color-accent-hover: #ae7f3c;
 
   --font-display: "Barlow Condensed", ui-sans-serif, system-ui, sans-serif;
   --font-body: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
@@ -43,7 +47,7 @@ h3 {
 }
 
 :focus-visible {
-  outline: 3px solid var(--color-accent);
+  outline: 3px solid var(--color-indigo);
   outline-offset: 2px;
 }
 

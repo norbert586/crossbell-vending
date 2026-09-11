@@ -1,13 +1,24 @@
 ---
+import { Image } from "astro:assets";
 import { site } from "../data/site";
+import crest from "../assets/brand/crest.png";
 const year = new Date().getFullYear();
 ---
 
-<footer class="bg-ink text-[#C9CDC7]">
+<footer class="bg-indigo text-lavender">
   <div class="mx-auto grid max-w-[1120px] gap-8 px-5 py-12 sm:px-8 sm:py-14 md:grid-cols-[1.2fr_1fr_1fr]">
     <div>
+      <Image
+        src={crest}
+        alt="Crossbell Vending crest"
+        width={280}
+        height={326}
+        densities={[1, 2]}
+        class="mb-4 h-[140px] w-auto"
+        loading="lazy"
+      />
       <h2 class="mb-3 font-body text-base font-semibold text-white">Crossbell Vending</h2>
-      <p class="max-w-[32ch] text-sm text-[#AEB3AA]">
+      <p class="max-w-[32ch] text-sm text-lavender">
         AI-powered smart coolers for break rooms, gyms, apartment communities, auto shops, and
         light industrial sites in Macomb and north Oakland County.
       </p>
@@ -29,10 +40,10 @@ const year = new Date().getFullYear();
       <ul class="columns-2 gap-4 text-sm leading-relaxed">
         {site.serviceArea.map((city) => <li>{city}</li>)}
       </ul>
-      <p class="mt-2 text-xs text-[#8A9089]">{site.serviceAreaNote}</p>
+      <p class="mt-2 text-xs text-[#9EA2D6]">{site.serviceAreaNote}</p>
     </div>
   </div>
-  <div class="mx-auto flex max-w-[1120px] flex-wrap justify-between gap-3 border-t border-[#3A4148] px-5 py-5 text-xs text-[#8A9089] sm:px-8">
+  <div class="mx-auto flex max-w-[1120px] flex-wrap justify-between gap-3 border-t border-indigo-2 px-5 py-5 text-xs text-[#9EA2D6] sm:px-8">
     <span>&copy; {year} {site.legalName}</span>
   </div>
 </footer>

@@ -1,5 +1,7 @@
 ---
+import { Image } from "astro:assets";
 import { site } from "../data/site";
+import crest from "../assets/brand/crest.png";
 
 interface Props {
   contactHref?: string;
@@ -7,10 +9,19 @@ interface Props {
 const { contactHref = "/contact" } = Astro.props;
 ---
 
-<header class="sticky top-0 z-40 border-b border-line bg-paper">
-  <div class="mx-auto flex max-w-[1120px] items-center justify-between gap-4 px-5 py-3 sm:px-8">
-    <a href="/" class="font-display text-2xl font-bold tracking-tight text-ink">
-      Crossbell<span class="text-accent">.</span>Vending
+<header class="sticky top-0 z-40 border-b-2 border-lavender bg-white">
+  <div class="mx-auto flex max-w-[1120px] items-center justify-between gap-4 px-5 py-2.5 sm:px-8">
+    <a href="/" class="flex items-center gap-2.5 font-display text-2xl font-bold tracking-tight text-ink">
+      <Image
+        src={crest}
+        alt=""
+        width={96}
+        height={112}
+        densities={[1, 2]}
+        class="h-12 w-auto flex-none"
+        loading="eager"
+      />
+      <span>Crossbell Vending</span>
     </a>
     <div class="flex items-center gap-4 sm:gap-6">
       <a
@@ -24,7 +35,7 @@ const { contactHref = "/contact" } = Astro.props;
       </a>
       <a
         href={contactHref}
-        class="hidden rounded-[3px] border-2 border-transparent bg-accent px-5 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-accent-dim sm:inline-flex"
+        class="hidden rounded-[3px] border-2 border-transparent bg-accent px-5 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover sm:inline-flex"
       >
         Contact us
       </a>
