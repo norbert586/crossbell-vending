@@ -12,5 +12,10 @@ export default defineConfig({
     plugins: [tailwindcss()]
   },
 
-  integrations: [sitemap()]
+  integrations: [
+    sitemap({
+      // Form success page — reachable only by submitting a form, not for search.
+      filter: (page) => !page.includes('/thanks/'),
+    }),
+  ]
 });

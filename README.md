@@ -26,36 +26,66 @@ codebase.
 `site.ts` when ready. Also confirm the business hours in `site.ts` (`hours` field) — they're a
 placeholder (Mon–Fri, 8–5) used in the LocalBusiness schema.
 
+## Brand assets
+
+The crest and the palette both come from the designer's vector file. Sources live in two places:
+
+| File | Use |
+|---|---|
+| `src/assets/brand/crest.png` | Source for every on-site placement (header, footer, 404). Astro's `<Image>` resizes and converts it to WebP at build time — never link to this file directly. |
+| `public/brand/crossbell-crest.svg` | Vector master, cropped to the artwork. Hand this to printers, embroiderers, and the Google Business Profile. Too heavy (~180 KB) to ship on every page. |
+| `public/brand/crossbell-crest.png` | 2400px transparent raster for anything that won't take SVG. |
+| `public/og.png` | 1200x630 social share card (texts, Facebook, LinkedIn). Regenerate if the tagline changes. |
+| `public/favicon.ico`, `public/apple-touch-icon.png` | Simplified bell-and-cross mark. The full crest is illegible at 16px, so this is a deliberate simplification, not the logo. |
+
+The original `.ai` is not in the repo. Keep it somewhere safe; the SVG here is derived from it.
+
+**Colors** (`src/styles/global.css`, `@theme`): gold `#C49350` and lavender `#CDD1FF` are sampled from
+the crest. Indigo `#2A2A5C` is lavender's dark end, used for the pricing section and footer. Lavender
+is a *surface* color only — it fails contrast as text, so it is never used for type. `accent-dim` is
+the darkest gold that passes AA for small text; `accent-hover` is the button hover shade.
+
 ## Swapping in real photos
 
-The site ships with two labeled placeholder slots (dashed border, camera icon) instead of stock
-photography — an honest placeholder beats a fake stock photo. Replace them with real images in
-`src/components/PhotoPlaceholder.astro` usages (in `src/pages/index.astro`), or point them at
-real files in `public/images/` and swap the placeholder markup for an `<img>` tag.
+Photos live in `src/assets/photos/` and go through Astro's `<Image>` component, which generates
+responsive WebP variants at build time. Drop in a JPEG at 2000px+ on the long side and reference it
+from the page; do not pre-resize.
 
 **Shot list:**
 
-| Shot | Where it's used | What to shoot | Orientation / aspect ratio |
+| Shot | Where it's used | What to shoot | Status |
 |---|---|---|---|
-| 01 | Hero (top of home page) | The installed cooler in a real break room. Three-quarter angle so both the front door and one side are visible; make sure the screen/card-reader area is lit and in focus. | Portrait, **4:5** |
-| 02 | "Why us" section | A technician mid-restock — hand on the door or loading a shelf. Shows the service side of the business, not just the machine. | Portrait, **3:4** |
+| 01 | Hero (top of home page) | The installed cooler in a real break room. Three-quarter angle so both the front door and one side are visible; screen/card-reader area lit and in focus. Portrait, **4:5**. | `hero-cooler.jpg` — a manufacturer install photo cropped to exclude the host's signage. Replace with a Crossbell placement when one exists. |
+| 02 | "Why us" section | A technician mid-restock, or the compact single-door unit on its own. Portrait, **3:4**. | Placeholder (`PhotoPlaceholder` in `src/pages/index.astro`). |
 
-Shoot in landscape if that's easier and crop to the target aspect ratio afterward — the aspect
-ratio matters more than the original orientation. Export as WebP or well-compressed JPEG; the
-layout expects the image to fill its slot (`object-fit: cover`), so don't worry about matching
-the exact pixel dimensions as long as the aspect ratio is close.
+Shoot in landscape if that's easier and crop afterward — the aspect ratio matters more than the
+original orientation. The layout uses `object-fit: cover`, so exact pixel dimensions don't matter
+as long as the ratio is close.
 
 ## Where form submissions land
 
 Both forms (the business walkthrough request and the "already have a cooler" feedback form) use
-**Netlify Forms** — no backend code, no database. Once the site is deployed on Netlify:
+**Netlify Forms** — no backend code, no database. Nothing is emailed by the site itself; Netlify
+receives the submission and (once configured) emails you.
 
-1. Submissions appear under **Site settings → Forms** in the Netlify dashboard, split into
-   `business-inquiry` and `location-feedback`.
-2. To get emailed on every submission: **Forms → Form notifications → Add notification → Email
-   notification**, and enter the address from `site.ts`.
-3. Both forms include a honeypot field (hidden from real visitors, invisible bait for bots) —
-   Netlify silently discards anything that fills it in.
+**One-time setup in the Netlify dashboard — the forms do not work until this is done:**
+
+1. **Site configuration → Forms → Enable form detection.** Netlify only scans the built HTML for
+   forms when this is on. Without it, every submit returns a 404 (this is what "the send button
+   goes to page not found" looks like).
+2. **Deploys → Trigger deploy.** Detection only happens during a build, so redeploy after
+   enabling it.
+3. Submit a test through the live site. It should land on `/thanks/`, and the entry should
+   appear under **Forms** in the dashboard, split into `business-inquiry` and `location-feedback`.
+4. To get emailed on every submission: **Forms → Form notifications → Add notification → Email
+   notification**, and enter the address from `site.ts` (`crossbellvending@gmail.com`).
+
+Both forms include a honeypot field (hidden from real visitors, invisible bait for bots) —
+Netlify silently discards anything that fills it in. After a successful submit, Netlify redirects
+to `src/pages/thanks.astro` (set by the `action` attribute on each form).
+
+Local `npm run preview` cannot accept form posts — there is no Netlify behind it — so always test
+forms on the live site.
 
 If you ever move off Netlify, the forms will need a different backend (e.g. Formspree) — update
 the `data-netlify` / `netlify-honeypot` attributes and form `action` in
@@ -151,6 +181,6 @@ counts too.
 - `astro.config.mjs` has `site` set to `https://crossbellvending.com` — required for the sitemap
   (`@astrojs/sitemap`) to generate correct URLs. Update it if the domain ever changes.
 - `public/robots.txt` points at the generated sitemap.
-- Accessibility: skip-to-content link, visible focus rings (amber, 3px), semantic landmarks,
+- Accessibility: skip-to-content link, visible focus rings (indigo, 3px), semantic landmarks,
   native `<details>` for the FAQ (works without JavaScript, announced correctly by screen
   readers), labeled form fields.

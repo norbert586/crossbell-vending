@@ -13,7 +13,7 @@ const {
 } = Astro.props;
 ---
 
-<section id={id} class="bg-paper-2">
+<section id={id} class="bg-lavender-tint">
   <div class="mx-auto max-w-[1120px] px-5 py-12 sm:px-8 sm:py-16">
     <div class="mb-9 max-w-[52ch]">
       <h2 class="font-display text-[clamp(1.85rem,3.2vw,2.4rem)] font-semibold">{heading}</h2>
@@ -25,6 +25,7 @@ const {
       <form
         name="business-inquiry"
         method="POST"
+        action="/thanks/"
         data-netlify="true"
         netlify-honeypot="bot-field"
         class="max-w-[640px] border border-line bg-white p-6 sm:p-10"
@@ -50,7 +51,7 @@ const {
               name="name"
               type="text"
               required
-              class="border border-line bg-paper px-3 py-2.5 text-[1.0625rem] focus:border-accent focus:outline-2 focus:outline-accent focus:outline-offset-1"
+              class="border border-line bg-paper px-3 py-2.5 text-[1.0625rem] focus:border-indigo focus:outline-2 focus:outline-indigo focus:outline-offset-1"
             />
           </div>
           <div class="flex flex-col gap-1.5">
@@ -60,7 +61,7 @@ const {
               name="business"
               type="text"
               required
-              class="border border-line bg-paper px-3 py-2.5 text-[1.0625rem] focus:border-accent focus:outline-2 focus:outline-accent focus:outline-offset-1"
+              class="border border-line bg-paper px-3 py-2.5 text-[1.0625rem] focus:border-indigo focus:outline-2 focus:outline-indigo focus:outline-offset-1"
             />
           </div>
         </div>
@@ -72,7 +73,7 @@ const {
               name="phone"
               type="tel"
               required
-              class="border border-line bg-paper px-3 py-2.5 text-[1.0625rem] focus:border-accent focus:outline-2 focus:outline-accent focus:outline-offset-1"
+              class="border border-line bg-paper px-3 py-2.5 text-[1.0625rem] focus:border-indigo focus:outline-2 focus:outline-indigo focus:outline-offset-1"
             />
           </div>
           <div class="flex flex-col gap-1.5">
@@ -80,7 +81,7 @@ const {
             <select
               id="loctype"
               name="location_type"
-              class="border border-line bg-paper px-3 py-2.5 text-[1.0625rem] focus:border-accent focus:outline-2 focus:outline-accent focus:outline-offset-1"
+              class="border border-line bg-paper px-3 py-2.5 text-[1.0625rem] focus:border-indigo focus:outline-2 focus:outline-indigo focus:outline-offset-1"
             >
               {site.locationTypes.map((t) => <option>{t}</option>)}
             </select>
@@ -92,12 +93,12 @@ const {
             id="message"
             name="message"
             rows="4"
-            class="border border-line bg-paper px-3 py-2.5 text-[1.0625rem] focus:border-accent focus:outline-2 focus:outline-accent focus:outline-offset-1"
+            class="border border-line bg-paper px-3 py-2.5 text-[1.0625rem] focus:border-indigo focus:outline-2 focus:outline-indigo focus:outline-offset-1"
           ></textarea>
         </div>
         <button
           type="submit"
-          class="inline-flex rounded-[3px] bg-accent px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-accent-dim"
+          class="inline-flex rounded-[3px] bg-accent px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover"
         >
           Send request
         </button>
@@ -115,6 +116,7 @@ const {
         <form
           name="location-feedback"
           method="POST"
+          action="/thanks/"
           data-netlify="true"
           netlify-honeypot="bot-field-2"
           class="mt-4 flex flex-col gap-4"
@@ -139,7 +141,7 @@ const {
               name="location"
               type="text"
               required
-              class="border border-line bg-white px-3 py-2 text-sm focus:border-accent focus:outline-2 focus:outline-accent focus:outline-offset-1"
+              class="border border-line bg-white px-3 py-2 text-sm focus:border-indigo focus:outline-2 focus:outline-indigo focus:outline-offset-1"
             />
           </div>
           <div class="flex flex-col gap-1.5">
@@ -149,7 +151,7 @@ const {
               name="message"
               rows="3"
               required
-              class="border border-line bg-white px-3 py-2 text-sm focus:border-accent focus:outline-2 focus:outline-accent focus:outline-offset-1"
+              class="border border-line bg-white px-3 py-2 text-sm focus:border-indigo focus:outline-2 focus:outline-indigo focus:outline-offset-1"
             ></textarea>
           </div>
           <button
