@@ -7,6 +7,15 @@ interface Props {
   contactHref?: string;
 }
 const { contactHref = "/contact" } = Astro.props;
+
+// Absolute "/#id" hrefs so the links work from the contact and thanks pages too.
+const nav = [
+  { href: "/#how", label: "How it works" },
+  { href: "/#machine", label: "The machine" },
+  { href: "/#why", label: "Why us" },
+  { href: "/#area", label: "Service area" },
+  { href: "/#faq", label: "FAQ" },
+];
 ---
 
 <header class="sticky top-0 z-40 border-b-2 border-lavender bg-white">
@@ -23,6 +32,17 @@ const { contactHref = "/contact" } = Astro.props;
       />
       <span>Crossbell Vending</span>
     </a>
+    <nav aria-label="Sections" class="hidden lg:block">
+      <ul class="flex items-center gap-6">
+        {nav.map((item) => (
+          <li>
+            <a href={item.href} class="text-sm font-medium text-ink transition-colors hover:text-accent-dim">
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
     <div class="flex items-center gap-4 sm:gap-6">
       <a
         href={`tel:${site.phoneTel}`}

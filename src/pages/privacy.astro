@@ -1,0 +1,98 @@
+---
+import LegalLayout from "../layouts/LegalLayout.astro";
+import { site } from "../data/site";
+---
+
+<LegalLayout
+  title="Privacy Policy | Crossbell Vending"
+  description="How Crossbell Vending collects, uses, and protects information submitted through this website."
+  heading="Privacy policy"
+  updated="2026-09-12"
+>
+  <p>
+    This policy explains what information {site.legalName} ("Crossbell Vending," "we," "us")
+    collects through {site.domain}, how we use it, and the choices you have. We keep it short
+    because we collect very little.
+  </p>
+
+  <h2>Information you give us</h2>
+  <p>
+    When you submit a form on this site, we receive what you type: your name, business name,
+    phone number, location type, and any message you include. The feedback form for existing
+    locations collects the location name and your message. We use this information to respond to
+    your request, schedule a site visit, and service the coolers we place.
+  </p>
+
+  <h2>Information collected automatically</h2>
+  <ul>
+    <li>
+      <strong>Referral source.</strong> If you arrive from a QR code or a link that carries a
+      campaign tag, we record which code or campaign brought you here, along with the page you
+      landed on. This is stored in your browser's session storage (cleared when you close the
+      tab) and attached to any form you submit, so we know which sticker or flyer is working.
+    </li>
+    <li>
+      <strong>Server logs.</strong> Our hosting provider keeps standard server logs (IP address,
+      browser type, pages requested, timestamps) for security and troubleshooting.
+    </li>
+  </ul>
+  <p>
+    We do not use advertising trackers, analytics cookies, or third-party pixels, and we do not
+    set cookies of our own.
+  </p>
+
+  <h2>Purchases at a cooler</h2>
+  <p>
+    Card and mobile-wallet payments at a Crossbell cooler are processed by the machine's payment
+    provider, not by this website. We do not see or store your full card number. Refund requests
+    can be sent to us using the contact details below or the QR code on the cooler door.
+  </p>
+
+  <h2>Who we share information with</h2>
+  <ul>
+    <li>
+      <strong>Service providers.</strong> This site is hosted by Netlify, which receives and
+      stores form submissions on our behalf. We use standard tools such as email to respond to
+      you.
+    </li>
+    <li>
+      <strong>Legal requirements.</strong> We may disclose information when required by law or to
+      protect our rights, property, or safety.
+    </li>
+  </ul>
+  <p>We do not sell personal information, and we do not share it with third parties for their own marketing.</p>
+
+  <h2>How long we keep it</h2>
+  <p>
+    We keep inquiry and feedback submissions for as long as needed to respond and, for locations we
+    service, for the life of the placement plus a reasonable period for our records. You can ask
+    us to delete your information at any time.
+  </p>
+
+  <h2>Your choices</h2>
+  <p>
+    You can contact us to access, correct, or delete the information you have submitted. Email
+    <a href={`mailto:${site.email}`}>{site.email}</a> or call
+    <a href={`tel:${site.phoneTel}`}>{site.phone}</a>.
+  </p>
+
+  <h2>Children</h2>
+  <p>
+    This site is intended for businesses and adults. We do not knowingly collect information from
+    children under 13.
+  </p>
+
+  <h2>Changes to this policy</h2>
+  <p>
+    If we change this policy, we will update the date at the top of this page. Continued use of
+    the site after a change means you accept the updated policy.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    {site.legalName}<br />
+    Macomb County, Michigan<br />
+    <a href={`mailto:${site.email}`}>{site.email}</a> &middot;
+    <a href={`tel:${site.phoneTel}`}>{site.phone}</a>
+  </p>
+</LegalLayout>

@@ -55,12 +55,16 @@ from the page; do not pre-resize.
 
 | Shot | Where it's used | What to shoot | Status |
 |---|---|---|---|
-| 01 | Hero (top of home page) | The installed cooler in a real break room. Three-quarter angle so both the front door and one side are visible; screen/card-reader area lit and in focus. Portrait, **4:5**. | `hero-cooler.jpg` — a manufacturer install photo cropped to exclude the host's signage. Replace with a Crossbell placement when one exists. |
-| 02 | "Why us" section | A technician mid-restock, or the compact single-door unit on its own. Portrait, **3:4**. | Placeholder (`PhotoPlaceholder` in `src/pages/index.astro`). |
+| Hero | Top of home page, right column | `02-machine.jpg` — two-door cooler in an office lobby. Square source; the layout crops it to portrait with `object-fit: cover`. | Placed. |
+| The machine | "The machine" section | `01-machine.jpg` — a 3:4 crop of `01-hero.png` (single-door cooler in a hallway, 16:9). Re-crop with `sharp` if the source changes: `extract({ left: 300, top: 0, width: 1080, height: 1440 })`. | Placed. |
+| Carousel | "What's inside" cards | `04-colddrinks.png` through `09-premiumluxury.png` — product lineups on white, shown uncropped inside a 4:3 white box. The card list (labels, blurbs, alt text) is the `inside` array at the top of `src/pages/index.astro`. To add a card, drop a PNG on white in `src/assets/photos/`, import it, and add a row. | Placed. |
+
+When a real Crossbell placement is photographed, swap it in for the hero: a two-door unit in a
+real break room, three-quarter angle, lights on, no other company's logo in frame.
 
 Shoot in landscape if that's easier and crop afterward — the aspect ratio matters more than the
 original orientation. The layout uses `object-fit: cover`, so exact pixel dimensions don't matter
-as long as the ratio is close.
+as long as the ratio is close. Shoot with the lights on and no other company's logo in frame.
 
 ## Where form submissions land
 

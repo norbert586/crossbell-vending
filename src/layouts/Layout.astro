@@ -22,10 +22,10 @@ const localBusinessSchema = {
   telephone: site.phone,
   email: site.email,
   url: site.url,
-  areaServed: site.serviceArea.map((city) => ({
-    "@type": "City",
-    name: `${city}, MI`,
-  })),
+  // "Romeo / Bruce" is one row on the site but two municipalities to Google.
+  areaServed: site.serviceArea
+    .flatMap((entry) => entry.split("/").map((c) => c.trim()))
+    .map((city) => ({ "@type": "City", name: `${city}, MI` })),
   openingHoursSpecification: {
     "@type": "OpeningHoursSpecification",
     dayOfWeek: site.hours.days,

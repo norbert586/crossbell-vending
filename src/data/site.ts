@@ -13,7 +13,7 @@ export const site = {
     "Shelby Township",
     "Macomb Township",
     "Utica",
-    "Romeo",
+    "Romeo / Bruce",
     "Rochester",
     "Rochester Hills",
     "Sterling Heights",

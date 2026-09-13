@@ -1,0 +1,42 @@
+---
+import LegalLayout from "../layouts/LegalLayout.astro";
+import { site } from "../data/site";
+---
+
+<LegalLayout
+  title="Accessibility | Crossbell Vending"
+  description="Crossbell Vending's commitment to an accessible website and how to report a barrier."
+  heading="Accessibility"
+  updated="2026-09-12"
+>
+  <p>
+    {site.legalName} wants every visitor to be able to read this site and reach us, whatever
+    device or assistive technology they use. We build to the Web Content Accessibility Guidelines
+    (WCAG) 2.2 at level AA.
+  </p>
+
+  <h2>What we do</h2>
+  <ul>
+    <li>Every page can be navigated by keyboard, with a visible focus indicator and a skip-to-content link.</li>
+    <li>Headings, landmarks, and form labels are structured so screen readers announce them correctly.</li>
+    <li>Text and background colors meet AA contrast ratios.</li>
+    <li>Images carry descriptive alternative text; decorative images are hidden from assistive technology.</li>
+    <li>The site respects your reduced-motion preference and works without JavaScript.</li>
+    <li>Layouts adapt from phone screens to large monitors without horizontal scrolling.</li>
+  </ul>
+
+  <h2>Tell us if something is in the way</h2>
+  <p>
+    If any part of this site is difficult to use, we want to fix it. Email
+    <a href={`mailto:${site.email}`}>{site.email}</a> or call
+    <a href={`tel:${site.phoneTel}`}>{site.phone}</a> and tell us the page and what happened.
+    We respond by the end of the business day.
+  </p>
+
+  <h2>Our coolers</h2>
+  <p>
+    Questions about the physical accessibility of a Crossbell cooler — reach height, clearance,
+    or payment options — are welcome at the same contact details. We consider placement height
+    and clear floor space during every site walkthrough.
+  </p>
+</LegalLayout>

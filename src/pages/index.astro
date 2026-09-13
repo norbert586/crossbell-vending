@@ -1,202 +1,294 @@
 ---
 import { Image } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
-import PhotoPlaceholder from "../components/PhotoPlaceholder.astro";
 import FaqItem from "../components/FaqItem.astro";
 import ContactSection from "../components/ContactSection.astro";
 import { site } from "../data/site";
-import heroCooler from "../assets/photos/hero-cooler.jpg";
+import heroCooler from "../assets/photos/02-machine.jpg";
+import machine from "../assets/photos/01-machine.jpg";
+import imgColdDrinks from "../assets/photos/04-colddrinks.png";
+import imgEnergy from "../assets/photos/05-energysports.png";
+import imgSnacks from "../assets/photos/06-snacks.png";
+import imgHealthy from "../assets/photos/07-healthy.png";
+import imgProtein from "../assets/photos/08-protein.png";
+import imgPremium from "../assets/photos/09-premiumluxury.png";
 
 const title = "Vending Machine Services Macomb County | Crossbell Vending";
 const description =
-  "AI-powered smart coolers for break rooms, gyms, apartment communities, auto shops, and light industrial sites across Macomb and north Oakland County. No cost, no long contract.";
+  "AI-powered smart coolers for break rooms, gyms, auto shops, offices, and light industrial sites across Macomb and north Oakland County. $0 to your business — we wheel it in, stock it, and keep it running.";
+
+const placements = [
+  { label: "Break rooms", icon: "mug" },
+  { label: "Gyms", icon: "barbell" },
+  { label: "Auto shops", icon: "wrench" },
+  { label: "Light industrial sites", icon: "warehouse" },
+  { label: "Offices", icon: "desk" },
+  { label: "Schools", icon: "school" },
+  { label: "Warehouses", icon: "boxes" },
+] as const;
+
+// Carousel cards. Images are product lineups on white, shown uncropped.
+const inside = [
+  { group: "Food & drink", label: "Cold drinks", blurb: "Water, soda, iced tea, and juice — always cold.", image: imgColdDrinks, alt: "Bottled water, Coca-Cola, Diet Coke, Sprite, Pure Leaf tea, Tropicana, and Gatorade" },
+  { group: "Food & drink", label: "Energy & sports", blurb: "Energy drinks, electrolytes, and cold brew for long shifts and hard workouts.", image: imgEnergy, alt: "Monster, Red Bull, Bang, Gatorade, Celsius, and Starbucks cold brew" },
+  { group: "Food & drink", label: "Snacks", blurb: "Chips, candy, jerky, and trail mix — the ones people actually reach for.", image: imgSnacks, alt: "Doritos, Lay's, Ruffles, Takis, Snickers, M&M's, Planters trail mix, and Jack Link's jerky" },
+  { group: "Food & drink", label: "Healthier picks", blurb: "Protein bars, nuts, fruit cups, and low-sugar drinks.", image: imgHealthy, alt: "RXBAR, KIND bar, Blue Diamond almonds, Chobani yogurt, GoGo squeeZ, Naked juice, Olipop, and That's It fruit bar" },
+  { group: "Food & drink", label: "Protein & meals", blurb: "Protein shakes and ready-to-eat options where the site calls for them.", image: imgProtein, alt: "Premier Protein, Fairlife, and Atkins shakes, a chicken teriyaki entrée, hard-boiled eggs, and Sargento Balanced Breaks" },
+  { group: "Premium amenities", label: "Premium & luxury", blurb: "Higher-end snacks, drinks, and personal items that set your break room apart.", image: imgPremium, alt: "Pokémon trading card packs, BlenderBottle shakers, Beats Studio Buds, Altoids, and 5 gum" },
+] as const;
+
+const icons: Record<(typeof placements)[number]["icon"] | "plus", string> = {
+  plus: '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
+  mug: '<path d="M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8Z"/><path d="M17 9h1.5a2.5 2.5 0 0 1 0 5H17"/><line x1="7" y1="4" x2="7" y2="6"/><line x1="10.5" y1="3.5" x2="10.5" y2="6"/>',
+  barbell: '<rect x="2" y="10" width="4" height="4"/><rect x="18" y="10" width="4" height="4"/><line x1="6" y1="12" x2="18" y2="12"/>',
+  wrench: '<path d="M14 7l3 3-6 6-3.5.5.5-3.5Z"/><path d="M12 9l3 3"/><path d="M4 20h6"/>',
+  warehouse: '<rect x="4" y="10" width="16" height="9"/><path d="M8 10V7l4-2 4 2v3"/>',
+  desk: '<rect x="3" y="6" width="18" height="4"/><line x1="6" y1="10" x2="6" y2="19"/><line x1="18" y1="10" x2="18" y2="19"/><line x1="9" y1="14" x2="15" y2="14"/>',
+  school: '<path d="M3 10l9-5 9 5-9 5-9-5Z"/><path d="M7 12v5c0 1.5 2.5 2.5 5 2.5s5-1 5-2.5v-5"/><line x1="21" y1="10" x2="21" y2="16"/>',
+  boxes: '<rect x="3" y="12" width="8" height="8"/><rect x="13" y="12" width="8" height="8"/><rect x="8" y="4" width="8" height="8"/>',
+};
 ---
 
 <Layout title={title} description={description} contactHref="#contact">
-  <!-- Hero -->
-  <section class="bg-lavender-tint py-11 sm:py-16">
-    <div class="mx-auto grid max-w-[1120px] items-center gap-10 px-5 sm:px-8 md:grid-cols-[1.1fr_0.9fr]">
-      <div>
-        <h1 class="text-[clamp(2.5rem,5.4vw,3.9rem)] font-bold leading-[1.05]">
-          Smart vending for Macomb and Oakland County workplaces
-        </h1>
-        <p class="mt-4 max-w-[46ch] text-lg text-muted">
-          We install, stock, and service AI-powered smart coolers at your location — free. No
-          cost, no contracts you can't get out of, no work for your team.
+  <!-- Hero: dark panel, photo bleeding to the right edge -->
+  <section class="bg-indigo text-paper">
+    <div class="grid md:grid-cols-2">
+      <div
+        class="flex flex-col justify-center px-5 py-14 sm:px-8 sm:py-20 md:pr-12 md:pl-[max(2rem,calc((100vw-1120px)/2+2rem))] lg:py-24"
+      >
+        <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent uppercase">
+          Macomb &amp; north Oakland County, Michigan
         </p>
-        <div class="mt-7 flex flex-wrap gap-3.5">
+        <h1 class="mt-4 text-[clamp(2.6rem,5.6vw,4.4rem)] font-bold leading-[1.02] text-white">
+          A stocked smart cooler at your location. <span class="text-accent">Your cost: $0.</span>
+        </h1>
+        <p class="mt-5 max-w-[46ch] text-lg text-lavender">
+          We wheel it in, fill it, and keep it running. Your people get cold drinks and snacks
+          around the clock. You provide the outlet.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3.5">
           <a
             href="#contact"
-            class="inline-flex items-center rounded-[3px] bg-accent px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover"
+            class="inline-flex items-center rounded-[3px] bg-accent px-6 py-3.5 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover"
           >
             Contact us
           </a>
           <a
             href={`tel:${site.phoneTel}`}
-            class="inline-flex items-center rounded-[3px] border-2 border-ink px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-ink hover:text-paper"
+            class="inline-flex items-center rounded-[3px] border-2 border-lavender px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white hover:text-indigo"
           >
             Call {site.phone}
           </a>
         </div>
       </div>
-      <Image
-        src={heroCooler}
-        alt="A black smart cooler with two glass doors, stocked with drinks and snacks, installed against a break-room wall"
-        widths={[480, 720, 960, 1120]}
-        sizes="(min-width: 768px) 45vw, 100vw"
-        class="w-full border border-lavender"
-        loading="eager"
-        fetchpriority="high"
-      />
+      <div class="relative min-h-[320px] sm:min-h-[420px] md:min-h-[560px]">
+        <Image
+          src={heroCooler}
+          alt="A black two-door smart cooler, fully stocked with drinks and snacks, installed in an office lobby beside a row of chairs"
+          widths={[640, 960, 1120]}
+          sizes="(min-width: 768px) 50vw, 100vw"
+          class="absolute inset-0 h-full w-full object-cover"
+          loading="eager"
+          fetchpriority="high"
+        />
+        <div
+          class="pointer-events-none absolute inset-y-0 left-0 hidden w-24 bg-gradient-to-r from-indigo to-transparent md:block"
+          aria-hidden="true"
+        ></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Value strip -->
+  <section class="bg-accent text-ink" aria-label="At a glance">
+    <div class="mx-auto grid max-w-[1120px] divide-y divide-ink/20 px-5 sm:grid-cols-3 sm:divide-x sm:divide-y-0 sm:px-8">
+      <div class="py-6 sm:pr-8">
+        <div class="font-display text-4xl font-bold leading-none">$0</div>
+        <p class="mt-2 text-sm font-medium">Machine, product, service, and electricity — all on us.</p>
+      </div>
+      <div class="py-6 sm:px-8">
+        <div class="font-display text-4xl font-bold leading-none">Same day</div>
+        <p class="mt-2 text-sm font-medium">We respond by end of business day. Replacement unit within 48 hours.</p>
+      </div>
+      <div class="py-6 sm:pl-8">
+        <div class="font-display text-4xl font-bold leading-none">Weekly</div>
+        <p class="mt-2 text-sm font-medium">Restocked on a set route and monitored remotely in between.</p>
+      </div>
     </div>
   </section>
 
   <!-- How it works -->
-  <section class="py-12 sm:py-16">
+  <section id="how" class="scroll-mt-20 py-14 sm:py-20">
     <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
-      <div class="mb-9 max-w-[52ch]">
-        <h2 class="text-[clamp(1.85rem,3.2vw,2.4rem)] font-semibold">How it works</h2>
+      <div class="mb-10 max-w-[52ch]">
+        <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent-dim uppercase">How it works</p>
+        <h2 class="mt-2 text-[clamp(1.9rem,3.4vw,2.6rem)] font-semibold">Three steps. The last one is ours for good.</h2>
       </div>
-      <div class="grid gap-7 sm:grid-cols-3">
-        <div class="border-t-[3px] border-ink pt-4">
+      <ol class="grid gap-7 sm:grid-cols-3">
+        <li class="border-t-[3px] border-ink pt-4">
           <div class="font-mono text-sm font-semibold text-accent-dim">STEP 1</div>
           <h3 class="mt-2 text-xl font-semibold">We walk your space.</h3>
           <p class="mt-2 text-[0.98rem] text-muted">
-            Ten minutes. We measure, find an outlet, and tell you honestly whether your traffic
-            supports a machine.
+            Ten minutes. We measure, find an outlet, and confirm the best spot for the cooler.
           </p>
-        </div>
-        <div class="border-t-[3px] border-ink pt-4">
+        </li>
+        <li class="border-t-[3px] border-ink pt-4">
           <div class="font-mono text-sm font-semibold text-accent-dim">STEP 2</div>
-          <h3 class="mt-2 text-xl font-semibold">We install and stock it.</h3>
+          <h3 class="mt-2 text-xl font-semibold">We wheel it in and stock it.</h3>
           <p class="mt-2 text-[0.98rem] text-muted">
-            We buy the machine, deliver it, and fill it. You provide a standard outlet and
-            nothing else — we even cover the electricity.
+            We deliver the cooler, set it up, and fill it. You provide a standard outlet — we
+            even cover the electricity.
           </p>
-        </div>
-        <div class="border-t-[3px] border-ink pt-4">
+        </li>
+        <li class="border-t-[3px] border-ink pt-4">
           <div class="font-mono text-sm font-semibold text-accent-dim">STEP 3</div>
           <h3 class="mt-2 text-xl font-semibold">We keep it running.</h3>
           <p class="mt-2 text-[0.98rem] text-muted">
-            We restock on a set schedule and monitor inventory remotely. Machine problems are
-            ours, not yours.
+            Restocked weekly and monitored remotely. Anything you need, we respond the same day.
           </p>
-        </div>
-      </div>
+        </li>
+      </ol>
     </div>
   </section>
 
   <!-- What it costs you -->
   <section class="bg-indigo text-paper">
-    <div class="mx-auto max-w-[1120px] px-5 py-12 sm:px-8 sm:py-16">
-      <div class="grid gap-9 md:grid-cols-[1.1fr_0.9fr] md:items-start">
+    <div class="mx-auto max-w-[1120px] px-5 py-14 sm:px-8 sm:py-20">
+      <div class="grid gap-10 md:grid-cols-[1fr_1fr] md:items-center">
         <div>
-          <h2 class="text-[clamp(2rem,3.6vw,2.75rem)] font-bold text-accent">
-            What it costs you
-          </h2>
-          <p class="mt-5 max-w-[52ch] text-[1.05rem] text-lavender">
-            Nothing. We buy the machine, we stock it, we service it, and we cover the electricity
-            it uses. There is no fee, no revenue split to negotiate, and nothing billed to you.
+          <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent uppercase">What it costs you</p>
+          <div class="mt-3 font-display text-[clamp(5rem,12vw,8.5rem)] font-bold leading-none text-accent">$0</div>
+          <p class="mt-5 max-w-[50ch] text-[1.05rem] text-lavender">
+            We wheel in the machine, stock it, service it, and cover the electricity it uses.
+            Nothing is billed to your business.
           </p>
-          <p class="mt-3.5 max-w-[52ch] text-[1.05rem] text-lavender">
-            We place the cooler as a free amenity for the people at your site and make our money
-            on what sells. If it doesn't sell, that's our problem, not yours.
+          <p class="mt-3.5 max-w-[50ch] text-[1.05rem] text-lavender">
+            The cooler is a free amenity for the people at your site. We earn on what sells, so
+            we have every reason to keep it full of what they actually want.
           </p>
         </div>
-        <div class="border border-indigo-2 bg-[#1f1f4a80] p-6">
+        <div class="border border-indigo-2 bg-[#1f1f4a80] p-6 sm:p-8">
           <ul class="flex flex-col gap-3.5">
             <li class="flex justify-between gap-4">
               <span class="text-paper">The machine</span>
-              <strong class="flex-none font-mono text-accent">OURS</strong>
+              <strong class="flex-none font-mono text-accent">$0.00</strong>
+            </li>
+            <li class="flex justify-between gap-4">
+              <span class="text-paper">Delivery and setup</span>
+              <strong class="flex-none font-mono text-accent">$0.00</strong>
             </li>
             <li class="flex justify-between gap-4">
               <span class="text-paper">Product and restocking</span>
-              <strong class="flex-none font-mono text-accent">OURS</strong>
+              <strong class="flex-none font-mono text-accent">$0.00</strong>
             </li>
             <li class="flex justify-between gap-4">
               <span class="text-paper">Service and repairs</span>
-              <strong class="flex-none font-mono text-accent">OURS</strong>
+              <strong class="flex-none font-mono text-accent">$0.00</strong>
             </li>
             <li class="flex justify-between gap-4">
               <span class="text-paper">Electricity</span>
-              <strong class="flex-none font-mono text-accent">OURS</strong>
+              <strong class="flex-none font-mono text-accent">$0.00</strong>
             </li>
             <li class="flex justify-between gap-4 border-t border-indigo-2 pt-3.5">
               <span class="font-semibold text-paper">Your cost</span>
-              <strong class="flex-none font-mono text-lg text-accent">$0</strong>
+              <strong class="flex-none font-mono text-lg text-accent">$0.00</strong>
             </li>
           </ul>
           <p class="mt-5 border-t border-indigo-2 pt-4 text-sm text-lavender">
-            No options to pick between and no fine print. The only thing we need from you is a
-            spot and an outlet.
+            One offer, no tiers. All we need from you is a spot and an outlet.
           </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The machine -->
+  <section id="machine" class="scroll-mt-20 py-14 sm:py-20">
+    <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
+      <div class="grid gap-10 md:grid-cols-[0.8fr_1.2fr] md:items-center">
+        <Image
+          src={machine}
+          alt="A single-door smart cooler stocked with bottled drinks, standing against a hallway wall next to an elevator"
+          widths={[480, 720, 1080]}
+          sizes="(min-width: 768px) 36vw, 100vw"
+          class="w-full border border-line"
+          loading="lazy"
+        />
+        <div>
+          <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent-dim uppercase">The machine</p>
+          <h2 class="mt-2 text-[clamp(1.9rem,3.4vw,2.6rem)] font-semibold">
+            Tap, grab, go. Checkout happens on its own.
+          </h2>
+          <p class="mt-4 max-w-[52ch] text-muted">
+            An AI-powered smart cooler works like a small store: tap a card or phone to unlock,
+            take what you want, close the door. The cooler recognizes what left the shelf and
+            charges for exactly that.
+          </p>
+          <dl class="mt-8 grid gap-x-8 gap-y-5 border-t border-line pt-6 sm:grid-cols-2">
+            <div>
+              <dt class="font-mono text-xs font-semibold tracking-[0.14em] text-accent-dim uppercase">Footprint</dt>
+              <dd class="mt-1 text-[0.98rem]">22.8" W &times; 26" D &times; 76" H — about a household fridge.</dd>
+            </div>
+            <div>
+              <dt class="font-mono text-xs font-semibold tracking-[0.14em] text-accent-dim uppercase">Payment</dt>
+              <dd class="mt-1 text-[0.98rem]">Tap, swipe, Apple Pay, Google Pay.</dd>
+            </div>
+            <div>
+              <dt class="font-mono text-xs font-semibold tracking-[0.14em] text-accent-dim uppercase">Power</dt>
+              <dd class="mt-1 text-[0.98rem]">One standard wall outlet. The electricity is on us.</dd>
+            </div>
+            <div>
+              <dt class="font-mono text-xs font-semibold tracking-[0.14em] text-accent-dim uppercase">Monitoring</dt>
+              <dd class="mt-1 text-[0.98rem]">Inventory reports to us remotely, so low items get restocked early.</dd>
+            </div>
+          </dl>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Where we place them -->
-  <section class="py-12 sm:py-16">
+  <section class="bg-lavender-tint py-14 sm:py-20">
     <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
-      <div class="mb-9 max-w-[52ch]">
-        <h2 class="text-[clamp(1.85rem,3.2vw,2.4rem)] font-semibold">Where we place them</h2>
-        <p class="mt-2 text-muted">If your site looks like one of these, a unit likely fits.</p>
+      <div class="mb-10 max-w-[52ch]">
+        <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent-dim uppercase">Where we place them</p>
+        <h2 class="mt-2 text-[clamp(1.9rem,3.4vw,2.6rem)] font-semibold">Anywhere people spend their day.</h2>
       </div>
-      <div class="grid grid-cols-2 gap-px border border-line bg-line sm:grid-cols-3 lg:grid-cols-6">
-        <div class="flex flex-col items-center gap-2.5 bg-white p-6 text-center">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-[26px] w-[26px]" aria-hidden="true"><path d="M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8Z"></path><path d="M17 9h1.5a2.5 2.5 0 0 1 0 5H17"></path><line x1="7" y1="4" x2="7" y2="6"></line><line x1="10.5" y1="3.5" x2="10.5" y2="6"></line></svg>
-          <span class="text-sm font-semibold">Break rooms</span>
-        </div>
-        <div class="flex flex-col items-center gap-2.5 bg-white p-6 text-center">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-[26px] w-[26px]" aria-hidden="true"><rect x="2" y="10" width="4" height="4"></rect><rect x="18" y="10" width="4" height="4"></rect><line x1="6" y1="12" x2="18" y2="12"></line></svg>
-          <span class="text-sm font-semibold">Gyms</span>
-        </div>
-        <div class="flex flex-col items-center gap-2.5 bg-white p-6 text-center">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-[26px] w-[26px]" aria-hidden="true"><rect x="4" y="3" width="16" height="18"></rect><line x1="8" y1="7" x2="8" y2="9"></line><line x1="12" y1="7" x2="12" y2="9"></line><line x1="16" y1="7" x2="16" y2="9"></line><line x1="8" y1="12" x2="8" y2="14"></line><line x1="12" y1="12" x2="12" y2="14"></line><line x1="16" y1="12" x2="16" y2="14"></line></svg>
-          <span class="text-sm font-semibold">Apartment communities</span>
-        </div>
-        <div class="flex flex-col items-center gap-2.5 bg-white p-6 text-center">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-[26px] w-[26px]" aria-hidden="true"><path d="M14 7l3 3-6 6-3.5.5.5-3.5Z"></path><path d="M12 9l3 3"></path><path d="M4 20h6"></path></svg>
-          <span class="text-sm font-semibold">Auto shops</span>
-        </div>
-        <div class="flex flex-col items-center gap-2.5 bg-white p-6 text-center">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-[26px] w-[26px]" aria-hidden="true"><rect x="4" y="10" width="16" height="9"></rect><path d="M8 10V7l4-2 4 2v3"></path></svg>
-          <span class="text-sm font-semibold">Light industrial sites</span>
-        </div>
-        <div class="flex flex-col items-center gap-2.5 bg-lavender-tint p-6 text-center">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-[26px] w-[26px]" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      <ul class="grid grid-cols-2 gap-px border border-line bg-line sm:grid-cols-4">
+        {placements.map((p) => (
+          <li class="flex flex-col items-center gap-2.5 bg-white p-6 text-center">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-[26px] w-[26px] text-indigo" aria-hidden="true" set:html={icons[p.icon]} />
+            <span class="text-sm font-semibold">{p.label}</span>
+          </li>
+        ))}
+        <li class="flex flex-col items-center gap-2.5 bg-lavender-tint p-6 text-center text-indigo/70">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="h-[26px] w-[26px]" aria-hidden="true" set:html={icons.plus} />
           <span class="text-sm font-semibold">And many more</span>
-        </div>
-      </div>
-      <p class="mt-4 max-w-[60ch] text-sm text-muted">
-        Offices, schools, warehouses, dealerships, salons, hotels — if people spend hours at your
-        site, it's worth a ten-minute look.
-      </p>
+        </li>
+      </ul>
     </div>
   </section>
 
   <!-- Why us -->
-  <section class="bg-lavender-tint py-12 sm:py-16">
+  <section id="why" class="scroll-mt-20 py-14 sm:py-20">
     <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
-      <div class="mb-9 max-w-[52ch]">
-        <h2 class="text-[clamp(1.85rem,3.2vw,2.4rem)] font-semibold">Why us</h2>
-        <p class="mt-2 text-muted">Specifics, not adjectives.</p>
+      <div class="mb-10 max-w-[52ch]">
+        <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent-dim uppercase">Why Crossbell</p>
+        <h2 class="mt-2 text-[clamp(1.9rem,3.4vw,2.6rem)] font-semibold">Specifics, not adjectives.</h2>
       </div>
-      <div class="grid gap-8 lg:grid-cols-[1fr_300px]">
-        <div class="grid gap-4 sm:grid-cols-2">
-          <div class="relative border border-line bg-white p-6 sm:col-span-2">
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div class="relative border border-line bg-white p-6">
             <span class="absolute top-2.5 left-2.5 h-1.5 w-1.5 bg-accent"></span>
-            <div class="font-mono text-[clamp(1.4rem,2.4vw,1.85rem)] font-bold">FREE</div>
-            <p class="mt-2 max-w-[60ch] text-[0.96rem] text-muted">
-              Machine, product, service, and electricity — all on us. Nothing is ever billed to
-              your business.
+            <div class="font-mono text-[clamp(1.4rem,2.4vw,1.85rem)] font-bold">SAME DAY</div>
+            <p class="mt-2 max-w-[38ch] text-[0.96rem] text-muted">
+              Every call and message gets a response by end of business day.
             </p>
           </div>
           <div class="relative border border-line bg-white p-6">
             <span class="absolute top-2.5 left-2.5 h-1.5 w-1.5 bg-accent"></span>
             <div class="font-mono text-[clamp(1.4rem,2.4vw,1.85rem)] font-bold">48 HR</div>
             <p class="mt-2 max-w-[38ch] text-[0.96rem] text-muted">
-              Response to a reported malfunction.
+              If a unit needs more than a quick fix, a replacement can be on site within 48 hours.
             </p>
           </div>
           <div class="relative border border-line bg-white p-6">
@@ -208,17 +300,9 @@ const description =
           </div>
           <div class="relative border border-line bg-white p-6">
             <span class="absolute top-2.5 left-2.5 h-1.5 w-1.5 bg-accent"></span>
-            <div class="font-mono text-[clamp(1.4rem,2.4vw,1.85rem)] font-bold">$1M / $2M</div>
+            <div class="font-mono text-[clamp(1.4rem,2.4vw,1.85rem)] font-bold">LOCAL</div>
             <p class="mt-2 max-w-[38ch] text-[0.96rem] text-muted">
-              General liability, with your business named as additional insured. Certificate on
-              request.
-            </p>
-          </div>
-          <div class="relative border border-line bg-white p-6">
-            <span class="absolute top-2.5 left-2.5 h-1.5 w-1.5 bg-accent"></span>
-            <div class="font-mono text-[clamp(1.4rem,2.4vw,1.85rem)] font-bold">30 DAYS</div>
-            <p class="mt-2 max-w-[38ch] text-[0.96rem] text-muted">
-              Written notice ends the agreement, either direction, for any reason.
+              Owned and operated in Macomb County. The person you call is the person on the route.
             </p>
           </div>
           <div class="relative border border-line bg-white p-6 sm:col-span-2">
@@ -226,33 +310,118 @@ const description =
             <div class="font-mono text-[clamp(1.1rem,1.8vw,1.4rem)] font-bold">CUSTOM MIX</div>
             <p class="mt-2 max-w-[60ch] text-[0.96rem] text-muted">
               We tune what's stocked to your site — the mix that sells in a gym isn't the mix
-              that sells on a shop floor. Snacks, cold drinks, and where it fits, PPE and
-              personal-care items.
+              that sells on a shop floor. Snacks, cold drinks, and premium and luxury products
+              where the site calls for them.
             </p>
           </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What's inside: scroll-snap carousel, arrows are progressive enhancement -->
+  <section id="inside" class="scroll-mt-20 bg-lavender-tint py-14 sm:py-20">
+    <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
+      <div class="mb-8 flex flex-wrap items-end justify-between gap-6">
+        <div class="max-w-[52ch]">
+          <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent-dim uppercase">What's inside</p>
+          <h2 class="mt-2 text-[clamp(1.9rem,3.4vw,2.6rem)] font-semibold">Food, drinks, and premium amenities, picked for your site.</h2>
         </div>
-        <PhotoPlaceholder
-          shotId="02"
-          aspect="3/4"
-          label="Technician restocking a unit, mid-task, landscape or portrait crop to fit this column"
-          class="h-full"
-        />
+        <div class="flex gap-2">
+          <button
+            type="button"
+            data-carousel-prev
+            aria-label="Previous items"
+            class="flex h-11 w-11 items-center justify-center border-2 border-ink bg-white text-ink transition-colors hover:bg-ink hover:text-paper"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+          </button>
+          <button
+            type="button"
+            data-carousel-next
+            aria-label="Next items"
+            class="flex h-11 w-11 items-center justify-center border-2 border-ink bg-white text-ink transition-colors hover:bg-ink hover:text-paper"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="mx-auto max-w-[1120px] sm:px-8">
+      <ul
+        data-carousel
+        class="carousel flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-5 pb-4 sm:px-0"
+        aria-label="Product categories"
+      >
+        {inside.map((item) => (
+          <li class="flex w-[240px] flex-none snap-start flex-col border border-line bg-white sm:w-[280px]">
+            <div class="flex aspect-[4/3] items-center justify-center border-b border-line bg-white p-4">
+              <Image
+                src={item.image}
+                alt={item.alt}
+                widths={[280, 560]}
+                sizes="280px"
+                class="max-h-full w-auto max-w-full object-contain"
+                loading="lazy"
+              />
+            </div>
+            <div class="p-5">
+              <p class="font-mono text-[0.65rem] font-semibold tracking-[0.14em] text-accent-dim uppercase">{item.group}</p>
+              <h3 class="mt-1 text-xl font-semibold">{item.label}</h3>
+              <p class="mt-1.5 text-sm text-muted">{item.blurb}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <script>
+      // Arrow buttons scroll one card at a time. Without JS the list still
+      // scrolls by touch, trackpad, or keyboard.
+      document.querySelectorAll<HTMLElement>("[data-carousel]").forEach((track) => {
+        const section = track.closest("section");
+        const step = () => ((track.firstElementChild as HTMLElement | null)?.offsetWidth ?? 280) + 16;
+        section?.querySelector("[data-carousel-prev]")?.addEventListener("click", () => {
+          track.scrollBy({ left: -step(), behavior: "smooth" });
+        });
+        section?.querySelector("[data-carousel-next]")?.addEventListener("click", () => {
+          track.scrollBy({ left: step(), behavior: "smooth" });
+        });
+      });
+    </script>
+  </section>
+
+  <!-- Service area -->
+  <section id="area" class="scroll-mt-20 bg-lavender-tint py-14 sm:py-20">
+    <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
+      <div class="grid gap-10 md:grid-cols-[1fr_1.2fr] md:items-start">
+        <div>
+          <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent-dim uppercase">Service area</p>
+          <h2 class="mt-2 text-[clamp(1.9rem,3.4vw,2.6rem)] font-semibold">Macomb and north Oakland County.</h2>
+          <p class="mt-4 max-w-[46ch] text-muted">
+            We run a weekly route through these communities {site.serviceAreaNote}. Not on the
+            list? Ask — the route grows with every placement.
+          </p>
+        </div>
+        <ul class="grid grid-cols-2 gap-px border border-line bg-line sm:grid-cols-3">
+          {site.serviceArea.map((city) => (
+            <li class="bg-white px-4 py-3.5 text-sm font-semibold">{city}</li>
+          ))}
+        </ul>
       </div>
     </div>
   </section>
 
   <!-- FAQ -->
-  <section class="py-12 sm:py-16">
+  <section id="faq" class="scroll-mt-20 py-14 sm:py-20">
     <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
-      <div class="mb-9 max-w-[52ch]">
-        <h2 class="text-[clamp(1.85rem,3.2vw,2.4rem)] font-semibold">Frequently asked</h2>
+      <div class="mb-10 max-w-[52ch]">
+        <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent-dim uppercase">FAQ</p>
+        <h2 class="mt-2 text-[clamp(1.9rem,3.4vw,2.6rem)] font-semibold">Frequently asked</h2>
       </div>
       <div class="max-w-[72ch]">
         <FaqItem question="What does this cost us?" open>
           <p>
-            Nothing. We buy the machine and the product, handle restocking and repairs, and cover
-            the electricity. There's no fee and no revenue split — we place it as a free amenity
-            and make our money on what sells.
+            $0. We wheel in the machine and the product, handle restocking and service, and cover
+            the electricity. The cooler is a free amenity for your site — we earn on what sells.
           </p>
         </FaqItem>
         <FaqItem question="How big is the machine?">
@@ -261,25 +430,32 @@ const description =
             It needs a standard wall outlet nearby and a little clearance for the door to swing.
           </p>
         </FaqItem>
-        <FaqItem question="What if it breaks or charges someone wrong?">
+        <FaqItem question="What if something goes wrong with it?">
           <p>
-            It's our problem. Refunds are handled by us, and we respond to a reported
-            malfunction within 48 hours.
+            Call or message us and you'll hear back the same business day. Refunds are handled by
+            us, and if a unit needs more than a quick fix we can have a replacement on site within
+            48 hours.
           </p>
         </FaqItem>
-        <FaqItem question="Do we have to sign a long contract?">
-          <p>No. Thirty days' written notice ends the agreement, either direction, for any reason.</p>
+        <FaqItem question="How long is the agreement?">
+          <p>
+            There's no long-term lock-in. After the first 90 days, thirty days' written notice ends
+            the agreement. Because we purchase, stock, and install each cooler at our own expense,
+            an early-exit fee applies if you cancel inside those first 90 days — it's spelled out
+            in the agreement before you sign.
+          </p>
         </FaqItem>
         <FaqItem question="Are you insured?">
           <p>
-            Yes — $1,000,000 / $2,000,000 general liability, with your business named as
-            additional insured. Certificate on request.
+            Yes — fully insured, with your business named as additional insured. Certificate
+            available on request.
           </p>
         </FaqItem>
         <FaqItem question="What do you stock?">
           <p>
-            Snacks, cold drinks, and where it fits the site, PPE and personal-care items. We tune
-            the mix to what actually sells at your location.
+            Snacks, cold drinks, and premium and luxury products where the site calls for them. We tune
+            the mix to what actually sells at your location, and your people can request items
+            through the QR code on the door.
           </p>
         </FaqItem>
       </div>

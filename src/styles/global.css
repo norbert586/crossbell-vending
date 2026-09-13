@@ -43,6 +43,7 @@ h1,
 h2,
 h3 {
   font-family: var(--font-display);
+  line-height: 1.1;
   text-wrap: balance;
 }
 
@@ -107,4 +108,41 @@ h3 {
 }
 .faq-item[open] .faq-chevron {
   transform: rotate(45deg);
+}
+
+/* Product carousel: keep native scrolling, hide the scrollbar track */
+.carousel {
+  scrollbar-width: none;
+}
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+
+/* Legal pages: plain running prose without a typography plugin */
+.legal {
+  max-width: 68ch;
+}
+.legal h2 {
+  margin-top: 2.25rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.legal p,
+.legal ul {
+  margin-top: 0.9rem;
+  color: var(--color-muted);
+  font-size: 1.02rem;
+  line-height: 1.65;
+}
+.legal ul {
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+.legal li + li {
+  margin-top: 0.35rem;
+}
+.legal a {
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
