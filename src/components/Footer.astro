@@ -19,8 +19,11 @@ const year = new Date().getFullYear();
       />
       <h2 class="mb-3 font-body text-base font-semibold text-white">Crossbell Vending</h2>
       <p class="max-w-[32ch] text-sm text-lavender">
-        AI-powered smart coolers for break rooms, gyms, apartment communities, auto shops, and
-        light industrial sites in Macomb and north Oakland County.
+        AI-powered smart coolers for break rooms, gyms, auto shops, offices, and light industrial
+        sites in Macomb and north Oakland County.
+      </p>
+      <p class="mt-3 text-xs text-[#9EA2D6]">
+        {site.legalName} &middot; Macomb County, Michigan &middot; Fully insured
       </p>
     </div>
     <div>
@@ -43,7 +46,14 @@ const year = new Date().getFullYear();
       <p class="mt-2 text-xs text-[#9EA2D6]">{site.serviceAreaNote}</p>
     </div>
   </div>
-  <div class="mx-auto flex max-w-[1120px] flex-wrap justify-between gap-3 border-t border-indigo-2 px-5 py-5 text-xs text-[#9EA2D6] sm:px-8">
-    <span>&copy; {year} {site.legalName}</span>
+  <div class="mx-auto flex max-w-[1120px] flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-indigo-2 px-5 py-5 text-xs text-[#9EA2D6] sm:px-8">
+    <span>&copy; {year} {site.legalName}. All rights reserved.</span>
+    <nav aria-label="Legal">
+      <ul class="flex flex-wrap gap-x-5 gap-y-2">
+        <li><a href="/privacy/" class="underline underline-offset-2 hover:text-accent">Privacy policy</a></li>
+        <li><a href="/terms/" class="underline underline-offset-2 hover:text-accent">Terms of use</a></li>
+        <li><a href="/accessibility/" class="underline underline-offset-2 hover:text-accent">Accessibility</a></li>
+      </ul>
+    </nav>
   </div>
 </footer>
