@@ -123,9 +123,13 @@ instead of pushing straight to `main`.
 
 ## Email pamphlet
 
-[`email/follow-up-pamphlet.html`](email/) is a brochure-style follow-up email — the site's pitch
-in one message you paste into Gmail after a walkthrough or a call. Open it in a browser, select
-all, copy, paste into a compose window, fill in the bracketed placeholders, send.
+[`email/follow-up-pamphlet.html`](email/) is a short follow-up email to send after a walkthrough
+or a call: the $0 itemized, a look at the machine and what goes in it, and two ways to reply.
+Open it in a browser, select all, copy, paste into a Gmail compose window, fill in the bracketed
+placeholders, send.
+
+It is deliberately about two phone screens long, and the rest of the pitch is a tap away on the
+site. Resist growing it — the reason it gets read is that it ends.
 
 Two things to know before the first send, both covered in [`email/README.md`](email/README.md):
 

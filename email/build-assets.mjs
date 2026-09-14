@@ -42,6 +42,10 @@ const work = [
   // Product lineups. Sources are PNGs on transparent/white; flattened to white
   // so they sit on the white card cleanly and weigh a fraction as JPEG.
   //
+  // All six are built though the pamphlet shows three: swapping which three it
+  // shows should be an <img src> edit, not a trip back through this script, and
+  // the three unused files cost ~90 KB of repo and nothing at send time.
+  //
   // Letterboxed onto a fixed 4:3 white canvas rather than resized to a common
   // width. The sources have six different aspect ratios, and an email card grid
   // cannot equalize row heights the way the site's CSS grid does -- without a

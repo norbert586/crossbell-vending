@@ -1,7 +1,7 @@
 # Email pamphlet
 
-A brochure-style follow-up email for prospective locations — the site's pitch condensed into one
-message you can paste into Gmail and send after a walkthrough, a phone call, or a cold drop-in.
+A short follow-up email for prospective locations — the offer, a look at the machine and what
+goes in it, and a way to reply. About two iPhone screens of scroll.
 
 | File | What it is |
 |---|---|
@@ -28,10 +28,10 @@ for.
 2. Click once in the page, then **Ctrl+A / Cmd+A**, **Ctrl+C / Cmd+C**.
 3. In Gmail, hit Compose and paste with **Ctrl+V / Cmd+V**. Formatting, images, colors, and links
    all come across. Do *not* paste the file's source code — Gmail would send it as visible text.
-4. Fill in the placeholders, listed below.
+4. Replace the four placeholders below.
 5. Send yourself a test first and open it on a phone before it goes to a prospect.
 
-Subject lines that match the opening paragraph:
+Subject lines that match the opening line:
 
 - `Crossbell Vending — the details from today`
 - `Following up: the smart cooler for [Company]`
@@ -43,9 +43,8 @@ Every one is in square brackets, so searching the compose window for `[` finds t
 
 | Placeholder | Where | Notes |
 |---|---|---|
-| `[First name]` | Greeting | |
-| `[on the phone / when we stopped by]` | First paragraph | Keep whichever happened, delete the rest. |
-| `[Company]` | First paragraph, footer | Appears twice. |
+| `[First name]` | Opening line | |
+| `[Company]` | Opening line, footer | Appears twice. |
 | `[Your name]` | Signature | |
 | `[Street address], [City], MI [ZIP]` | Footer | See below — do not send this one unfilled. |
 
@@ -55,17 +54,21 @@ once it is settled, edit the default straight into `follow-up-pamphlet.html` so 
 remember it on every send.
 
 The footer also carries the opt-out ("reply 'no thanks' and we will not follow up again"). Honor
-it — and keep the line in when you trim sections.
+it, and leave the line in.
 
-### Trimming it
+## Keep it short
 
-The pamphlet is long on purpose: it is built to be forwarded to whoever else has to sign off.
-For a warm prospect who already saw the machine, delete whole sections in the compose window —
-"What's inside", "Where we place them", and "Quick answers" cut cleanly. Keep the letterhead, the
-`$0`, and the closing block.
+The length is the feature. A prospect decides in the first screen whether this is worth reading,
+and everything past the second screen is read by nobody. What earned its place: the `$0` itemized,
+one photo of an installed cooler, the size and payment specs, three product shots, the service
+promises, and two ways to reply.
 
-If Gmail shows *"[Message clipped]"* at the bottom, it hit its ~102 KB display limit: cut a
-section and the rest comes back.
+Everything else — how it works step by step, the full product range, placement types, the FAQ, the
+service-area list — is on the site, one tap away through the buttons. Add a section back here and
+something that is currently landing stops landing.
+
+If Gmail ever shows *"[Message clipped]"* at the bottom, the message has grown past its ~102 KB
+display limit. That is a signal it is too long, not a formatting bug.
 
 ## Attribution
 
@@ -80,8 +83,12 @@ codes scannable, and they tag traffic as `utm_medium=qr`.
 
 `public/email/` holds plain JPEG/PNG copies of the site photos at fixed paths. The site's own
 images cannot be reused: Astro's `<Image>` emits content-hashed WebP filenames that change on
-every build (a URL in a sent email would die at the next deploy) and Outlook cannot render WebP
-at all.
+every build (a URL in an already-sent email would die at the next deploy) and Outlook cannot
+render WebP at all.
+
+All six product shots are generated; the pamphlet shows three (cold drinks, snacks, premium). To
+show a different three — `energy.jpg`, `healthy.jpg`, `protein.jpg` are the others — edit the
+three `<img src>` values and their labels and alt text in the "What goes in it" block.
 
 After changing anything in `src/assets/photos/`, regenerate:
 
@@ -91,9 +98,6 @@ node email/build-assets.mjs
 ```
 
 Then commit `public/email/` along with the photo change, and deploy before sending again.
-
-Keep the whole folder well under a megabyte. Recipients on a phone download every image, and a
-slow-loading pamphlet is one nobody scrolls.
 
 ## Editing the HTML
 

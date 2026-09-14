@@ -6,12 +6,16 @@
 <title>Crossbell Vending — follow-up pamphlet</title>
 </head>
 <!--
-  Crossbell Vending — follow-up pamphlet for prospective locations.
+  Crossbell Vending — follow-up email for prospective locations.
 
   HOW TO SEND IT: open this file in a browser, Ctrl/Cmd+A, Ctrl/Cmd+C, then
-  paste into a Gmail compose window. Replace the bracketed placeholders, and
-  delete this paragraph's worth of sections you do not want. Full instructions,
-  including the one deploy this depends on, are in email/README.md.
+  paste into a Gmail compose window. Replace the bracketed placeholders.
+  Full instructions are in email/README.md.
+
+  LENGTH IS THE POINT. This is deliberately about two iPhone screens of
+  scroll: the $0, a look at the machine, a look at what goes in it, and a
+  way to reply. Anything a prospect asks after that is on the site, which
+  the buttons link to. Adding sections back is how it stops getting read.
 
   HOW IT IS BUILT, and why it looks nothing like the Astro site:
   - Tables, not divs. Gmail, Outlook and Yahoo have no reliable flex or grid.
@@ -43,15 +47,15 @@
 
   <!-- ===================== Letterhead ===================== -->
   <tr>
-    <td style="padding:20px 28px 18px 28px;border-bottom:1px solid #cfd0e4;">
+    <td style="padding:16px 28px 14px 28px;border-bottom:1px solid #cfd0e4;">
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;">
         <tr>
-          <td width="62" valign="middle" style="padding:0 14px 0 0;">
-            <img src="https://crossbellvending.com/email/crest.png" width="62" height="72" alt="Crossbell Vending crest" style="display:block;width:62px;height:72px;border:0;outline:none;">
+          <td width="52" valign="middle" style="padding:0 12px 0 0;">
+            <img src="https://crossbellvending.com/email/crest.png" width="52" height="60" alt="Crossbell Vending crest" style="display:block;width:52px;height:60px;border:0;outline:none;">
           </td>
           <td valign="middle" style="padding:0;">
-            <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:27px;font-weight:700;line-height:1.1;color:#141420;letter-spacing:-0.2px;">Crossbell Vending</div>
-            <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:11px;font-weight:600;letter-spacing:1.6px;text-transform:uppercase;color:#96692f;padding-top:5px;">Macomb &amp; North Oakland County, MI</div>
+            <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:24px;font-weight:700;line-height:1.1;color:#141420;">Crossbell Vending</div>
+            <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#96692f;padding-top:4px;">Macomb &amp; North Oakland County, MI</div>
           </td>
           <td valign="middle" align="right" style="padding:0;">
             <a href="tel:+15869071861" style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:14px;font-weight:600;color:#141420;text-decoration:none;white-space:nowrap;">586-907-1861</a>
@@ -63,19 +67,10 @@
 
   <!-- ===================== The follow-up note ===================== -->
   <tr>
-    <td style="padding:26px 28px 22px 28px;">
+    <td style="padding:20px 28px 18px 28px;">
       <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#141420;">
-        Hi [First name],
-      </div>
-      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#141420;padding-top:12px;">
-        Thanks for the time [on the phone / when we stopped by] this week. Here is everything
-        about the smart cooler in one place, so you can pass it along to whoever else needs to
-        see it at [Company].
-      </div>
-      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#141420;padding-top:12px;">
-        The short version: we install and stock the cooler at our expense, service it weekly,
-        and cover the electricity it uses. Your cost is $0. All we need is a spot along a wall
-        and a standard outlet.
+        Hi [First name] &mdash; good talking with you. Here is the whole offer on one screen,
+        easy to forward to anyone else at [Company] who needs to see it.
       </div>
     </td>
   </tr>
@@ -83,433 +78,153 @@
   <!-- ===================== Hero ===================== -->
   <tr>
     <td style="padding:0;">
-      <img src="https://crossbellvending.com/email/cooler-hero.jpg" width="600" alt="A black two-door smart cooler, fully stocked with drinks and snacks, installed in an office lobby beside a row of chairs" style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;">
+      <img src="https://crossbellvending.com/email/cooler-hero.jpg" width="600" height="420" alt="A black two-door smart cooler, fully stocked with drinks and snacks, installed in an office lobby beside a row of chairs" style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;">
     </td>
   </tr>
   <tr>
-    <td style="padding:24px 28px 26px 28px;background-color:#2a2a5c;">
-      <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:38px;font-weight:700;line-height:1.08;color:#ffffff;">
+    <td style="padding:22px 28px 24px 28px;background-color:#2a2a5c;">
+      <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:36px;font-weight:700;line-height:1.08;color:#ffffff;">
         A stocked smart cooler at your location.<br>
         <span style="color:#c49350;">Your cost: $0.</span>
       </div>
-      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#cdd1ff;padding-top:14px;">
-        We wheel it in, fill it, and keep it running. Your people get cold drinks and snacks
-        around the clock. You provide the outlet.
+      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#cdd1ff;padding-top:12px;">
+        We wheel it in, fill it, and keep it running. You provide a spot along a wall and a
+        standard outlet &mdash; we even cover the electricity.
       </div>
-      <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-top:20px;">
-        <tr>
-          <td bgcolor="#c49350" style="border-radius:3px;">
-            <a href="https://crossbellvending.com/contact/?utm_source=email&amp;utm_medium=pamphlet&amp;utm_campaign=followup" style="display:inline-block;padding:14px 26px;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;font-weight:600;color:#141420;text-decoration:none;">Book the ten-minute walkthrough</a>
-          </td>
-        </tr>
-      </table>
     </td>
   </tr>
 
-  <!-- ===================== At a glance ===================== -->
+  <!-- ===================== The $0, itemized ===================== -->
   <tr>
-    <td style="padding:0;background-color:#c49350;">
+    <td style="padding:22px 28px 24px 28px;background-color:#e6e8ff;">
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;">
         <tr>
-          <td width="33%" valign="top" style="padding:18px 14px 18px 28px;">
-            <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:32px;font-weight:700;line-height:1;color:#141420;">$0</div>
-            <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;font-weight:500;line-height:1.45;color:#141420;padding-top:7px;">Machine, product, service, and electricity &mdash; all on us.</div>
-          </td>
-          <td width="34%" valign="top" style="padding:18px 14px;border-left:1px solid #a97f44;border-right:1px solid #a97f44;">
-            <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:32px;font-weight:700;line-height:1;color:#141420;">Same day</div>
-            <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;font-weight:500;line-height:1.45;color:#141420;padding-top:7px;">We respond by end of business day. Replacement unit within 48 hours.</div>
-          </td>
-          <td width="33%" valign="top" style="padding:18px 28px 18px 14px;">
-            <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:32px;font-weight:700;line-height:1;color:#141420;">Weekly</div>
-            <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;font-weight:500;line-height:1.45;color:#141420;padding-top:7px;">Restocked on a set route and monitored remotely in between.</div>
-          </td>
+          <td style="padding:0 0 4px 0;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;color:#141420;">The machine, delivered and installed</td>
+          <td align="right" style="padding:0 0 4px 0;font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:15px;font-weight:600;color:#96692f;white-space:nowrap;">$0.00</td>
         </tr>
-      </table>
-    </td>
-  </tr>
-
-  <!-- ===================== How it works ===================== -->
-  <tr>
-    <td style="padding:30px 28px 6px 28px;">
-      <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:11px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:#96692f;">How it works</div>
-      <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:29px;font-weight:600;line-height:1.14;color:#141420;padding-top:6px;">Three steps. The last one is ours for good.</div>
-    </td>
-  </tr>
-  <tr>
-    <td style="padding:16px 28px 28px 28px;">
-      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;">
         <tr>
-          <td width="33%" valign="top" style="padding:0 10px 0 0;">
-            <div style="border-top:3px solid #141420;padding-top:12px;">
-              <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:12px;font-weight:600;color:#96692f;">STEP 1</div>
-              <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:20px;font-weight:600;line-height:1.2;color:#141420;padding-top:6px;">We walk your space.</div>
-              <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.55;color:#4f5168;padding-top:6px;">Ten minutes. We measure, find an outlet, and confirm the best spot for the cooler.</div>
-            </div>
-          </td>
-          <td width="34%" valign="top" style="padding:0 10px;">
-            <div style="border-top:3px solid #141420;padding-top:12px;">
-              <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:12px;font-weight:600;color:#96692f;">STEP 2</div>
-              <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:20px;font-weight:600;line-height:1.2;color:#141420;padding-top:6px;">We wheel it in and stock it.</div>
-              <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.55;color:#4f5168;padding-top:6px;">We deliver the cooler, set it up, and fill it. You provide a standard outlet &mdash; we even cover the electricity.</div>
-            </div>
-          </td>
-          <td width="33%" valign="top" style="padding:0 0 0 10px;">
-            <div style="border-top:3px solid #141420;padding-top:12px;">
-              <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:12px;font-weight:600;color:#96692f;">STEP 3</div>
-              <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:20px;font-weight:600;line-height:1.2;color:#141420;padding-top:6px;">We keep it running.</div>
-              <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.55;color:#4f5168;padding-top:6px;">Restocked weekly and monitored remotely. Anything you need, we respond the same day.</div>
-            </div>
-          </td>
+          <td style="padding:6px 0 4px 0;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;color:#141420;">Product, stocked weekly</td>
+          <td align="right" style="padding:6px 0 4px 0;font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:15px;font-weight:600;color:#96692f;white-space:nowrap;">$0.00</td>
+        </tr>
+        <tr>
+          <td style="padding:6px 0 4px 0;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;color:#141420;">Service, repairs, and refunds</td>
+          <td align="right" style="padding:6px 0 4px 0;font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:15px;font-weight:600;color:#96692f;white-space:nowrap;">$0.00</td>
+        </tr>
+        <tr>
+          <td style="padding:6px 0 10px 0;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;color:#141420;">Electricity</td>
+          <td align="right" style="padding:6px 0 10px 0;font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:15px;font-weight:600;color:#96692f;white-space:nowrap;">$0.00</td>
+        </tr>
+        <tr>
+          <td style="padding:12px 0 0 0;border-top:2px solid #141420;font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:28px;font-weight:700;color:#141420;">Your cost</td>
+          <td align="right" style="padding:12px 0 0 0;border-top:2px solid #141420;font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:28px;font-weight:700;color:#96692f;white-space:nowrap;">$0.00</td>
         </tr>
       </table>
-    </td>
-  </tr>
-
-  <!-- ===================== What it costs you ===================== -->
-  <tr>
-    <td style="padding:28px;background-color:#2a2a5c;">
-      <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:11px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:#c49350;">What it costs you</div>
-      <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:76px;font-weight:700;line-height:1;color:#c49350;padding-top:8px;">$0</div>
-      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#cdd1ff;padding-top:14px;">
-        We wheel in the machine, stock it, service it, and cover the electricity it uses. Nothing
-        is billed to your business. The cooler is a free amenity for the people at your site &mdash;
-        we earn on what sells, so we have every reason to keep it full of what they actually want.
+      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.55;color:#4f5168;padding-top:12px;">
+        One offer, no tiers. The cooler is a free amenity for your people &mdash; we earn on what
+        sells, so we have every reason to keep it full of what they actually want.
       </div>
-
-      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;margin-top:20px;border:1px solid #3b3b75;background-color:#23234e;">
-        <tr>
-          <td style="padding:14px 18px 6px 18px;">
-            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;">
-              <tr>
-                <td style="padding:6px 0;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;color:#f6f7ff;">The machine</td>
-                <td align="right" style="padding:6px 0;font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:15px;font-weight:600;color:#c49350;white-space:nowrap;">$0.00</td>
-              </tr>
-              <tr>
-                <td style="padding:6px 0;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;color:#f6f7ff;">Delivery and setup</td>
-                <td align="right" style="padding:6px 0;font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:15px;font-weight:600;color:#c49350;white-space:nowrap;">$0.00</td>
-              </tr>
-              <tr>
-                <td style="padding:6px 0;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;color:#f6f7ff;">Product and restocking</td>
-                <td align="right" style="padding:6px 0;font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:15px;font-weight:600;color:#c49350;white-space:nowrap;">$0.00</td>
-              </tr>
-              <tr>
-                <td style="padding:6px 0;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;color:#f6f7ff;">Service and repairs</td>
-                <td align="right" style="padding:6px 0;font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:15px;font-weight:600;color:#c49350;white-space:nowrap;">$0.00</td>
-              </tr>
-              <tr>
-                <td style="padding:6px 0;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;color:#f6f7ff;">Electricity</td>
-                <td align="right" style="padding:6px 0;font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:15px;font-weight:600;color:#c49350;white-space:nowrap;">$0.00</td>
-              </tr>
-              <tr>
-                <td style="padding:12px 0 6px 0;border-top:1px solid #3b3b75;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;font-weight:600;color:#ffffff;">Your cost</td>
-                <td align="right" style="padding:12px 0 6px 0;border-top:1px solid #3b3b75;font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:17px;font-weight:700;color:#c49350;white-space:nowrap;">$0.00</td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr>
-          <td style="padding:0 18px 14px 18px;">
-            <div style="border-top:1px solid #3b3b75;padding-top:12px;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.5;color:#cdd1ff;">
-              One offer, no tiers. All we need from you is a spot and an outlet.
-            </div>
-          </td>
-        </tr>
-      </table>
     </td>
   </tr>
 
   <!-- ===================== The machine ===================== -->
   <tr>
-    <td style="padding:30px 28px 0 28px;">
-      <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:11px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:#96692f;">The machine</div>
-      <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:29px;font-weight:600;line-height:1.14;color:#141420;padding-top:6px;">Tap, grab, go. Checkout happens on its own.</div>
-    </td>
-  </tr>
-  <tr>
-    <td style="padding:16px 28px 28px 28px;">
+    <td style="padding:24px 28px;">
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;">
         <tr>
-          <td width="200" valign="top" style="padding:0 20px 0 0;">
-            <img src="https://crossbellvending.com/email/machine.jpg" width="200" alt="A single-door smart cooler stocked with bottled drinks, standing against a hallway wall next to an elevator" style="display:block;width:200px;max-width:200px;height:auto;border:1px solid #cfd0e4;outline:none;">
+          <td width="150" valign="top" style="padding:0 18px 0 0;">
+            <img src="https://crossbellvending.com/email/machine.jpg" width="150" height="200" alt="A single-door smart cooler stocked with bottled drinks, standing against a hallway wall" style="display:block;width:150px;max-width:150px;height:auto;border:1px solid #cfd0e4;outline:none;">
           </td>
           <td valign="top" style="padding:0;">
-            <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#4f5168;">
-              An AI-powered smart cooler works like a small store: tap a card or phone to unlock,
-              take what you want, close the door. The cooler recognizes what left the shelf and
-              charges for exactly that. No coins, no keypad, no jammed spirals, nothing for your
-              staff to run.
+            <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:26px;font-weight:600;line-height:1.14;color:#141420;">Tap, grab, go.</div>
+            <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#4f5168;padding-top:6px;">
+              Tap a card or phone to unlock, take what you want, close the door. The cooler knows
+              what left the shelf and charges for exactly that &mdash; nothing for your staff to run.
             </div>
-            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;margin-top:14px;border-top:1px solid #cfd0e4;">
-              <tr>
-                <td valign="top" style="padding:12px 10px 0 0;" width="50%">
-                  <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:10px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;color:#96692f;">Footprint</div>
-                  <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5;color:#141420;padding-top:3px;">22.8" W &times; 26" D &times; 76" H &mdash; about a household fridge.</div>
-                </td>
-                <td valign="top" style="padding:12px 0 0 10px;" width="50%">
-                  <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:10px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;color:#96692f;">Payment</div>
-                  <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5;color:#141420;padding-top:3px;">Tap, swipe, Apple Pay, Google Pay.</div>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top" style="padding:14px 10px 0 0;">
-                  <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:10px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;color:#96692f;">Power</div>
-                  <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5;color:#141420;padding-top:3px;">One standard wall outlet. The electricity is on us.</div>
-                </td>
-                <td valign="top" style="padding:14px 0 0 10px;">
-                  <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:10px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;color:#96692f;">Monitoring</div>
-                  <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.5;color:#141420;padding-top:3px;">Inventory reports to us remotely, so low items get restocked early.</div>
-                </td>
-              </tr>
-            </table>
+            <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.7;color:#141420;margin-top:12px;padding-top:10px;border-top:1px solid #cfd0e4;">
+              <strong>Size:</strong> 22.8" W &times; 26" D &times; 76" H, about a household fridge<br>
+              <strong>Power:</strong> one standard wall outlet<br>
+              <strong>Pays with:</strong> tap, swipe, Apple Pay, Google Pay
+            </div>
           </td>
         </tr>
       </table>
     </td>
   </tr>
 
-  <!-- ===================== What's inside ===================== -->
+  <!-- ===================== What goes in it ===================== -->
   <tr>
-    <td style="padding:28px 28px 0 28px;background-color:#e6e8ff;">
-      <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:11px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:#96692f;">What's inside</div>
-      <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:29px;font-weight:600;line-height:1.14;color:#141420;padding-top:6px;">Food, drinks, and premium amenities, picked for your site.</div>
-      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#4f5168;padding-top:8px;">
-        The mix that sells in a gym is not the mix that sells on a shop floor, so we tune it to
-        your location &mdash; and your people can request items through the QR code on the door.
+    <td style="padding:22px 28px 10px 28px;background-color:#e6e8ff;">
+      <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:26px;font-weight:600;line-height:1.14;color:#141420;">Stocked for your site.</div>
+      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#4f5168;padding-top:5px;">
+        Cold drinks, energy, snacks, healthier picks, and premium items where the site calls for
+        them. The mix that sells in a gym is not the mix that sells on a shop floor.
       </div>
     </td>
   </tr>
   <tr>
-    <td style="padding:18px 28px 28px 28px;background-color:#e6e8ff;">
-      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;">
-        <!-- Row 1 -->
-        <tr>
-          <td width="50%" valign="top" height="1" style="padding:0 6px 12px 0;">
-            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" height="100%" style="height:100%;border-collapse:collapse;background-color:#ffffff;border:1px solid #cfd0e4;">
-              <tr><td style="padding:0;"><img src="https://crossbellvending.com/email/drinks.jpg" width="266" height="200" alt="Bottled water, Coca-Cola, Diet Coke, Sprite, Pure Leaf tea, Tropicana, and Gatorade" style="display:block;width:100%;max-width:266px;height:auto;border:0;border-bottom:1px solid #cfd0e4;outline:none;"></td></tr>
-              <tr><td style="padding:12px 14px 14px 14px;">
-                <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:9px;font-weight:600;letter-spacing:1.3px;text-transform:uppercase;color:#96692f;">Food &amp; drink</div>
-                <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:19px;font-weight:600;line-height:1.2;color:#141420;padding-top:3px;">Cold drinks</div>
-                <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.5;color:#4f5168;padding-top:4px;">Water, soda, iced tea, and juice &mdash; always cold.</div>
-              </td></tr>
-            </table>
-          </td>
-          <td width="50%" valign="top" height="1" style="padding:0 0 12px 6px;">
-            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" height="100%" style="height:100%;border-collapse:collapse;background-color:#ffffff;border:1px solid #cfd0e4;">
-              <tr><td style="padding:0;"><img src="https://crossbellvending.com/email/energy.jpg" width="266" height="200" alt="Monster, Red Bull, Bang, Gatorade, Celsius, and Starbucks cold brew" style="display:block;width:100%;max-width:266px;height:auto;border:0;border-bottom:1px solid #cfd0e4;outline:none;"></td></tr>
-              <tr><td style="padding:12px 14px 14px 14px;">
-                <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:9px;font-weight:600;letter-spacing:1.3px;text-transform:uppercase;color:#96692f;">Food &amp; drink</div>
-                <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:19px;font-weight:600;line-height:1.2;color:#141420;padding-top:3px;">Energy &amp; sports</div>
-                <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.5;color:#4f5168;padding-top:4px;">Energy drinks, electrolytes, and cold brew for long shifts and hard workouts.</div>
-              </td></tr>
-            </table>
-          </td>
-        </tr>
-        <!-- Row 2 -->
-        <tr>
-          <td width="50%" valign="top" height="1" style="padding:0 6px 12px 0;">
-            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" height="100%" style="height:100%;border-collapse:collapse;background-color:#ffffff;border:1px solid #cfd0e4;">
-              <tr><td style="padding:0;"><img src="https://crossbellvending.com/email/snacks.jpg" width="266" height="200" alt="Doritos, Lay's, Ruffles, Takis, Snickers, M&amp;M's, Planters trail mix, and Jack Link's jerky" style="display:block;width:100%;max-width:266px;height:auto;border:0;border-bottom:1px solid #cfd0e4;outline:none;"></td></tr>
-              <tr><td style="padding:12px 14px 14px 14px;">
-                <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:9px;font-weight:600;letter-spacing:1.3px;text-transform:uppercase;color:#96692f;">Food &amp; drink</div>
-                <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:19px;font-weight:600;line-height:1.2;color:#141420;padding-top:3px;">Snacks</div>
-                <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.5;color:#4f5168;padding-top:4px;">Chips, candy, jerky, and trail mix &mdash; the ones people actually reach for.</div>
-              </td></tr>
-            </table>
-          </td>
-          <td width="50%" valign="top" height="1" style="padding:0 0 12px 6px;">
-            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" height="100%" style="height:100%;border-collapse:collapse;background-color:#ffffff;border:1px solid #cfd0e4;">
-              <tr><td style="padding:0;"><img src="https://crossbellvending.com/email/healthy.jpg" width="266" height="200" alt="RXBAR, KIND bar, Blue Diamond almonds, Chobani yogurt, GoGo squeeZ, Naked juice, Olipop, and That's It fruit bar" style="display:block;width:100%;max-width:266px;height:auto;border:0;border-bottom:1px solid #cfd0e4;outline:none;"></td></tr>
-              <tr><td style="padding:12px 14px 14px 14px;">
-                <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:9px;font-weight:600;letter-spacing:1.3px;text-transform:uppercase;color:#96692f;">Food &amp; drink</div>
-                <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:19px;font-weight:600;line-height:1.2;color:#141420;padding-top:3px;">Healthier picks</div>
-                <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.5;color:#4f5168;padding-top:4px;">Protein bars, nuts, fruit cups, and low-sugar drinks.</div>
-              </td></tr>
-            </table>
-          </td>
-        </tr>
-        <!-- Row 3 -->
-        <tr>
-          <td width="50%" valign="top" height="1" style="padding:0 6px 0 0;">
-            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" height="100%" style="height:100%;border-collapse:collapse;background-color:#ffffff;border:1px solid #cfd0e4;">
-              <tr><td style="padding:0;"><img src="https://crossbellvending.com/email/protein.jpg" width="266" height="200" alt="Premier Protein, Fairlife, and Atkins shakes, a chicken teriyaki entree, hard-boiled eggs, and Sargento Balanced Breaks" style="display:block;width:100%;max-width:266px;height:auto;border:0;border-bottom:1px solid #cfd0e4;outline:none;"></td></tr>
-              <tr><td style="padding:12px 14px 14px 14px;">
-                <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:9px;font-weight:600;letter-spacing:1.3px;text-transform:uppercase;color:#96692f;">Food &amp; drink</div>
-                <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:19px;font-weight:600;line-height:1.2;color:#141420;padding-top:3px;">Protein &amp; meals</div>
-                <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.5;color:#4f5168;padding-top:4px;">Protein shakes and ready-to-eat options where the site calls for them.</div>
-              </td></tr>
-            </table>
-          </td>
-          <td width="50%" valign="top" height="1" style="padding:0 0 0 6px;">
-            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" height="100%" style="height:100%;border-collapse:collapse;background-color:#ffffff;border:1px solid #cfd0e4;">
-              <tr><td style="padding:0;"><img src="https://crossbellvending.com/email/premium.jpg" width="266" height="200" alt="Pokemon trading card packs, BlenderBottle shakers, Beats Studio Buds, Altoids, and 5 gum" style="display:block;width:100%;max-width:266px;height:auto;border:0;border-bottom:1px solid #cfd0e4;outline:none;"></td></tr>
-              <tr><td style="padding:12px 14px 14px 14px;">
-                <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:9px;font-weight:600;letter-spacing:1.3px;text-transform:uppercase;color:#96692f;">Premium amenities</div>
-                <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:19px;font-weight:600;line-height:1.2;color:#141420;padding-top:3px;">Premium &amp; luxury</div>
-                <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.5;color:#4f5168;padding-top:4px;">Higher-end snacks, drinks, and personal items that set your break room apart.</div>
-              </td></tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-
-  <!-- ===================== Why Crossbell ===================== -->
-  <tr>
-    <td style="padding:30px 28px 0 28px;">
-      <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:11px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:#96692f;">Why Crossbell</div>
-      <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:29px;font-weight:600;line-height:1.14;color:#141420;padding-top:6px;">Specifics, not adjectives.</div>
-    </td>
-  </tr>
-  <tr>
-    <td style="padding:16px 28px 28px 28px;">
+    <td style="padding:0 28px 24px 28px;background-color:#e6e8ff;">
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;">
         <tr>
-          <td width="50%" valign="top" height="1" style="padding:0 6px 12px 0;">
-            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" height="100%" style="height:100%;border-collapse:collapse;border:1px solid #cfd0e4;background-color:#ffffff;">
-              <tr><td style="padding:16px;border-left:4px solid #c49350;">
-                <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:19px;font-weight:700;color:#141420;">SAME DAY</div>
-                <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.5;color:#4f5168;padding-top:5px;">Every call and message gets a response by end of business day.</div>
-              </td></tr>
-            </table>
+          <td width="33%" valign="top" style="padding:0 5px 0 0;">
+            <img src="https://crossbellvending.com/email/drinks.jpg" width="176" height="132" alt="Bottled water, Coca-Cola, Diet Coke, Sprite, Pure Leaf tea, Tropicana, and Gatorade" style="display:block;width:100%;max-width:176px;height:auto;border:1px solid #cfd0e4;outline:none;">
+            <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;color:#141420;padding-top:7px;">Cold drinks</div>
           </td>
-          <td width="50%" valign="top" height="1" style="padding:0 0 12px 6px;">
-            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" height="100%" style="height:100%;border-collapse:collapse;border:1px solid #cfd0e4;background-color:#ffffff;">
-              <tr><td style="padding:16px;border-left:4px solid #c49350;">
-                <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:19px;font-weight:700;color:#141420;">48 HR</div>
-                <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.5;color:#4f5168;padding-top:5px;">If a unit needs more than a quick fix, a replacement can be on site within 48 hours.</div>
-              </td></tr>
-            </table>
+          <td width="34%" valign="top" style="padding:0 5px;">
+            <img src="https://crossbellvending.com/email/snacks.jpg" width="176" height="132" alt="Doritos, Lay's, Ruffles, Takis, Snickers, M&amp;M's, Planters trail mix, and Jack Link's jerky" style="display:block;width:100%;max-width:176px;height:auto;border:1px solid #cfd0e4;outline:none;">
+            <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;color:#141420;padding-top:7px;">Snacks</div>
           </td>
-        </tr>
-        <tr>
-          <td width="50%" valign="top" height="1" style="padding:0 6px 12px 0;">
-            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" height="100%" style="height:100%;border-collapse:collapse;border:1px solid #cfd0e4;background-color:#ffffff;">
-              <tr><td style="padding:16px;border-left:4px solid #c49350;">
-                <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:19px;font-weight:700;color:#141420;">WEEKLY</div>
-                <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.5;color:#4f5168;padding-top:5px;">Restocked weekly, or sooner when remote monitoring flags a low item.</div>
-              </td></tr>
-            </table>
-          </td>
-          <td width="50%" valign="top" height="1" style="padding:0 0 12px 6px;">
-            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" height="100%" style="height:100%;border-collapse:collapse;border:1px solid #cfd0e4;background-color:#ffffff;">
-              <tr><td style="padding:16px;border-left:4px solid #c49350;">
-                <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:19px;font-weight:700;color:#141420;">LOCAL</div>
-                <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.5;color:#4f5168;padding-top:5px;">Owned and operated in Macomb County. The person you call is the person on the route.</div>
-              </td></tr>
-            </table>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2" valign="top" style="padding:0;">
-            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" height="100%" style="height:100%;border-collapse:collapse;border:1px solid #cfd0e4;background-color:#ffffff;">
-              <tr><td style="padding:16px;border-left:4px solid #c49350;">
-                <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:19px;font-weight:700;color:#141420;">CUSTOM MIX</div>
-                <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.5;color:#4f5168;padding-top:5px;">We tune what's stocked to your site. Snacks, cold drinks, and premium and luxury products where the site calls for them &mdash; and we swap out what does not move.</div>
-              </td></tr>
-            </table>
+          <td width="33%" valign="top" style="padding:0 0 0 5px;">
+            <img src="https://crossbellvending.com/email/premium.jpg" width="176" height="132" alt="Pokemon trading card packs, BlenderBottle shakers, Beats Studio Buds, Altoids, and 5 gum" style="display:block;width:100%;max-width:176px;height:auto;border:1px solid #cfd0e4;outline:none;">
+            <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;color:#141420;padding-top:7px;">Premium &amp; luxury</div>
           </td>
         </tr>
       </table>
     </td>
   </tr>
 
-  <!-- ===================== Where we place them ===================== -->
+  <!-- ===================== Service promises ===================== -->
   <tr>
-    <td style="padding:26px 28px;background-color:#e6e8ff;">
-      <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:11px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:#96692f;">Where we place them</div>
-      <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:29px;font-weight:600;line-height:1.14;color:#141420;padding-top:6px;">Anywhere people spend their day.</div>
-      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;margin-top:14px;">
-        <tr>
-          <td width="25%" align="center" style="padding:12px 4px;background-color:#ffffff;border:1px solid #cfd0e4;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;color:#141420;">Break rooms</td>
-          <td width="25%" align="center" style="padding:12px 4px;background-color:#ffffff;border:1px solid #cfd0e4;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;color:#141420;">Gyms</td>
-          <td width="25%" align="center" style="padding:12px 4px;background-color:#ffffff;border:1px solid #cfd0e4;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;color:#141420;">Auto shops</td>
-          <td width="25%" align="center" style="padding:12px 4px;background-color:#ffffff;border:1px solid #cfd0e4;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;color:#141420;">Offices</td>
-        </tr>
-        <tr>
-          <td align="center" style="padding:12px 4px;background-color:#ffffff;border:1px solid #cfd0e4;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;color:#141420;">Light industrial</td>
-          <td align="center" style="padding:12px 4px;background-color:#ffffff;border:1px solid #cfd0e4;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;color:#141420;">Schools</td>
-          <td align="center" style="padding:12px 4px;background-color:#ffffff;border:1px solid #cfd0e4;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;color:#141420;">Warehouses</td>
-          <td align="center" style="padding:12px 4px;background-color:#e6e8ff;border:1px solid #cfd0e4;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;color:#4f5168;">+ many more</td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-
-  <!-- ===================== Quick answers ===================== -->
-  <tr>
-    <td style="padding:30px 28px 0 28px;">
-      <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:11px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:#96692f;">Quick answers</div>
-      <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:29px;font-weight:600;line-height:1.14;color:#141420;padding-top:6px;">The four we get asked every time.</div>
-    </td>
-  </tr>
-  <tr>
-    <td style="padding:14px 28px 28px 28px;">
+    <td style="padding:0;background-color:#c49350;">
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;">
         <tr>
-          <td style="padding:14px 0;border-top:1px solid #cfd0e4;">
-            <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:19px;font-weight:600;color:#141420;">How long is the agreement?</div>
-            <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.6;color:#4f5168;padding-top:4px;">No long-term lock-in. After the first 90 days, thirty days' written notice ends it. Because we purchase, stock, and install each cooler at our own expense, an early-exit fee applies inside those first 90 days &mdash; spelled out in the agreement before you sign.</div>
+          <td width="33%" valign="top" style="padding:14px 12px 14px 28px;">
+            <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:15px;font-weight:700;color:#141420;">SAME DAY</div>
+            <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.45;color:#141420;padding-top:4px;">Every call answered by end of business day.</div>
           </td>
-        </tr>
-        <tr>
-          <td style="padding:14px 0;border-top:1px solid #cfd0e4;">
-            <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:19px;font-weight:600;color:#141420;">What if something goes wrong with it?</div>
-            <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.6;color:#4f5168;padding-top:4px;">Call or message us and you hear back the same business day. Refunds are handled by us, not by your staff, and a replacement unit can be on site within 48 hours.</div>
+          <td width="34%" valign="top" style="padding:14px 12px;border-left:1px solid #a97f44;border-right:1px solid #a97f44;">
+            <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:15px;font-weight:700;color:#141420;">48 HOURS</div>
+            <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.45;color:#141420;padding-top:4px;">Replacement unit on site if one is ever needed.</div>
           </td>
-        </tr>
-        <tr>
-          <td style="padding:14px 0;border-top:1px solid #cfd0e4;">
-            <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:19px;font-weight:600;color:#141420;">Are you insured?</div>
-            <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.6;color:#4f5168;padding-top:4px;">Fully insured, with your business named as additional insured. Certificate available on request &mdash; reply to this email and we will send it over.</div>
-          </td>
-        </tr>
-        <tr>
-          <td style="padding:14px 0;border-top:1px solid #cfd0e4;border-bottom:1px solid #cfd0e4;">
-            <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:19px;font-weight:600;color:#141420;">What do you need from us?</div>
-            <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.6;color:#4f5168;padding-top:4px;">A spot along a wall, a standard outlet nearby, and enough clearance for the door to swing. That is the whole list.</div>
+          <td width="33%" valign="top" style="padding:14px 28px 14px 12px;">
+            <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:15px;font-weight:700;color:#141420;">NO LOCK-IN</div>
+            <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.45;color:#141420;padding-top:4px;">After 90 days, thirty days' notice ends it.</div>
           </td>
         </tr>
       </table>
-    </td>
-  </tr>
-
-  <!-- ===================== Service area ===================== -->
-  <tr>
-    <td style="padding:26px 28px;background-color:#e6e8ff;">
-      <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:11px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:#96692f;">Service area</div>
-      <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:29px;font-weight:600;line-height:1.14;color:#141420;padding-top:6px;">Macomb and north Oakland County.</div>
-      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#4f5168;padding-top:8px;">
-        We run a weekly route through Washington Township, Shelby Township, Macomb Township,
-        Utica, Romeo / Bruce, Rochester, Rochester Hills, Sterling Heights, and Clinton Township,
-        and surrounding Macomb and Oakland County communities. Not on the list? Ask &mdash; the
-        route grows with every placement.
-      </div>
     </td>
   </tr>
 
   <!-- ===================== Close ===================== -->
   <tr>
-    <td style="padding:30px 28px;background-color:#2a2a5c;">
-      <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:31px;font-weight:700;line-height:1.12;color:#ffffff;">
+    <td style="padding:26px 28px;background-color:#2a2a5c;">
+      <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:29px;font-weight:700;line-height:1.12;color:#ffffff;">
         Next step is ten minutes of your time.
       </div>
-      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#cdd1ff;padding-top:10px;">
-        We walk the space, find the outlet, and confirm the spot. If it is not a fit, we say so
-        and that is the end of it &mdash; no pitch, no paperwork.
+      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#cdd1ff;padding-top:8px;">
+        We walk the space, find the outlet, confirm the spot. If it is not a fit, we say so.
       </div>
-      <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-top:20px;">
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-top:18px;">
         <tr>
           <td bgcolor="#c49350" style="border-radius:3px;">
-            <a href="https://crossbellvending.com/contact/?utm_source=email&amp;utm_medium=pamphlet&amp;utm_campaign=followup" style="display:inline-block;padding:14px 26px;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;font-weight:600;color:#141420;text-decoration:none;">Pick a time</a>
+            <a href="https://crossbellvending.com/contact/?utm_source=email&amp;utm_medium=pamphlet&amp;utm_campaign=followup" style="display:inline-block;padding:13px 24px;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;font-weight:600;color:#141420;text-decoration:none;">Pick a time</a>
           </td>
-          <td width="12" style="font-size:0;line-height:0;">&nbsp;</td>
+          <td width="10" style="font-size:0;line-height:0;">&nbsp;</td>
           <td style="border:2px solid #cdd1ff;border-radius:3px;">
-            <a href="tel:+15869071861" style="display:inline-block;padding:12px 24px;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;font-weight:600;color:#ffffff;text-decoration:none;">Call 586-907-1861</a>
+            <a href="tel:+15869071861" style="display:inline-block;padding:11px 22px;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;font-weight:600;color:#ffffff;text-decoration:none;">Call 586-907-1861</a>
           </td>
         </tr>
       </table>
-      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.6;color:#cdd1ff;padding-top:18px;">
+      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.6;color:#cdd1ff;padding-top:16px;">
         Or just reply to this email &mdash; it comes straight to us.
       </div>
     </td>
@@ -517,13 +232,12 @@
 
   <!-- ===================== Signature ===================== -->
   <tr>
-    <td style="padding:24px 28px 20px 28px;border-bottom:1px solid #cfd0e4;">
+    <td style="padding:18px 28px;">
       <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#141420;">
         Thanks again,<br>
-        <strong>[Your name]</strong><br>
-        <span style="color:#4f5168;">Crossbell Vending LLC</span>
+        <strong>[Your name]</strong>, Crossbell Vending LLC
       </div>
-      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;padding-top:10px;">
+      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;padding-top:6px;">
         <a href="tel:+15869071861" style="color:#141420;text-decoration:none;font-weight:600;">586-907-1861</a>
         <span style="color:#cfd0e4;">&nbsp;|&nbsp;</span>
         <a href="mailto:crossbellvending@gmail.com" style="color:#141420;text-decoration:none;font-weight:600;">crossbellvending@gmail.com</a>
@@ -535,21 +249,15 @@
 
   <!-- ===================== Footer ===================== -->
   <tr>
-    <td style="padding:20px 28px 26px 28px;background-color:#141420;">
-      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:12px;line-height:1.6;color:#9ea2d6;">
-        Crossbell Vending LLC &middot; [Street address], [City], MI [ZIP] &middot; Fully insured
+    <td style="padding:14px 28px 20px 28px;background-color:#141420;">
+      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:12px;line-height:1.55;color:#9ea2d6;">
+        Crossbell Vending LLC &middot; [Street address], [City], MI [ZIP] &middot; Fully insured &middot;
+        Serving Macomb and north Oakland County
       </div>
-      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:12px;line-height:1.6;color:#9ea2d6;padding-top:8px;">
+      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:12px;line-height:1.55;color:#9ea2d6;padding-top:6px;">
         You are getting this because we spoke about placing a cooler at [Company]. Not the right
         person? Reply and point us to whoever is. Prefer we stop? Reply &ldquo;no thanks&rdquo;
         and we will not follow up again.
-      </div>
-      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:12px;line-height:1.6;color:#9ea2d6;padding-top:8px;">
-        <a href="https://crossbellvending.com/privacy/" style="color:#cdd1ff;text-decoration:underline;">Privacy policy</a>
-        <span style="color:#4f5168;">&nbsp;&middot;&nbsp;</span>
-        <a href="https://crossbellvending.com/terms/" style="color:#cdd1ff;text-decoration:underline;">Terms of use</a>
-        <span style="color:#4f5168;">&nbsp;&middot;&nbsp;</span>
-        <a href="https://crossbellvending.com/accessibility/" style="color:#cdd1ff;text-decoration:underline;">Accessibility</a>
       </div>
     </td>
   </tr>
