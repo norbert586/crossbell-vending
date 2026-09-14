@@ -66,6 +66,9 @@ Shoot in landscape if that's easier and crop afterward — the aspect ratio matt
 original orientation. The layout uses `object-fit: cover`, so exact pixel dimensions don't matter
 as long as the ratio is close. Shoot with the lights on and no other company's logo in frame.
 
+These photos feed the email pamphlet too. After swapping one, run `node email/build-assets.mjs`
+to regenerate `public/email/` and commit it alongside — see [Email pamphlet](#email-pamphlet).
+
 ## Where form submissions land
 
 Both forms (the business walkthrough request and the "already have a cooler" feedback form) use
@@ -117,6 +120,29 @@ so a green CI run means a green production build.
 failing CI run will not stop a bad build from being attempted. To make the check blocking, add a
 branch protection rule on `main` requiring the `Build` check, and work through pull requests
 instead of pushing straight to `main`.
+
+## Email pamphlet
+
+[`email/follow-up-pamphlet.html`](email/) is a short follow-up email to send after a walkthrough
+or a call: the $0 itemized, a look at the machine and what goes in it, and two ways to reply.
+Open it in a browser, select all, copy, paste into a Gmail compose window, fill in the bracketed
+placeholders, send.
+
+It is deliberately about two phone screens long, and the rest of the pitch is a tap away on the
+site. Resist growing it — the reason it gets read is that it ends.
+
+Two things to know before the first send, both covered in [`email/README.md`](email/README.md):
+
+- **It depends on a deploy.** The email's images are absolute `crossbellvending.com/email/…` URLs
+  served out of `public/email/`, so the pamphlet only renders once that folder is live. The
+  site's own images cannot be reused — Astro's `<Image>` emits content-hashed WebP that changes
+  filename on every build and that Outlook cannot display.
+- **The footer needs a real mailing address.** It ships with a `[Street address]` placeholder;
+  a commercial email requires one under CAN-SPAM.
+
+Copy in the pamphlet is duplicated from `src/pages/index.astro`, not imported from
+`src/data/site.ts` — an email has no build step. Change a claim on the site (the $0 offer, the
+48-hour replacement, the 90-day terms) and change it in the pamphlet too.
 
 ## QR codes and traffic attribution
 

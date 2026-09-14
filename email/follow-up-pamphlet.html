@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crossbell Vending — follow-up pamphlet</title>
+</head>
+<!--
+  Crossbell Vending — follow-up email for prospective locations.
+
+  HOW TO SEND IT: open this file in a browser, Ctrl/Cmd+A, Ctrl/Cmd+C, then
+  paste into a Gmail compose window. Replace the bracketed placeholders.
+  Full instructions are in email/README.md.
+
+  LENGTH IS THE POINT. This is deliberately about two iPhone screens of
+  scroll: the $0, a look at the machine, a look at what goes in it, and a
+  way to reply. Anything a prospect asks after that is on the site, which
+  the buttons link to. Adding sections back is how it stops getting read.
+
+  HOW IT IS BUILT, and why it looks nothing like the Astro site:
+  - Tables, not divs. Gmail, Outlook and Yahoo have no reliable flex or grid.
+  - Every style is inline. Gmail drops <style> blocks when HTML is pasted into
+    a compose window, so a stylesheet here would silently do nothing.
+  - 600px fixed width, the width every desktop client can show without
+    horizontal scroll. Mobile clients scale it down to fit.
+  - Images are absolute https://crossbellvending.com/email/ URLs, never
+    relative paths and never the site's own /_astro/ images: those are
+    content-hashed WebP that changes filename on every build and that Outlook
+    cannot render. See email/build-assets.mjs.
+  - Fonts name the brand faces first and then a real fallback. Mail clients do
+    not load webfonts, so what recipients actually see is the fallback --
+    Arial Narrow standing in for Barlow Condensed on headings.
+  - No background-image, no position, no float, no <style>, no web fonts,
+    no JavaScript. All of it is stripped or ignored somewhere that matters.
+-->
+<body style="margin:0;padding:0;background-color:#ffffff;">
+
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;background-color:#ffffff;">
+<tr>
+<td align="center" style="padding:0;">
+
+<!-- ===================== 600px brochure ===================== -->
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="600" style="width:600px;max-width:600px;border-collapse:collapse;background-color:#ffffff;">
+
+  <!-- Gold rule across the top, the same hairline the site uses on its cards -->
+  <tr><td style="padding:0;background-color:#c49350;height:4px;line-height:4px;font-size:0;">&nbsp;</td></tr>
+
+  <!-- ===================== Letterhead ===================== -->
+  <tr>
+    <td style="padding:16px 28px 14px 28px;border-bottom:1px solid #cfd0e4;">
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;">
+        <tr>
+          <td width="52" valign="middle" style="padding:0 12px 0 0;">
+            <img src="https://crossbellvending.com/email/crest.png" width="52" height="60" alt="Crossbell Vending crest" style="display:block;width:52px;height:60px;border:0;outline:none;">
+          </td>
+          <td valign="middle" style="padding:0;">
+            <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:24px;font-weight:700;line-height:1.1;color:#141420;">Crossbell Vending</div>
+            <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#96692f;padding-top:4px;">Macomb &amp; North Oakland County, MI</div>
+          </td>
+          <td valign="middle" align="right" style="padding:0;">
+            <a href="tel:+15869071861" style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:14px;font-weight:600;color:#141420;text-decoration:none;white-space:nowrap;">586-907-1861</a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- ===================== The follow-up note ===================== -->
+  <tr>
+    <td style="padding:20px 28px 18px 28px;">
+      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#141420;">
+        Hi [First name] &mdash; good talking with you. Here is the whole offer on one screen,
+        easy to forward to anyone else at [Company] who needs to see it.
+      </div>
+    </td>
+  </tr>
+
+  <!-- ===================== Hero ===================== -->
+  <tr>
+    <td style="padding:0;">
+      <img src="https://crossbellvending.com/email/cooler-hero.jpg" width="600" height="420" alt="A black two-door smart cooler, fully stocked with drinks and snacks, installed in an office lobby beside a row of chairs" style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;">
+    </td>
+  </tr>
+  <tr>
+    <td style="padding:22px 28px 24px 28px;background-color:#2a2a5c;">
+      <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:36px;font-weight:700;line-height:1.08;color:#ffffff;">
+        A stocked smart cooler at your location.<br>
+        <span style="color:#c49350;">Your cost: $0.</span>
+      </div>
+      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.6;color:#cdd1ff;padding-top:12px;">
+        We wheel it in, fill it, and keep it running. You provide a spot along a wall and a
+        standard outlet &mdash; we even cover the electricity.
+      </div>
+    </td>
+  </tr>
+
+  <!-- ===================== The $0, itemized ===================== -->
+  <tr>
+    <td style="padding:22px 28px 24px 28px;background-color:#e6e8ff;">
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;">
+        <tr>
+          <td style="padding:0 0 4px 0;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;color:#141420;">The machine, delivered and installed</td>
+          <td align="right" style="padding:0 0 4px 0;font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:15px;font-weight:600;color:#96692f;white-space:nowrap;">$0.00</td>
+        </tr>
+        <tr>
+          <td style="padding:6px 0 4px 0;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;color:#141420;">Product, stocked weekly</td>
+          <td align="right" style="padding:6px 0 4px 0;font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:15px;font-weight:600;color:#96692f;white-space:nowrap;">$0.00</td>
+        </tr>
+        <tr>
+          <td style="padding:6px 0 4px 0;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;color:#141420;">Service, repairs, and refunds</td>
+          <td align="right" style="padding:6px 0 4px 0;font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:15px;font-weight:600;color:#96692f;white-space:nowrap;">$0.00</td>
+        </tr>
+        <tr>
+          <td style="padding:6px 0 10px 0;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;color:#141420;">Electricity</td>
+          <td align="right" style="padding:6px 0 10px 0;font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:15px;font-weight:600;color:#96692f;white-space:nowrap;">$0.00</td>
+        </tr>
+        <tr>
+          <td style="padding:12px 0 0 0;border-top:2px solid #141420;font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:28px;font-weight:700;color:#141420;">Your cost</td>
+          <td align="right" style="padding:12px 0 0 0;border-top:2px solid #141420;font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:28px;font-weight:700;color:#96692f;white-space:nowrap;">$0.00</td>
+        </tr>
+      </table>
+      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.55;color:#4f5168;padding-top:12px;">
+        One offer, no tiers. The cooler is a free amenity for your people &mdash; we earn on what
+        sells, so we have every reason to keep it full of what they actually want.
+      </div>
+    </td>
+  </tr>
+
+  <!-- ===================== The machine ===================== -->
+  <tr>
+    <td style="padding:24px 28px;">
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;">
+        <tr>
+          <td width="150" valign="top" style="padding:0 18px 0 0;">
+            <img src="https://crossbellvending.com/email/machine.jpg" width="150" height="200" alt="A single-door smart cooler stocked with bottled drinks, standing against a hallway wall" style="display:block;width:150px;max-width:150px;height:auto;border:1px solid #cfd0e4;outline:none;">
+          </td>
+          <td valign="top" style="padding:0;">
+            <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:26px;font-weight:600;line-height:1.14;color:#141420;">Tap, grab, go.</div>
+            <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#4f5168;padding-top:6px;">
+              Tap a card or phone to unlock, take what you want, close the door. The cooler knows
+              what left the shelf and charges for exactly that &mdash; nothing for your staff to run.
+            </div>
+            <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.7;color:#141420;margin-top:12px;padding-top:10px;border-top:1px solid #cfd0e4;">
+              <strong>Size:</strong> 22.8" W &times; 26" D &times; 76" H, about a household fridge<br>
+              <strong>Power:</strong> one standard wall outlet<br>
+              <strong>Pays with:</strong> tap, swipe, Apple Pay, Google Pay
+            </div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- ===================== What goes in it ===================== -->
+  <tr>
+    <td style="padding:22px 28px 10px 28px;background-color:#e6e8ff;">
+      <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:26px;font-weight:600;line-height:1.14;color:#141420;">Stocked for your site.</div>
+      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#4f5168;padding-top:5px;">
+        Cold drinks, energy, snacks, healthier picks, and premium items where the site calls for
+        them. The mix that sells in a gym is not the mix that sells on a shop floor.
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td style="padding:0 28px 24px 28px;background-color:#e6e8ff;">
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;">
+        <tr>
+          <td width="33%" valign="top" style="padding:0 5px 0 0;">
+            <img src="https://crossbellvending.com/email/drinks.jpg" width="176" height="132" alt="Bottled water, Coca-Cola, Diet Coke, Sprite, Pure Leaf tea, Tropicana, and Gatorade" style="display:block;width:100%;max-width:176px;height:auto;border:1px solid #cfd0e4;outline:none;">
+            <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;color:#141420;padding-top:7px;">Cold drinks</div>
+          </td>
+          <td width="34%" valign="top" style="padding:0 5px;">
+            <img src="https://crossbellvending.com/email/snacks.jpg" width="176" height="132" alt="Doritos, Lay's, Ruffles, Takis, Snickers, M&amp;M's, Planters trail mix, and Jack Link's jerky" style="display:block;width:100%;max-width:176px;height:auto;border:1px solid #cfd0e4;outline:none;">
+            <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;color:#141420;padding-top:7px;">Snacks</div>
+          </td>
+          <td width="33%" valign="top" style="padding:0 0 0 5px;">
+            <img src="https://crossbellvending.com/email/premium.jpg" width="176" height="132" alt="Pokemon trading card packs, BlenderBottle shakers, Beats Studio Buds, Altoids, and 5 gum" style="display:block;width:100%;max-width:176px;height:auto;border:1px solid #cfd0e4;outline:none;">
+            <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;color:#141420;padding-top:7px;">Premium &amp; luxury</div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- ===================== Service promises ===================== -->
+  <tr>
+    <td style="padding:0;background-color:#c49350;">
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;">
+        <tr>
+          <td width="33%" valign="top" style="padding:14px 12px 14px 28px;">
+            <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:15px;font-weight:700;color:#141420;">SAME DAY</div>
+            <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.45;color:#141420;padding-top:4px;">Every call answered by end of business day.</div>
+          </td>
+          <td width="34%" valign="top" style="padding:14px 12px;border-left:1px solid #a97f44;border-right:1px solid #a97f44;">
+            <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:15px;font-weight:700;color:#141420;">48 HOURS</div>
+            <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.45;color:#141420;padding-top:4px;">Replacement unit on site if one is ever needed.</div>
+          </td>
+          <td width="33%" valign="top" style="padding:14px 28px 14px 12px;">
+            <div style="font-family:'IBM Plex Mono',Consolas,Menlo,monospace;font-size:15px;font-weight:700;color:#141420;">NO LOCK-IN</div>
+            <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:13px;line-height:1.45;color:#141420;padding-top:4px;">After 90 days, thirty days' notice ends it.</div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- ===================== Close ===================== -->
+  <tr>
+    <td style="padding:26px 28px;background-color:#2a2a5c;">
+      <div style="font-family:'Barlow Condensed','Arial Narrow',Arial,Helvetica,sans-serif;font-size:29px;font-weight:700;line-height:1.12;color:#ffffff;">
+        Next step is ten minutes of your time.
+      </div>
+      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#cdd1ff;padding-top:8px;">
+        We walk the space, find the outlet, confirm the spot. If it is not a fit, we say so.
+      </div>
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-top:18px;">
+        <tr>
+          <td bgcolor="#c49350" style="border-radius:3px;">
+            <a href="https://crossbellvending.com/contact/?utm_source=email&amp;utm_medium=pamphlet&amp;utm_campaign=followup" style="display:inline-block;padding:13px 24px;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;font-weight:600;color:#141420;text-decoration:none;">Pick a time</a>
+          </td>
+          <td width="10" style="font-size:0;line-height:0;">&nbsp;</td>
+          <td style="border:2px solid #cdd1ff;border-radius:3px;">
+            <a href="tel:+15869071861" style="display:inline-block;padding:11px 22px;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;font-weight:600;color:#ffffff;text-decoration:none;">Call 586-907-1861</a>
+          </td>
+        </tr>
+      </table>
+      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.6;color:#cdd1ff;padding-top:16px;">
+        Or just reply to this email &mdash; it comes straight to us.
+      </div>
+    </td>
+  </tr>
+
+  <!-- ===================== Signature ===================== -->
+  <tr>
+    <td style="padding:18px 28px;">
+      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#141420;">
+        Thanks again,<br>
+        <strong>[Your name]</strong>, Crossbell Vending LLC
+      </div>
+      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;padding-top:6px;">
+        <a href="tel:+15869071861" style="color:#141420;text-decoration:none;font-weight:600;">586-907-1861</a>
+        <span style="color:#cfd0e4;">&nbsp;|&nbsp;</span>
+        <a href="mailto:crossbellvending@gmail.com" style="color:#141420;text-decoration:none;font-weight:600;">crossbellvending@gmail.com</a>
+        <span style="color:#cfd0e4;">&nbsp;|&nbsp;</span>
+        <a href="https://crossbellvending.com/?utm_source=email&amp;utm_medium=pamphlet&amp;utm_campaign=followup" style="color:#141420;text-decoration:none;font-weight:600;">crossbellvending.com</a>
+      </div>
+    </td>
+  </tr>
+
+  <!-- ===================== Footer ===================== -->
+  <tr>
+    <td style="padding:14px 28px 20px 28px;background-color:#141420;">
+      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:12px;line-height:1.55;color:#9ea2d6;">
+        Crossbell Vending LLC &middot; [Street address], [City], MI [ZIP] &middot; Fully insured &middot;
+        Serving Macomb and north Oakland County
+      </div>
+      <div style="font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;font-size:12px;line-height:1.55;color:#9ea2d6;padding-top:6px;">
+        You are getting this because we spoke about placing a cooler at [Company]. Not the right
+        person? Reply and point us to whoever is. Prefer we stop? Reply &ldquo;no thanks&rdquo;
+        and we will not follow up again.
+      </div>
+    </td>
+  </tr>
+
+</table>
+<!-- =================== end 600px brochure =================== -->
+
+</td>
+</tr>
+</table>
+
+</body>
+</html>
