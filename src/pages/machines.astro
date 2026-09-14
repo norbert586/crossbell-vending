@@ -1,0 +1,238 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ContactSection from "../components/ContactSection.astro";
+import MachineFigure from "../components/MachineFigure.astro";
+import FleetScale from "../components/FleetScale.astro";
+import { machines, monthlyPower } from "../data/machines";
+import { site } from "../data/site";
+
+const title = "Our Fleet of Smart Vending Machines | Crossbell Vending";
+const description =
+  "Five AI smart coolers, from a 245-bottle compact that fits a small break room to an 864-bottle double-door unit — plus a true freezer. Specs, dimensions, and what each one is for.";
+
+const feet = (inches: number) => `${Math.floor(inches / 12)}′ ${Math.round(inches % 12)}″`;
+---
+
+<Layout title={title} description={description}>
+  <!-- Intro -->
+  <section class="bg-indigo text-paper">
+    <div class="mx-auto max-w-[1120px] px-5 py-14 sm:px-8 sm:py-20">
+      <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent uppercase">The fleet</p>
+      <h1 class="mt-4 max-w-[18ch] text-[clamp(2.3rem,5vw,3.9rem)] font-bold leading-[1.04] text-white">
+        Five machines. You get the one your site actually needs.
+      </h1>
+      <p class="mt-5 max-w-[56ch] text-lg text-lavender">
+        Most operators own one model and place it everywhere. We carry a range — a compact that
+        slips into a break room with no spare wall, a double-door unit for a plant that empties a
+        single cabinet by Wednesday, and a real freezer for sites that want lunch on hand. Every
+        one of them runs the same tap, grab, go checkout, and every one of them is
+        <strong class="font-semibold text-accent">free to your business</strong>.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3.5">
+        <a
+          href="#lineup"
+          class="inline-flex items-center rounded-[3px] bg-accent px-6 py-3.5 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover"
+        >
+          See the lineup
+        </a>
+        <a
+          href={`tel:${site.phoneTel}`}
+          class="inline-flex items-center rounded-[3px] border-2 border-lavender px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white hover:text-indigo"
+        >
+          Call {site.phone}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scale comparison -->
+  <section class="py-14 sm:py-20">
+    <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
+      <div class="mb-8 max-w-[52ch]">
+        <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent-dim uppercase">Side by side</p>
+        <h2 class="mt-2 text-[clamp(1.9rem,3.4vw,2.6rem)] font-semibold">
+          The smallest one is about a household fridge.
+        </h2>
+        <p class="mt-4 text-muted">
+          The question we get first is always "will it fit?" — so here they all are, drawn to
+          scale against a person.
+        </p>
+      </div>
+      <FleetScale />
+    </div>
+  </section>
+
+  <!-- Lineup -->
+  <section id="lineup" class="scroll-mt-20 bg-lavender-tint py-14 sm:py-20">
+    <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
+      <div class="mb-10 max-w-[52ch]">
+        <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent-dim uppercase">The lineup</p>
+        <h2 class="mt-2 text-[clamp(1.9rem,3.4vw,2.6rem)] font-semibold">Every unit we place.</h2>
+      </div>
+
+      <div class="flex flex-col gap-5">
+        {machines.map((m) => (
+          <article id={m.slug} class="scroll-mt-20 border border-line bg-white">
+            <div class="grid gap-0 md:grid-cols-[240px_1fr] lg:grid-cols-[300px_1fr]">
+              <div class="flex items-end justify-center border-b border-line bg-lavender-tint p-6 md:border-r md:border-b-0">
+                <MachineFigure machine={m} class="h-[260px] w-auto max-w-full md:h-[320px]" />
+              </div>
+              <div class="p-6 sm:p-8">
+                <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
+                  <h3 class="text-2xl font-semibold sm:text-3xl">{m.name}</h3>
+                  <span class="font-mono text-xs font-semibold tracking-[0.12em] text-accent-dim uppercase">
+                    {m.model}
+                  </span>
+                  {m.workhorse && (
+                    <span class="bg-accent px-2.5 py-1 font-mono text-[0.65rem] font-bold tracking-[0.12em] text-ink uppercase">
+                      Most placed
+                    </span>
+                  )}
+                </div>
+                <p class="mt-2 text-lg font-medium text-indigo">{m.tagline}</p>
+                <p class="mt-3 max-w-[62ch] text-[0.98rem] text-muted">{m.blurb}</p>
+
+                <ul class="mt-5 flex flex-wrap gap-2">
+                  {m.bestFor.map((use) => (
+                    <li class="border border-line px-2.5 py-1 text-xs font-semibold text-muted">{use}</li>
+                  ))}
+                </ul>
+
+                <dl class="mt-6 grid gap-x-8 gap-y-4 border-t border-line pt-5 sm:grid-cols-2 lg:grid-cols-3">
+                  <div>
+                    <dt class="font-mono text-[0.65rem] font-semibold tracking-[0.14em] text-accent-dim uppercase">Holds</dt>
+                    <dd class="mt-0.5 text-[0.95rem]">{m.capacity} · {m.shelves} shelves</dd>
+                  </div>
+                  <div>
+                    <dt class="font-mono text-[0.65rem] font-semibold tracking-[0.14em] text-accent-dim uppercase">Footprint</dt>
+                    <dd class="mt-0.5 text-[0.95rem]">{m.width}″ W × {m.depth}″ D × {m.height}″ H <span class="text-muted">({feet(m.height)} tall)</span></dd>
+                  </div>
+                  <div>
+                    <dt class="font-mono text-[0.65rem] font-semibold tracking-[0.14em] text-accent-dim uppercase">Temperature</dt>
+                    <dd class="mt-0.5 text-[0.95rem]">{m.tempRange}</dd>
+                  </div>
+                  <div>
+                    <dt class="font-mono text-[0.65rem] font-semibold tracking-[0.14em] text-accent-dim uppercase">Stocked with</dt>
+                    <dd class="mt-0.5 text-[0.95rem]">{m.selection}</dd>
+                  </div>
+                  <div>
+                    <dt class="font-mono text-[0.65rem] font-semibold tracking-[0.14em] text-accent-dim uppercase">Power</dt>
+                    <dd class="mt-0.5 text-[0.95rem]">
+                      One 110V outlet · {m.kwhPerDay} kWh a day
+                      <span class="block text-muted">{monthlyPower(m.kwhPerDay)} on your bill</span>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt class="font-mono text-[0.65rem] font-semibold tracking-[0.14em] text-accent-dim uppercase">Weight</dt>
+                    <dd class="mt-0.5 text-[0.95rem]">{m.weight} · {m.doors === 2 ? "two doors" : "one door"}</dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <p class="mt-6 max-w-[68ch] text-sm text-muted">
+        Dimensions are the cabinet only — leave a few inches for the door to swing and for airflow
+        behind the unit. Power figures are the manufacturer's draw at a typical Michigan
+        commercial rate; your bill will land near them, not exactly on them.
+      </p>
+    </div>
+  </section>
+
+  <!-- What they share -->
+  <section class="py-14 sm:py-20">
+    <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
+      <div class="mb-10 max-w-[52ch]">
+        <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent-dim uppercase">What they all share</p>
+        <h2 class="mt-2 text-[clamp(1.9rem,3.4vw,2.6rem)] font-semibold">Same checkout, same service, same price to you.</h2>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="relative border border-line bg-white p-6">
+          <span class="absolute top-2.5 left-2.5 h-1.5 w-1.5 bg-accent"></span>
+          <h3 class="font-mono text-lg font-bold">TAP, GRAB, GO</h3>
+          <p class="mt-2 text-[0.96rem] text-muted">
+            Tap a card or phone to unlock, take what you want, close the door. The cooler sees
+            what left the shelf and charges for exactly that.
+          </p>
+        </div>
+        <div class="relative border border-line bg-white p-6">
+          <span class="absolute top-2.5 left-2.5 h-1.5 w-1.5 bg-accent"></span>
+          <h3 class="font-mono text-lg font-bold">NO CASH SLOT</h3>
+          <p class="mt-2 text-[0.96rem] text-muted">
+            Tap, swipe, Apple Pay, Google Pay. Nothing to jam, nothing to empty, nothing worth
+            breaking into after hours.
+          </p>
+        </div>
+        <div class="relative border border-line bg-white p-6">
+          <span class="absolute top-2.5 left-2.5 h-1.5 w-1.5 bg-accent"></span>
+          <h3 class="font-mono text-lg font-bold">WATCHED REMOTELY</h3>
+          <p class="mt-2 text-[0.96rem] text-muted">
+            Inventory and temperature report back to us between visits, so a low item or a warm
+            cabinet gets handled before anyone tells us.
+          </p>
+        </div>
+        <div class="relative border border-line bg-white p-6">
+          <span class="absolute top-2.5 left-2.5 h-1.5 w-1.5 bg-accent"></span>
+          <h3 class="font-mono text-lg font-bold">FREE TO YOU</h3>
+          <p class="mt-2 text-[0.96rem] text-muted">
+            Whichever unit lands at your site, the machine, the product, the delivery, and the
+            service are on us. We earn on what sells.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How we choose -->
+  <section class="bg-indigo text-paper">
+    <div class="mx-auto max-w-[1120px] px-5 py-14 sm:px-8 sm:py-20">
+      <div class="grid gap-10 md:grid-cols-[1fr_1fr] md:items-start">
+        <div>
+          <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent uppercase">Picking one</p>
+          <h2 class="mt-2 text-[clamp(1.9rem,3.4vw,2.6rem)] font-semibold text-white">
+            You don't have to choose. That's our job.
+          </h2>
+          <p class="mt-4 max-w-[50ch] text-[1.05rem] text-lavender">
+            On the walkthrough we count heads, look at the space and the outlet, and ask what
+            people currently leave the building to buy. Then we bring the unit that fits. If we
+            get it wrong, we swap it — you are not stuck with the first machine through the door.
+          </p>
+        </div>
+        <div class="border border-indigo-2 bg-[#1f1f4a80] p-6 sm:p-8">
+          <ul class="flex flex-col gap-4 text-[0.98rem]">
+            <li class="flex gap-3">
+              <span class="font-mono font-semibold text-accent">·</span>
+              <span><strong class="text-white">Under 30 people, tight room?</strong> The Compact.</span>
+            </li>
+            <li class="flex gap-3">
+              <span class="font-mono font-semibold text-accent">·</span>
+              <span><strong class="text-white">Everyone wants a drink at once?</strong> The Beverage.</span>
+            </li>
+            <li class="flex gap-3">
+              <span class="font-mono font-semibold text-accent">·</span>
+              <span><strong class="text-white">Snacks and drinks, one cabinet?</strong> The Combo.</span>
+            </li>
+            <li class="flex gap-3">
+              <span class="font-mono font-semibold text-accent">·</span>
+              <span><strong class="text-white">Microwave on site, people eat there?</strong> The Frozen.</span>
+            </li>
+            <li class="flex gap-3">
+              <span class="font-mono font-semibold text-accent">·</span>
+              <span><strong class="text-white">High headcount or round-the-clock?</strong> The Double.</span>
+            </li>
+          </ul>
+          <p class="mt-5 border-t border-indigo-2 pt-4 text-sm text-lavender">
+            Big sites often take two — a Combo on the floor and a Compact upstairs.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ContactSection
+    heading="Ask which one fits your space"
+    subheading="Tell us roughly how many people are on site and we'll tell you which unit we'd bring — before anyone commits to anything."
+  />
+</Layout>

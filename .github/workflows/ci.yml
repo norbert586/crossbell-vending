@@ -34,7 +34,7 @@ jobs:
 
       - name: Check expected pages were generated
         run: |
-          for f in dist/index.html dist/contact/index.html dist/404.html dist/sitemap-index.xml; do
+          for f in dist/index.html dist/machines/index.html dist/contact/index.html dist/404.html dist/sitemap-index.xml; do
             test -s "$f" || { echo "::error::missing or empty build output: $f"; exit 1; }
           done
           echo "All expected pages present."

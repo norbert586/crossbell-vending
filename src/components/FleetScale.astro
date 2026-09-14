@@ -1,0 +1,68 @@
+---
+// Every unit in the fleet, drawn on one baseline at true relative scale, with a
+// 5'8" person for reference. The point of the graphic is the comparison — a
+// Compact really is that much smaller than a Double.
+import { cabinetMarkup } from "../lib/cabinet";
+import { machines, tallest } from "../data/machines";
+
+const GAP = 46;
+const PERSON_H = 68 * 10;
+const PERSON_W = 150;
+const LABEL_H = 118;
+
+const top = tallest * 10;
+let cursor = PERSON_W + GAP;
+const placed = machines.map((m) => {
+  const x = cursor;
+  cursor += m.width * 10 + GAP;
+  return { m, x };
+});
+const totalW = cursor - GAP;
+const totalH = top + LABEL_H;
+
+// Person: a plain silhouette, sized off the same inch scale as the cabinets.
+const feetOf = (inches: number) => `${Math.floor(inches / 12)}′${Math.round(inches % 12)}″`;
+---
+
+<figure class="not-prose">
+  <div class="overflow-x-auto border border-line bg-white">
+    <svg
+      viewBox={`0 0 ${totalW} ${totalH}`}
+      class="block h-auto w-full min-w-[680px]"
+      role="img"
+      aria-label={`The five machines drawn to scale side by side next to a five-foot-eight person: ${machines.map((m) => `${m.name}, ${feetOf(m.height)} tall`).join("; ")}.`}
+    >
+      <!-- Floor line -->
+      <line x1="0" y1={top} x2={totalW} y2={top} stroke="#cfd0e4" stroke-width="3" />
+
+      <g transform={`translate(0, ${top - PERSON_H})`} fill="#2a2a5c" opacity="0.32">
+        <circle cx={PERSON_W / 2} cy="56" r="46" />
+        <rect x={PERSON_W / 2 - 52} y="118" width="104" height="222" rx="34" />
+        <rect x={PERSON_W / 2 - 44} y="316" width="38" height={PERSON_H - 316} rx="18" />
+        <rect x={PERSON_W / 2 + 6} y="316" width="38" height={PERSON_H - 316} rx="18" />
+      </g>
+      <text x={PERSON_W / 2} y={top + 40} text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="30" font-weight="600" fill="#4f5168">
+        5′8″
+      </text>
+      <text x={PERSON_W / 2} y={top + 78} text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="27" fill="#4f5168">
+        person
+      </text>
+
+      {placed.map(({ m, x }) => (
+        <Fragment>
+          <g transform={`translate(${x}, ${top - m.height * 10})`} set:html={cabinetMarkup(m)} />
+          <text x={x + (m.width * 10) / 2} y={top + 40} text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="30" font-weight="600" fill="#141420">
+            {feetOf(m.height)}
+          </text>
+          <text x={x + (m.width * 10) / 2} y={top + 78} text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="27" fill="#4f5168">
+            {m.name.replace(/^The /, "")}
+          </text>
+        </Fragment>
+      ))}
+    </svg>
+  </div>
+  <figcaption class="mt-3 text-sm text-muted">
+    Drawn to scale from the cabinet dimensions below. Allow a few inches of clearance for the
+    door to swing.
+  </figcaption>
+</figure>

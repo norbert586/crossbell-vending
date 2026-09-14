@@ -109,6 +109,12 @@ h3 {
 .faq-item[open] .faq-chevron {
   transform: rotate(45deg);
 }
+.faq-body a {
+  color: var(--color-ink);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
 
 /* Product carousel: keep native scrolling, hide the scrollbar track */
 .carousel {

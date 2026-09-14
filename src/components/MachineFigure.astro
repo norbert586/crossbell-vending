@@ -1,0 +1,22 @@
+---
+import { cabinetMarkup } from "../lib/cabinet";
+import type { Machine } from "../data/machines";
+
+interface Props {
+  machine: Machine;
+  class?: string;
+}
+const { machine, class: className = "" } = Astro.props;
+
+const feet = Math.floor(machine.height / 12);
+const inches = Math.round(machine.height % 12);
+const label = `Line drawing of the ${machine.name}: a ${machine.doors === 2 ? "double" : "single"}-door glass-front cooler, ${feet} foot ${inches} inches tall, with ${machine.shelves} stocked shelves.`;
+---
+
+<svg
+  viewBox={`0 0 ${machine.width * 10} ${machine.height * 10}`}
+  class={className}
+  role="img"
+  aria-label={label}
+  set:html={cabinetMarkup(machine)}
+/>

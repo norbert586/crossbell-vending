@@ -3,6 +3,9 @@ import { Image } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
 import FaqItem from "../components/FaqItem.astro";
 import ContactSection from "../components/ContactSection.astro";
+import MachineFigure from "../components/MachineFigure.astro";
+import ServiceAreaMap from "../components/ServiceAreaMap.astro";
+import { machines } from "../data/machines";
 import { site } from "../data/site";
 import heroCooler from "../assets/photos/02-machine.jpg";
 import machine from "../assets/photos/01-machine.jpg";
@@ -15,7 +18,7 @@ import imgPremium from "../assets/photos/09-premiumluxury.png";
 
 const title = "Vending Machine Services Macomb County | Crossbell Vending";
 const description =
-  "AI-powered smart coolers for break rooms, gyms, auto shops, offices, and light industrial sites across Macomb and north Oakland County. $0 to your business — we wheel it in, stock it, and keep it running.";
+  "AI-powered smart coolers for break rooms, gyms, auto shops, offices, and light industrial sites across Macomb and north Oakland County. Free to your business — we wheel it in, stock it, and keep it running.";
 
 const placements = [
   { label: "Break rooms", icon: "mug" },
@@ -60,7 +63,7 @@ const icons: Record<(typeof placements)[number]["icon"] | "plus", string> = {
           Macomb &amp; north Oakland County, Michigan
         </p>
         <h1 class="mt-4 text-[clamp(2.6rem,5.6vw,4.4rem)] font-bold leading-[1.02] text-white">
-          A stocked smart cooler at your location. <span class="text-accent">Your cost: $0.</span>
+          A stocked smart cooler at your location. <span class="text-accent">Your cost: FREE.</span>
         </h1>
         <p class="mt-5 max-w-[46ch] text-lg text-lavender">
           We wheel it in, fill it, and keep it running. Your people get cold drinks and snacks
@@ -103,8 +106,8 @@ const icons: Record<(typeof placements)[number]["icon"] | "plus", string> = {
   <section class="bg-accent text-ink" aria-label="At a glance">
     <div class="mx-auto grid max-w-[1120px] divide-y divide-ink/20 px-5 sm:grid-cols-3 sm:divide-x sm:divide-y-0 sm:px-8">
       <div class="py-6 sm:pr-8">
-        <div class="font-display text-4xl font-bold leading-none">$0</div>
-        <p class="mt-2 text-sm font-medium">Machine, product, service, and electricity — all on us.</p>
+        <div class="font-display text-4xl font-bold leading-none">FREE</div>
+        <p class="mt-2 text-sm font-medium">Machine, product, delivery, and service — all on us.</p>
       </div>
       <div class="py-6 sm:px-8">
         <div class="font-display text-4xl font-bold leading-none">Same day</div>
@@ -136,8 +139,8 @@ const icons: Record<(typeof placements)[number]["icon"] | "plus", string> = {
           <div class="font-mono text-sm font-semibold text-accent-dim">STEP 2</div>
           <h3 class="mt-2 text-xl font-semibold">We wheel it in and stock it.</h3>
           <p class="mt-2 text-[0.98rem] text-muted">
-            We deliver the cooler, set it up, and fill it. You provide a standard outlet — we
-            even cover the electricity.
+            We deliver the cooler, set it up, and fill it. All we need from you is a standard
+            wall outlet.
           </p>
         </li>
         <li class="border-t-[3px] border-ink pt-4">
@@ -157,10 +160,10 @@ const icons: Record<(typeof placements)[number]["icon"] | "plus", string> = {
       <div class="grid gap-10 md:grid-cols-[1fr_1fr] md:items-center">
         <div>
           <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent uppercase">What it costs you</p>
-          <div class="mt-3 font-display text-[clamp(5rem,12vw,8.5rem)] font-bold leading-none text-accent">$0</div>
+          <div class="mt-3 font-display text-[clamp(5rem,12vw,8.5rem)] font-bold leading-none text-accent">FREE</div>
           <p class="mt-5 max-w-[50ch] text-[1.05rem] text-lavender">
-            We wheel in the machine, stock it, service it, and cover the electricity it uses.
-            Nothing is billed to your business.
+            We buy the machine, wheel it in, stock it, and service it. Nothing is billed to your
+            business — there is no invoice, because there is no account.
           </p>
           <p class="mt-3.5 max-w-[50ch] text-[1.05rem] text-lavender">
             The cooler is a free amenity for the people at your site. We earn on what sells, so
@@ -171,31 +174,33 @@ const icons: Record<(typeof placements)[number]["icon"] | "plus", string> = {
           <ul class="flex flex-col gap-3.5">
             <li class="flex justify-between gap-4">
               <span class="text-paper">The machine</span>
-              <strong class="flex-none font-mono text-accent">$0.00</strong>
+              <strong class="flex-none font-mono text-accent">FREE</strong>
             </li>
             <li class="flex justify-between gap-4">
               <span class="text-paper">Delivery and setup</span>
-              <strong class="flex-none font-mono text-accent">$0.00</strong>
+              <strong class="flex-none font-mono text-accent">FREE</strong>
             </li>
             <li class="flex justify-between gap-4">
               <span class="text-paper">Product and restocking</span>
-              <strong class="flex-none font-mono text-accent">$0.00</strong>
+              <strong class="flex-none font-mono text-accent">FREE</strong>
             </li>
             <li class="flex justify-between gap-4">
               <span class="text-paper">Service and repairs</span>
-              <strong class="flex-none font-mono text-accent">$0.00</strong>
+              <strong class="flex-none font-mono text-accent">FREE</strong>
             </li>
             <li class="flex justify-between gap-4">
-              <span class="text-paper">Electricity</span>
-              <strong class="flex-none font-mono text-accent">$0.00</strong>
+              <span class="text-paper">Refunds and support</span>
+              <strong class="flex-none font-mono text-accent">FREE</strong>
             </li>
             <li class="flex justify-between gap-4 border-t border-indigo-2 pt-3.5">
               <span class="font-semibold text-paper">Your cost</span>
-              <strong class="flex-none font-mono text-lg text-accent">$0.00</strong>
+              <strong class="flex-none font-mono text-lg text-accent">FREE</strong>
             </li>
           </ul>
           <p class="mt-5 border-t border-indigo-2 pt-4 text-sm text-lavender">
-            One offer, no tiers. All we need from you is a spot and an outlet.
+            One offer, no tiers. All we ask for is a spot and a standard outlet — the cooler
+            draws about as much power as a household fridge. On larger units and busier sites
+            we'll credit that back to you; just ask.
           </p>
         </div>
       </div>
@@ -235,15 +240,56 @@ const icons: Record<(typeof placements)[number]["icon"] | "plus", string> = {
             </div>
             <div>
               <dt class="font-mono text-xs font-semibold tracking-[0.14em] text-accent-dim uppercase">Power</dt>
-              <dd class="mt-1 text-[0.98rem]">One standard wall outlet. The electricity is on us.</dd>
+              <dd class="mt-1 text-[0.98rem]">One standard wall outlet, about 2 kWh a day — on par with a household fridge.</dd>
             </div>
             <div>
               <dt class="font-mono text-xs font-semibold tracking-[0.14em] text-accent-dim uppercase">Monitoring</dt>
               <dd class="mt-1 text-[0.98rem]">Inventory reports to us remotely, so low items get restocked early.</dd>
             </div>
           </dl>
+          <p class="mt-6 text-[0.98rem] text-muted">
+            That's the unit we place most often. It isn't the only one we own.
+          </p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- The fleet -->
+  <section id="fleet" class="scroll-mt-20 bg-indigo py-14 text-paper sm:py-20">
+    <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
+      <div class="mb-10 flex flex-wrap items-end justify-between gap-6">
+        <div class="max-w-[54ch]">
+          <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent uppercase">The fleet</p>
+          <h2 class="mt-2 text-[clamp(1.9rem,3.4vw,2.6rem)] font-semibold text-white">
+            Five machines, so your site isn't stuck with the one we happen to own.
+          </h2>
+          <p class="mt-4 text-[1.05rem] text-lavender">
+            A compact that fits a break room with no spare wall, a double-door unit for a plant
+            that empties a single cabinet by Wednesday, and a true freezer for sites that want
+            lunch on hand. Drawn to scale below.
+          </p>
+        </div>
+        <a
+          href="/machines/"
+          class="inline-flex items-center rounded-[3px] bg-accent px-6 py-3.5 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover"
+        >
+          See the fleet and specs
+        </a>
+      </div>
+      <ul class="grid grid-cols-2 gap-px border border-indigo-2 bg-indigo-2 sm:grid-cols-3 lg:grid-cols-5">
+        {machines.map((m) => (
+          <li class="bg-indigo">
+            <a href={`/machines/#${m.slug}`} class="flex h-full flex-col items-center gap-3 p-5 text-center transition-colors hover:bg-[#1f1f4a]">
+              <span class="flex h-[150px] items-end">
+                <MachineFigure machine={m} class="h-full w-auto" />
+              </span>
+              <span class="text-base font-semibold text-white">{m.name}</span>
+              <span class="font-mono text-[0.7rem] tracking-[0.1em] text-accent uppercase">{m.capacity}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
     </div>
   </section>
 
@@ -392,20 +438,57 @@ const icons: Record<(typeof placements)[number]["icon"] | "plus", string> = {
   <!-- Service area -->
   <section id="area" class="scroll-mt-20 bg-lavender-tint py-14 sm:py-20">
     <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
-      <div class="grid gap-10 md:grid-cols-[1fr_1.2fr] md:items-start">
-        <div>
-          <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent-dim uppercase">Service area</p>
-          <h2 class="mt-2 text-[clamp(1.9rem,3.4vw,2.6rem)] font-semibold">Macomb and north Oakland County.</h2>
-          <p class="mt-4 max-w-[46ch] text-muted">
-            We run a weekly route through these communities {site.serviceAreaNote}. Not on the
-            list? Ask — the route grows with every placement.
+      <div class="mb-10 max-w-[56ch]">
+        <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent-dim uppercase">Service area</p>
+        <h2 class="mt-2 text-[clamp(1.9rem,3.4vw,2.6rem)] font-semibold">
+          We're from here. That's the whole pitch.
+        </h2>
+        <p class="mt-4 text-muted">
+          Crossbell is a small Macomb County business, not a regional branch of something
+          headquartered three states away. The person who answers the phone is the person who
+          drives the route — which is why a machine of ours doesn't sit empty for a month.
+        </p>
+      </div>
+
+      <ServiceAreaMap>
+        <div class="border border-line bg-white p-5">
+          <h3 class="text-xl font-semibold">On the weekly route</h3>
+          <ul class="mt-4 flex flex-col gap-px bg-line">
+            {site.serviceArea.map((city) => (
+              <li class="bg-white py-2 text-sm font-semibold">{city.name}</li>
+            ))}
+          </ul>
+          <p class="mt-4 border-t border-line pt-4 text-sm text-muted">
+            And the surrounding Macomb and Oakland County communities. Not on the list? Ask —
+            the route grows with every placement, and one more stop down the road is an easy yes.
           </p>
         </div>
-        <ul class="grid grid-cols-2 gap-px border border-line bg-line sm:grid-cols-3">
-          {site.serviceArea.map((city) => (
-            <li class="bg-white px-4 py-3.5 text-sm font-semibold">{city}</li>
-          ))}
-        </ul>
+      </ServiceAreaMap>
+
+      <div class="mt-10 grid gap-8 border-t border-line pt-8 md:grid-cols-2">
+        <div>
+          <h3 class="text-xl font-semibold">Already have a machine nobody refills?</h3>
+          <p class="mt-3 max-w-[48ch] text-muted">
+            Half-empty shelves, a warm cooler, a card reader that's been down for weeks — that's
+            what happens when the operator is two counties away and your site is the last stop on
+            a long list. Tell us who services it and when they last showed up — switching operators is
+            usually simpler than people expect, and we'll walk you through it.
+          </p>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold">We'll ask your people what they want</h3>
+          <p class="mt-3 max-w-[48ch] text-muted">
+            Being local means we can actually walk the floor and talk to your staff, and there's a
+            QR code on every door for requests. If three people ask for the same thing, it's in
+            the cooler on the next visit — not in a ticket queue at a regional office.
+          </p>
+          <a
+            href="#contact"
+            class="mt-5 inline-flex items-center rounded-[3px] bg-accent px-6 py-3.5 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover"
+          >
+            Check your address
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -420,14 +503,25 @@ const icons: Record<(typeof placements)[number]["icon"] | "plus", string> = {
       <div class="max-w-[72ch]">
         <FaqItem question="What does this cost us?" open>
           <p>
-            $0. We wheel in the machine and the product, handle restocking and service, and cover
-            the electricity. The cooler is a free amenity for your site — we earn on what sells.
+            Nothing — it's free. We buy the machine, wheel it in, stock it, and service it. The
+            cooler is a free amenity for your site, and we earn on what sells, so we have every
+            reason to keep it full of what people actually want.
+          </p>
+        </FaqItem>
+        <FaqItem question="Who pays for the electricity?">
+          <p>
+            The cooler plugs into one of your standard outlets and draws about 2 kWh a day — the
+            same ballpark as the refrigerator in your break room, and roughly $12 a month at
+            Michigan commercial rates. On a larger unit or a high-traffic site we'll credit the
+            power back to you; ask us and we'll write it into the agreement.
           </p>
         </FaqItem>
         <FaqItem question="How big is the machine?">
           <p>
-            22.8" wide, 26" deep, and 76" tall — about the footprint of a household refrigerator.
-            It needs a standard wall outlet nearby and a little clearance for the door to swing.
+            Our most-placed unit is 22.8" wide, 26" deep, and 76" tall — about the footprint of a
+            household refrigerator. It needs a standard wall outlet nearby and a little clearance
+            for the door to swing. We run five sizes in total; see
+            <a href="/machines/">the full fleet</a> for dimensions on each.
           </p>
         </FaqItem>
         <FaqItem question="What if something goes wrong with it?">
