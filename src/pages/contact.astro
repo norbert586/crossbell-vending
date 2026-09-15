@@ -32,7 +32,7 @@ const description =
         <div>
           <h2 class="text-sm font-semibold text-muted">Service area</h2>
           <p class="mt-1 text-[0.95rem]">
-            {site.serviceArea.join(", ")}, {site.serviceAreaNote}.
+            {site.serviceArea.map((c) => c.name).join(", ")}, {site.serviceAreaNote}.
           </p>
         </div>
       </div>

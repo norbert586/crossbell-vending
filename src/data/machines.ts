@@ -185,7 +185,7 @@ export const machineWidthRange = {
 
 /** Shared across every machine; lives here so it is written once. */
 export const machineCommon = {
-  power: "One standard wall outlet. The electricity is on us.",
+  power: "One standard wall outlet, drawing about what a household fridge does.",
   payment: "Tap, swipe, Apple Pay, Google Pay.",
   madeBy: "HAHA Vending",
 };

@@ -5,7 +5,7 @@ import { machines, machineTypes } from "../data/machines";
 
 const title = "Smart Vending Machines — The Lineup | Crossbell Vending";
 const description =
-  "Six sizes of AI-powered smart cooler, from a single-door unit the size of a household fridge to a double-door cooler and a freezer. Every one is $0 to your business.";
+  "Six sizes of AI-powered smart cooler, from a single-door unit the size of a household fridge to a double-door cooler and a freezer. Every one is free to your business.";
 
 const sections = machineTypes
   .map((t) => ({ ...t, machines: machines.filter((m) => m.type === t.id) }))
@@ -18,12 +18,12 @@ const sections = machineTypes
     <div class="mx-auto max-w-[1120px] px-5 py-14 sm:px-8 sm:py-20">
       <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent uppercase">The lineup</p>
       <h1 class="mt-3 text-[clamp(2.4rem,5vw,4rem)] font-bold leading-[1.02] text-white">
-        Six sizes. <span class="text-accent">Same $0.</span>
+        Six sizes. <span class="text-accent">All free.</span>
       </h1>
       <p class="mt-5 max-w-[52ch] text-lg text-lavender">
-        Every machine in the line comes on the same terms: $0 for the machine, delivery, product,
-        service, and electricity. The only thing that changes is how much it holds and how much
-        floor it takes.
+        Every machine in the line comes on the same terms: the machine, delivery, product, and
+        service are free. The only thing that changes is how much it holds and how much floor it
+        takes.
       </p>
       <nav aria-label="Machine types" class="mt-8">
         <ul class="flex flex-wrap gap-2.5">
