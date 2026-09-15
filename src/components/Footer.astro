@@ -41,7 +41,7 @@ const year = new Date().getFullYear();
     <div>
       <h2 class="mb-3 font-body text-base font-semibold text-white">Service area</h2>
       <ul class="columns-2 gap-4 text-sm leading-relaxed">
-        {site.serviceArea.map((city) => <li>{city}</li>)}
+        {site.serviceArea.map((city) => <li>{city.name}</li>)}
       </ul>
       <p class="mt-2 text-xs text-[#9EA2D6]">{site.serviceAreaNote}</p>
     </div>

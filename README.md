@@ -17,9 +17,16 @@ Requires Node 22+.
 ## Changing the phone number, email, or service area
 
 Everything site-wide reads from **`src/data/site.ts`**. Edit the values there — phone, email,
-service-area cities, business hours, location types in the contact form dropdown — and every
-page updates. You should not need to touch phone numbers or city names anywhere else in the
+service-area towns, business hours, location types in the contact form dropdown — and every
+page updates. You should not need to touch phone numbers or town names anywhere else in the
 codebase.
+
+Each `serviceArea` entry carries a `name` plus a `lat`/`lon`. The name is what every page
+prints; the coordinates place the town's dot on the service-area map
+(`src/components/ServiceAreaMap.astro`), which projects real longitude and latitude at build
+time. Adding a town with coordinates puts it on the map automatically. If two labels end up
+overlapping, nudge them with the `labelAt` table at the top of that component — that table is
+the only hand-tuned part of the map.
 
 **TODO before launch:** the site currently uses `crossbellvending@gmail.com`. A domain address
 (e.g. `info@crossbellvending.com`) reads as more established — set one up and swap it into
@@ -159,7 +166,7 @@ instead of pushing straight to `main`.
 ## Email pamphlet
 
 [`email/follow-up-pamphlet.html`](email/) is a short follow-up email to send after a walkthrough
-or a call: the $0 itemized, a look at the machine and what goes in it, and two ways to reply.
+or a call: the free offer itemized, a look at the machine and what goes in it, and two ways to reply.
 Open it in a browser, select all, copy, paste into a Gmail compose window, fill in the bracketed
 placeholders, send.
 
@@ -176,7 +183,7 @@ Two things to know before the first send, both covered in [`email/README.md`](em
   a commercial email requires one under CAN-SPAM.
 
 Copy in the pamphlet is duplicated from `src/pages/index.astro`, not imported from
-`src/data/site.ts` — an email has no build step. Change a claim on the site (the $0 offer, the
+`src/data/site.ts` — an email has no build step. Change a claim on the site (the free offer, the
 48-hour replacement, the 90-day terms) and change it in the pamphlet too.
 
 ## QR codes and traffic attribution

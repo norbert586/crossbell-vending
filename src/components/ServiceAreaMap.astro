@@ -1,0 +1,212 @@
+---
+// Locator map for the service area: a Michigan inset with our corner boxed,
+// and the two counties we run, with every town from site.serviceArea plotted.
+//
+// Outlines are real longitude/latitude, projected at build time (equirectangular,
+// with longitude shortened by cos(latitude) so nothing looks stretched). To move
+// a town, edit its lat/lon in src/data/site.ts — the dot follows. Only the label
+// nudges below are hand-set, to keep names from colliding.
+import { site } from "../data/site";
+
+type Pt = readonly [number, number]; // [lon, lat]
+
+interface Projection {
+  lonMin: number;
+  latMax: number;
+  midLat: number;
+  scale: number; // pixels per degree of latitude
+  x0: number;
+  y0: number;
+}
+
+function projectWith(p: Projection) {
+  const cos = Math.cos((p.midLat * Math.PI) / 180);
+  return ([lon, lat]: Pt): [number, number] => [
+    Math.round((p.x0 + (lon - p.lonMin) * cos * p.scale) * 10) / 10,
+    Math.round((p.y0 + (p.latMax - lat) * p.scale) * 10) / 10,
+  ];
+}
+
+function path(points: readonly Pt[], project: (pt: Pt) => [number, number]): string {
+  return points.map((pt, i) => `${i === 0 ? "M" : "L"}${project(pt).join(" ")}`).join("") + "Z";
+}
+
+/* ---------------------------------------------------------------- inset --- */
+
+const state = projectWith({ lonMin: -90.42, latMax: 47.46, midLat: 44.6, scale: 16.06, x0: 8, y0: 38 });
+
+const lowerPeninsula: readonly Pt[] = [
+  [-86.82, 41.76], [-86.62, 42.0], [-86.48, 42.2], [-86.23, 42.42], [-86.21, 42.76],
+  [-86.26, 43.05], [-86.24, 43.32], [-86.43, 43.65], [-86.51, 44.05], [-86.44, 44.27],
+  [-86.26, 44.53], [-86.22, 44.76], [-86.06, 44.91], [-85.78, 45.02], [-85.6, 45.2],
+  [-85.55, 45.1], [-85.62, 44.9], [-85.62, 44.76], [-85.5, 44.8], [-85.48, 45.0],
+  [-85.4, 44.84], [-85.35, 44.74], [-85.28, 44.9], [-85.2, 45.1], [-85.35, 45.22],
+  [-85.15, 45.38], [-84.96, 45.37], [-84.78, 45.43], [-84.72, 45.65], [-84.75, 45.79],
+  [-84.45, 45.65], [-84.1, 45.5], [-83.9, 45.42], [-83.6, 45.4], [-83.42, 45.32],
+  [-83.3, 45.1], [-83.31, 44.95], [-83.45, 44.88], [-83.38, 44.7], [-83.32, 44.44],
+  [-83.42, 44.25], [-83.55, 44.05], [-83.68, 44.05], [-83.9, 43.9], [-83.94, 43.68],
+  [-83.85, 43.6], [-83.62, 43.72], [-83.35, 43.87], [-83.1, 43.96], [-82.99, 44.07],
+  [-82.77, 44.02], [-82.62, 43.85], [-82.53, 43.56], [-82.47, 43.25], [-82.42, 43.0],
+  [-82.48, 42.78], [-82.54, 42.62], [-82.78, 42.58], [-82.9, 42.45], [-83.0, 42.35],
+  [-83.13, 42.27], [-83.18, 42.05], [-83.44, 41.73], [-84.8, 41.76],
+];
+
+const upperPeninsula: readonly Pt[] = [
+  [-90.42, 46.57], [-89.9, 46.82], [-89.25, 46.85], [-88.9, 46.84], [-88.5, 47.0],
+  [-88.42, 47.25], [-88.15, 47.46], [-87.98, 47.38], [-88.2, 47.1], [-88.3, 46.9],
+  [-87.7, 46.85], [-87.38, 46.58], [-86.95, 46.5], [-86.5, 46.7], [-85.87, 46.68],
+  [-85.02, 46.76], [-84.96, 46.47], [-84.55, 46.46], [-84.12, 46.25], [-84.34, 45.98],
+  [-84.72, 45.85], [-85.05, 46.0], [-85.6, 46.05], [-86.0, 45.95], [-86.4, 45.95],
+  [-86.75, 45.75], [-87.0, 45.75], [-87.1, 45.55], [-87.35, 45.45], [-87.62, 45.35],
+  [-87.8, 45.75], [-88.1, 46.0], [-88.7, 46.02], [-89.6, 46.3], [-90.12, 46.35],
+];
+
+// Box drawn on the inset around the two counties below.
+const [insetX1, insetY1] = state([-83.7, 42.888]);
+const [insetX2, insetY2] = state([-82.72, 42.4355]);
+
+/* ----------------------------------------------------------- county map --- */
+
+const map = projectWith({ lonMin: -83.7, latMax: 42.888, midLat: 42.66, scale: 555, x0: 112, y0: 30 });
+
+// Oakland is a plain rectangle of survey townships — no natural borders at all.
+const oakland: readonly Pt[] = [
+  [-83.7, 42.888], [-83.103, 42.888], [-83.103, 42.4355], [-83.7, 42.4355],
+];
+
+// Macomb shares Oakland's north and south lines; Lake St. Clair takes the
+// southeast corner, from Anchor Bay down to the Wayne County line.
+const shoreline: readonly Pt[] = [
+  [-82.75, 42.735], [-82.72, 42.69], [-82.79, 42.645], [-82.8, 42.585],
+  [-82.845, 42.552], [-82.872, 42.505], [-82.886, 42.4355],
+];
+const macomb: readonly Pt[] = [
+  [-83.103, 42.888], [-82.75, 42.888], ...shoreline, [-83.103, 42.4355],
+];
+const lake: readonly Pt[] = [
+  ...shoreline.slice(1), // from New Baltimore south; the segment above it is a land border
+  [-82.6, 42.4355], [-82.55, 42.52], [-82.56, 42.61], [-82.61, 42.665], [-82.68, 42.7],
+];
+
+// Label nudges, in map pixels, keyed by the town name in site.ts. Anything
+// without an entry falls back to a label set to the right of its dot.
+const labelAt: Record<string, { anchor: "start" | "end"; dx: number; dy: number }> = {
+  "Romeo / Bruce": { anchor: "start", dx: 9, dy: 4 },
+  "Washington Township": { anchor: "start", dx: 9, dy: 4 },
+  Rochester: { anchor: "end", dx: -9, dy: -2 },
+  "Rochester Hills": { anchor: "end", dx: -9, dy: 5 },
+  "Shelby Township": { anchor: "start", dx: 9, dy: -8 },
+  "Macomb Township": { anchor: "start", dx: 9, dy: 14 },
+  Utica: { anchor: "start", dx: 9, dy: 4 },
+  "Clinton Township": { anchor: "start", dx: 9, dy: 4 },
+  "Sterling Heights": { anchor: "end", dx: -9, dy: 4 },
+};
+const fallbackLabel = { anchor: "start", dx: 9, dy: 4 } as const;
+
+const towns = site.serviceArea.map((town) => {
+  const [x, y] = map([town.lon, town.lat]);
+  return { ...town, x, y, ...(labelAt[town.name] ?? fallbackLabel) };
+});
+
+const caption = `Map of ${site.serviceArea.map((t) => t.name).join(", ")} — the Macomb and north Oakland County towns on our weekly route.`;
+---
+
+<figure class="border border-line bg-white p-3 sm:p-4">
+  <svg viewBox="0 0 596 310" role="img" aria-label={caption} class="w-full">
+    <!-- Surrounding land, so the counties read as a crop of a real map -->
+    <rect x="108" y="20" width="488" height="268" fill="#eceef8"></rect>
+    <path d={path(lake, map)} fill="#c3cbe8"></path>
+
+    <!-- Michigan locator -->
+    <g fill="#d6d9ee" stroke="#8b8fb8" stroke-width="1" stroke-linejoin="round">
+      <path d={path(lowerPeninsula, state)}></path>
+      <path d={path(upperPeninsula, state)}></path>
+    </g>
+    <rect
+      x={insetX1 - 2.5}
+      y={insetY1 - 3}
+      width={insetX2 - insetX1 + 5}
+      height={insetY2 - insetY1 + 6}
+      fill="none"
+      stroke="#c49350"
+      stroke-width="1.8"></rect>
+    <text x="54" y="148" text-anchor="middle" class="map-inset-label font-mono" font-weight="600" letter-spacing="1.4" fill="#4f5168">MICHIGAN</text>
+    <text x="54" y="161" text-anchor="middle" class="map-inset-label font-mono" font-weight="700" letter-spacing="1.4" fill="#96692f">OUR CORNER</text>
+
+    <!-- The two counties -->
+    <g stroke="#2a2a5c" stroke-width="1.6" stroke-linejoin="round">
+      <path d={path(oakland, map)} fill="#f6f7ff"></path>
+      <path d={path(macomb, map)} fill="#e6e8ff"></path>
+    </g>
+    <g class="map-label font-mono" font-weight="600" letter-spacing="1.2" fill="#2a2a5c" fill-opacity="0.55" text-anchor="middle">
+      <text x="205" y="108">OAKLAND CO.</text>
+      <text x="428" y="50">MACOMB CO.</text>
+    </g>
+    <text
+      x="578"
+      y="248"
+      text-anchor="end"
+      class="map-label"
+      font-style="italic"
+      fill="#4f5168"
+      stroke="#c3cbe8"
+      stroke-width="3"
+      stroke-linejoin="round"
+      paint-order="stroke fill">Lake St. Clair</text>
+
+    <!-- Towns on the route -->
+    <g class="map-town-labels" font-size="10.5" font-weight="600" fill="#141420" stroke="#ffffff" stroke-width="3.2" stroke-linejoin="round" paint-order="stroke fill">
+      {towns.map((t) => (
+        <text x={t.x + t.dx} y={t.y + t.dy} text-anchor={t.anchor}>{t.name}</text>
+      ))}
+    </g>
+    <g>
+      {towns.map((t) => (
+        <circle cx={t.x} cy={t.y} r="4.2" fill="#c49350" stroke="#141420" stroke-width="1.2"></circle>
+      ))}
+    </g>
+
+    <!-- Legend -->
+    <g>
+      <circle cx="116" cy="300" r="4.2" fill="#c49350" stroke="#141420" stroke-width="1.2"></circle>
+      <text x="127" y="304" class="map-label" fill="#4f5168">On our weekly route</text>
+    </g>
+  </svg>
+</figure>
+
+<style>
+  /* SVG font sizes are viewBox units, so they shrink with the figure. The
+     figure is narrow both on phones and in the two-column desktop layout, so
+     size the type against the figure itself rather than the viewport. Below
+     roughly 480px the town names are too small to read at any size that still
+     fits between the dots, so they drop out — the town list sits directly
+     under the map and carries every name. */
+  figure {
+    container-type: inline-size;
+  }
+  .map-label {
+    font-size: 10.5px;
+  }
+  .map-inset-label {
+    font-size: 9.5px;
+  }
+  @container (max-width: 480px) {
+    .map-town-labels {
+      display: none;
+    }
+    .map-label {
+      font-size: 15px;
+    }
+    .map-inset-label {
+      font-size: 12px;
+    }
+  }
+  @container (max-width: 380px) {
+    .map-label {
+      font-size: 19px;
+    }
+    .map-inset-label {
+      font-size: 15px;
+    }
+  }
+</style>

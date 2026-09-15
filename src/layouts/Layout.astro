@@ -24,7 +24,7 @@ const localBusinessSchema = {
   url: site.url,
   // "Romeo / Bruce" is one row on the site but two municipalities to Google.
   areaServed: site.serviceArea
-    .flatMap((entry) => entry.split("/").map((c) => c.trim()))
+    .flatMap((entry) => entry.name.split("/").map((c) => c.trim()))
     .map((city) => ({ "@type": "City", name: `${city}, MI` })),
   openingHoursSpecification: {
     "@type": "OpeningHoursSpecification",

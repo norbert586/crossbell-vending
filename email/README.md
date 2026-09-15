@@ -59,7 +59,7 @@ it, and leave the line in.
 ## Keep it short
 
 The length is the feature. A prospect decides in the first screen whether this is worth reading,
-and everything past the second screen is read by nobody. What earned its place: the `$0` itemized,
+and everything past the second screen is read by nobody. What earned its place: the free offer itemized,
 one photo of an installed cooler, the size and payment specs, three product shots, the service
 promises, and two ways to reply.
 
@@ -108,7 +108,7 @@ dropped or ignored by a client that matters, and Gmail specifically discards `<s
 is pasted into a compose window.
 
 Colors and copy are lifted from the site (`src/styles/global.css` and `src/pages/index.astro`).
-Change a claim on the site — the $0 offer, the 48-hour replacement, the 90-day terms — and change
+Change a claim on the site — the free offer, the 48-hour replacement, the 90-day terms — and change
 it here too; this file does not read from `src/data/site.ts`.
 
 To preview a change, reopen the file in a browser. To see it the way a recipient will, paste it
