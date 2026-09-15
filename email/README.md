@@ -60,8 +60,8 @@ it, and leave the line in.
 
 The length is the feature. A prospect decides in the first screen whether this is worth reading,
 and everything past the second screen is read by nobody. What earned its place: the free offer itemized,
-one photo of an installed cooler, the size and payment specs, three product shots, the service
-promises, and two ways to reply.
+one photo of an installed cooler, the size and payment specs, a card pointing at the machine
+lineup, three product shots, the service promises, and two ways to reply.
 
 Everything else — how it works step by step, the full product range, placement types, the FAQ, the
 service-area list — is on the site, one tap away through the buttons. Add a section back here and
@@ -72,7 +72,9 @@ display limit. That is a signal it is too long, not a formatting bug.
 
 ## Attribution
 
-Links in the pamphlet carry `?utm_source=email&utm_medium=pamphlet&utm_campaign=followup`, so a
+The pamphlet links out three times: **See the full lineup** to `/machines/`, **Pick a time** to
+`/contact/`, and the domain in the footer to the home page. All three carry
+`?utm_source=email&utm_medium=pamphlet&utm_campaign=followup`, so a
 form submission that starts from this email arrives labelled `email / pamphlet / followup` in
 Netlify Forms. (`src/components/Attribution.astro` carries the tags from the landing page through
 to the submission.) Change `utm_campaign` per push — `followup`, `springroute`, `chamber` — if you
@@ -107,9 +109,23 @@ block, no flexbox or grid, no background images, no web fonts, no JavaScript —
 dropped or ignored by a client that matters, and Gmail specifically discards `<style>` when HTML
 is pasted into a compose window.
 
+Three rules are worth keeping when you edit:
+
+- **Body copy is 16px and high-contrast.** Every pairing in the file clears 5:1 — ink `#141420` on
+  light, `#e6e8ff` on indigo, near-black on the gold band. The site's lighter tones (`#cdd1ff` on
+  indigo, `#4f5168` on lavender) look right on a backlit web page and go thin in a mail client, so
+  they are used for fine print only. If you add a section, pick from the pairings already here.
+- **Every colored band sets `background-color` and `color` on the same cell.** That is what stops a
+  dark-mode client from repainting one and leaving the other, which is how gold bands end up with
+  white text on them.
+- **Buttons stack, one fixed-width table each.** Two buttons side by side in one row get stretched
+  by Gmail into a full-width cell and the label wraps a word per line. `width="240"` on the table,
+  `display:block` on the `<a>`, `white-space:nowrap` on the label.
+
 Colors and copy are lifted from the site (`src/styles/global.css` and `src/pages/index.astro`).
 Change a claim on the site — the free offer, the 48-hour replacement, the 90-day terms — and change
-it here too; this file does not read from `src/data/site.ts`.
+it here too; this file does not read from `src/data/site.ts`. The lineup card says **six sizes**;
+if `src/data/machines.ts` grows or shrinks, fix that number here by hand.
 
 To preview a change, reopen the file in a browser. To see it the way a recipient will, paste it
 into a Gmail draft and send it to yourself.
