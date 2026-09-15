@@ -87,6 +87,24 @@
         setField(forms[i], "landing_page", attr.landing);
       }
 
+      // "Ask about the Pro 542" on /machines/ links here with ?machine=pro-542.
+      // Stamp the slug onto the inquiry form and, if the message box is still
+      // empty, say so in plain words so the visitor can see it carried over.
+      var machine = clean(params.get("machine"));
+      if (machine) {
+        var machineField = document.querySelector('form[name="business-inquiry"] input[name="machine"]');
+        if (machineField) machineField.value = machine;
+        var message = document.getElementById("message");
+        if (message && !message.value) {
+          message.value =
+            "Interested in the " +
+            machine.replace(/-/g, " ").replace(/\b\w/g, function (c) {
+              return c.toUpperCase();
+            }) +
+            ".";
+        }
+      }
+
       // Any cooler scan opens the feedback panel: that person is standing at
       // the machine, not reading the sales pitch. Keyed off the params of THIS
       // page load rather than stored attribution, so it fires only on the

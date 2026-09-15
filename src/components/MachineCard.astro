@@ -1,0 +1,154 @@
+---
+// One machine in the lineup grid. Built on native <details> like the FAQ, so
+// the card opens and closes without JavaScript, on the keyboard, and in a
+// screen reader; the page script only adds motion on top. `name="machine"`
+// makes the set an exclusive accordion — opening one closes the others — in
+// browsers that support it, and is harmlessly ignored in the rest.
+//
+// Collapsed: the <summary> is the whole card face. Expanded: the summary
+// shrinks to a title bar and the panel below shows photos and the full spec
+// list. The grid rule that lets an open card span the row lives in
+// global.css (.machine-grid).
+import { Image } from "astro:assets";
+import { formatFootprint, machineCommon, type Machine } from "../data/machines";
+
+interface Props {
+  machine: Machine;
+  /** Section label shown as the card's eyebrow. */
+  typeLabel: string;
+  /** Lay the collapsed card out sideways across the full row. For sections with a single machine. */
+  wide?: boolean;
+}
+const { machine: m, typeLabel, wide = false } = Astro.props;
+const footprint = formatFootprint(m.footprint);
+const holds = `~${m.holds} drinks`;
+---
+
+<li class:list={["machine", { "machine--wide": wide }]}>
+  <details name="machine" id={m.slug} class="machine-details h-full scroll-mt-24 border border-line bg-white">
+    <!-- Photos are square with the machine centred in a wide white margin, so a
+         4:5 box with object-cover trims only white and shows the unit larger. -->
+    <summary class="machine-face cursor-pointer">
+      <span class="machine-face-media block aspect-[4/5] overflow-hidden border-line bg-white">
+        <Image
+          src={m.front}
+          alt={`${m.name} smart cooler, front view`}
+          widths={[320, 640, 800]}
+          sizes="(min-width: 1024px) 260px, (min-width: 640px) 45vw, 90vw"
+          class="h-full w-full object-cover"
+          loading="lazy"
+        />
+      </span>
+      <span class="machine-face-text block p-5">
+        <span class="machine-face-hide block font-mono text-[0.65rem] font-semibold tracking-[0.14em] text-accent-dim uppercase">
+          {typeLabel}
+        </span>
+        <span class="machine-face-title flex items-start justify-between gap-4">
+          <h3 class="text-2xl font-semibold">{m.name}</h3>
+          <span class="machine-face-toggle mt-1 flex-none font-mono text-xs font-semibold tracking-[0.1em] text-accent-dim uppercase" aria-hidden="true">
+            <span class="machine-face-toggle-open">Details +</span>
+            <span class="machine-face-toggle-close">Close ×</span>
+          </span>
+        </span>
+        <span class="machine-face-hide mt-1.5 block text-sm text-muted">{m.tagline}</span>
+        <dl class="machine-face-hide mt-4 grid gap-2.5 border-t border-line pt-4 text-sm">
+          <div class="flex justify-between gap-3">
+            <dt class="text-muted">Footprint</dt>
+            <dd class="text-right font-medium">{footprint}</dd>
+          </div>
+          <div class="flex justify-between gap-3">
+            <dt class="text-muted">Holds</dt>
+            <dd class="text-right font-medium">{holds}</dd>
+          </div>
+          <div class="flex justify-between gap-3">
+            <dt class="flex-none text-muted">Best for</dt>
+            <dd class="text-right font-medium">{m.bestFor}</dd>
+          </div>
+        </dl>
+      </span>
+    </summary>
+
+    <div class="machine-panel border-t border-line p-5 sm:p-8">
+      <div class="grid gap-8 md:grid-cols-2 md:gap-10">
+        <div class:list={["grid gap-3", m.angle ? "grid-cols-2" : "max-w-[340px] grid-cols-1"]}>
+          <div class="aspect-[4/5] overflow-hidden border border-line bg-white">
+            <Image
+              src={m.front}
+              alt={`${m.name}, front view`}
+              widths={[400, 800]}
+              sizes="(min-width: 768px) 260px, 45vw"
+              class="h-full w-full object-cover"
+              loading="lazy"
+            />
+          </div>
+          {m.angle && (
+            <div class="aspect-[4/5] overflow-hidden border border-line bg-white">
+              <Image
+                src={m.angle}
+                alt={`${m.name}, three-quarter view`}
+                widths={[400, 800]}
+                sizes="(min-width: 768px) 260px, 45vw"
+                class="h-full w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+          )}
+        </div>
+        <div>
+          <p class="max-w-[52ch] text-[1.02rem]">{m.blurb}</p>
+          <dl class="mt-6 grid gap-x-8 gap-y-4 border-t border-line pt-5 sm:grid-cols-2">
+            <div>
+              <dt class="font-mono text-xs font-semibold tracking-[0.14em] text-accent-dim uppercase">Footprint</dt>
+              <dd class="mt-1 text-[0.98rem]">{footprint}</dd>
+            </div>
+            <div>
+              <dt class="font-mono text-xs font-semibold tracking-[0.14em] text-accent-dim uppercase">Weight</dt>
+              <dd class="mt-1 text-[0.98rem]">{m.weightLb} lb</dd>
+            </div>
+            <div>
+              <dt class="font-mono text-xs font-semibold tracking-[0.14em] text-accent-dim uppercase">Shelves</dt>
+              <dd class="mt-1 text-[0.98rem]">{m.shelves}</dd>
+            </div>
+            <div>
+              <dt class="font-mono text-xs font-semibold tracking-[0.14em] text-accent-dim uppercase">Holds</dt>
+              <dd class="mt-1 text-[0.98rem]">About {m.holds} bottles and cans stocked with drinks only. Snacks and fresh food take more room per item.</dd>
+            </div>
+            <div>
+              <dt class="font-mono text-xs font-semibold tracking-[0.14em] text-accent-dim uppercase">Temperature</dt>
+              <dd class="mt-1 text-[0.98rem]">{m.temperature}</dd>
+            </div>
+            <div>
+              <dt class="font-mono text-xs font-semibold tracking-[0.14em] text-accent-dim uppercase">Door</dt>
+              <dd class="mt-1 text-[0.98rem]">{m.door}</dd>
+            </div>
+            <div>
+              <dt class="font-mono text-xs font-semibold tracking-[0.14em] text-accent-dim uppercase">Power</dt>
+              <dd class="mt-1 text-[0.98rem]">{machineCommon.power}</dd>
+            </div>
+            <div>
+              <dt class="font-mono text-xs font-semibold tracking-[0.14em] text-accent-dim uppercase">Payment</dt>
+              <dd class="mt-1 text-[0.98rem]">{machineCommon.payment}</dd>
+            </div>
+            <div>
+              <dt class="font-mono text-xs font-semibold tracking-[0.14em] text-accent-dim uppercase">Best for</dt>
+              <dd class="mt-1 text-[0.98rem]">{m.bestFor}</dd>
+            </div>
+            <div>
+              <dt class="font-mono text-xs font-semibold tracking-[0.14em] text-accent-dim uppercase">Made by</dt>
+              <dd class="mt-1 text-[0.98rem]">{machineCommon.madeBy}</dd>
+            </div>
+          </dl>
+          <div class="mt-7 flex flex-wrap items-center gap-4">
+            <a
+              href={`/contact/?machine=${m.slug}`}
+              class="inline-flex items-center rounded-[3px] bg-accent px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover"
+            >
+              Ask about the {m.name}
+            </a>
+            <span class="text-sm text-muted">Same $0 as every machine in the line.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </details>
+</li>

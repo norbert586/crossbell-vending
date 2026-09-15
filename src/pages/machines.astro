@@ -1,0 +1,180 @@
+---
+import Layout from "../layouts/Layout.astro";
+import MachineCard from "../components/MachineCard.astro";
+import { machines, machineTypes } from "../data/machines";
+
+const title = "Smart Vending Machines — The Lineup | Crossbell Vending";
+const description =
+  "Six sizes of AI-powered smart cooler, from a single-door unit the size of a household fridge to a double-door cooler and a freezer. Every one is $0 to your business.";
+
+const sections = machineTypes
+  .map((t) => ({ ...t, machines: machines.filter((m) => m.type === t.id) }))
+  .filter((t) => t.machines.length > 0);
+---
+
+<Layout title={title} description={description}>
+  <!-- Intro -->
+  <section class="bg-indigo text-paper">
+    <div class="mx-auto max-w-[1120px] px-5 py-14 sm:px-8 sm:py-20">
+      <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent uppercase">The lineup</p>
+      <h1 class="mt-3 text-[clamp(2.4rem,5vw,4rem)] font-bold leading-[1.02] text-white">
+        Six sizes. <span class="text-accent">Same $0.</span>
+      </h1>
+      <p class="mt-5 max-w-[52ch] text-lg text-lavender">
+        Every machine in the line comes on the same terms: $0 for the machine, delivery, product,
+        service, and electricity. The only thing that changes is how much it holds and how much
+        floor it takes.
+      </p>
+      <nav aria-label="Machine types" class="mt-8">
+        <ul class="flex flex-wrap gap-2.5">
+          {sections.map((s) => (
+            <li>
+              <a
+                href={`#${s.id}`}
+                class="inline-flex items-center border border-lavender/60 px-3.5 py-2 text-sm font-semibold text-white transition-colors hover:border-white hover:bg-white hover:text-indigo"
+              >
+                {s.label}
+                <span class="ml-2 font-mono text-xs text-lavender">{s.machines.length}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+  </section>
+
+  <!-- One section per machine type -->
+  {sections.map((s, i) => (
+    <section id={s.id} class:list={["scroll-mt-20 py-14 sm:py-20", { "bg-lavender-tint": i % 2 === 1 }]}>
+      <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
+        <div class="mb-8 max-w-[56ch]">
+          <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent-dim uppercase">
+            {s.machines.length === 1 ? "One machine" : `${s.machines.length} machines`}
+          </p>
+          <h2 class="mt-2 text-[clamp(1.9rem,3.4vw,2.6rem)] font-semibold">{s.heading}</h2>
+          <p class="mt-3 text-muted">{s.description}</p>
+        </div>
+        <ul class="machine-grid" data-machine-grid aria-label={s.label}>
+          {s.machines.map((m) => (
+            <MachineCard machine={m} typeLabel={s.label} wide={s.machines.length === 1} />
+          ))}
+        </ul>
+      </div>
+    </section>
+  ))}
+
+  <!-- Closing CTA -->
+  <section class="bg-indigo text-paper">
+    <div class="mx-auto flex max-w-[1120px] flex-wrap items-center justify-between gap-6 px-5 py-12 sm:px-8 sm:py-16">
+      <div class="max-w-[52ch]">
+        <h2 class="text-[clamp(1.7rem,3vw,2.3rem)] font-semibold text-white">Not sure which one fits?</h2>
+        <p class="mt-2 text-lavender">
+          Tell us about the space and how many people use it. We'll match the machine to it.
+        </p>
+      </div>
+      <a
+        href="/contact/"
+        class="inline-flex items-center rounded-[3px] bg-accent px-6 py-3.5 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover"
+      >
+        Contact us
+      </a>
+    </div>
+  </section>
+
+  <script>
+    // Motion for the lineup cards. The cards work without this — <details>
+    // opens and closes on its own — so everything here is decoration:
+    //
+    //  1. FLIP: on the click, note where every card in its grid sits; once the
+    //     toggle has reflowed the grid, slide each card from its old spot to
+    //     its new one instead of snapping.
+    //  2. Fade the opened panel in.
+    //  3. An opened card spans the row, so it often lands a row lower than the
+    //     face that was clicked. Bring its title bar into view when it ended up
+    //     under the sticky header or below the fold.
+    //  4. /machines/#pro-542 opens that card on arrival.
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const grids = document.querySelectorAll<HTMLElement>("[data-machine-grid]");
+
+    const rects = (grid: HTMLElement) => {
+      const map = new Map<Element, DOMRect>();
+      grid.querySelectorAll(".machine").forEach((el) => map.set(el, el.getBoundingClientRect()));
+      return map;
+    };
+
+    const flip = (grid: HTMLElement, before: Map<Element, DOMRect>) => {
+      before.forEach((first, el) => {
+        const last = el.getBoundingClientRect();
+        const dx = first.left - last.left;
+        const dy = first.top - last.top;
+        if (!dx && !dy) return;
+        el.animate(
+          [{ transform: `translate(${dx}px, ${dy}px)` }, { transform: "none" }],
+          { duration: 320, easing: "cubic-bezier(0.2, 0, 0, 1)" },
+        );
+      });
+    };
+
+    // `top` is measured by the caller before flip() starts its animations.
+    // Both getBoundingClientRect and scrollIntoView see the in-flight
+    // transform, so the scroll target is computed from that early number
+    // rather than asked of the element mid-slide.
+    const reveal = (details: HTMLDetailsElement, top: number) => {
+      const panel = details.querySelector<HTMLElement>(".machine-panel");
+      if (!reduced) panel?.animate(
+        [{ opacity: 0, transform: "translateY(10px)" }, { opacity: 1, transform: "none" }],
+        { duration: 260, delay: 80, easing: "ease-out", fill: "backwards" },
+      );
+      const headerHeight = document.querySelector("header")?.offsetHeight ?? 0;
+      if (top < headerHeight || top > window.innerHeight * 0.6) {
+        window.scrollTo({
+          top: window.scrollY + top - headerHeight - 16,
+          behavior: reduced ? "auto" : "smooth",
+        });
+      }
+    };
+
+    grids.forEach((grid) => {
+      // Positions captured on the click, before the browser toggles `open`.
+      let before: Map<Element, DOMRect> | null = null;
+
+      grid.addEventListener(
+        "click",
+        (e) => {
+          const summary = (e.target as Element).closest("summary");
+          if (summary && grid.contains(summary) && !reduced) before = rects(grid);
+        },
+        true,
+      );
+
+      // `toggle` fires once `open` has changed and layout reflects it — the
+      // right moment to measure. With the exclusive group it fires for the
+      // closing card as well; the opening card carries the motion.
+      grid.addEventListener(
+        "toggle",
+        (e) => {
+          const details = e.target as HTMLDetailsElement;
+          if (!details.classList.contains("machine-details")) return;
+          if (!details.open) {
+            // A plain close: slide the others back up. If another card is
+            // open, this close is the accordion's side of that card opening —
+            // leave `before` for it.
+            if (before && !grid.querySelector(".machine-details[open]")) {
+              flip(grid, before);
+              before = null;
+            }
+            return;
+          }
+          const top = details.getBoundingClientRect().top;
+          if (before) flip(grid, before);
+          before = null;
+          reveal(details, top);
+        },
+        true,
+      );
+    });
+
+    const target = location.hash && document.querySelector<HTMLDetailsElement>(`.machine-details${location.hash}`);
+    if (target) target.open = true;
+  </script>
+</Layout>

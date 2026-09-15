@@ -4,6 +4,7 @@ import Layout from "../layouts/Layout.astro";
 import FaqItem from "../components/FaqItem.astro";
 import ContactSection from "../components/ContactSection.astro";
 import { site } from "../data/site";
+import { machineWidthRange, machines } from "../data/machines";
 import heroCooler from "../assets/photos/02-machine.jpg";
 import machine from "../assets/photos/01-machine.jpg";
 import imgColdDrinks from "../assets/photos/04-colddrinks.png";
@@ -227,7 +228,7 @@ const icons: Record<(typeof placements)[number]["icon"] | "plus", string> = {
           <dl class="mt-8 grid gap-x-8 gap-y-5 border-t border-line pt-6 sm:grid-cols-2">
             <div>
               <dt class="font-mono text-xs font-semibold tracking-[0.14em] text-accent-dim uppercase">Footprint</dt>
-              <dd class="mt-1 text-[0.98rem]">22.8" W &times; 26" D &times; 76" H — about a household fridge.</dd>
+              <dd class="mt-1 text-[0.98rem]">From {machineWidthRange.min}" to {machineWidthRange.max}" wide, single or double door. The smallest is about a household fridge.</dd>
             </div>
             <div>
               <dt class="font-mono text-xs font-semibold tracking-[0.14em] text-accent-dim uppercase">Payment</dt>
@@ -242,6 +243,15 @@ const icons: Record<(typeof placements)[number]["icon"] | "plus", string> = {
               <dd class="mt-1 text-[0.98rem]">Inventory reports to us remotely, so low items get restocked early.</dd>
             </div>
           </dl>
+          <div class="mt-8 flex flex-wrap items-center gap-4">
+            <a
+              href="/machines/"
+              class="inline-flex items-center rounded-[3px] bg-accent px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover"
+            >
+              See the full lineup &rarr;
+            </a>
+            <span class="text-sm text-muted">{machines.length} sizes, including a double-door cooler and a freezer.</span>
+          </div>
         </div>
       </div>
     </div>
@@ -426,8 +436,10 @@ const icons: Record<(typeof placements)[number]["icon"] | "plus", string> = {
         </FaqItem>
         <FaqItem question="How big is the machine?">
           <p>
-            22.8" wide, 26" deep, and 76" tall — about the footprint of a household refrigerator.
-            It needs a standard wall outlet nearby and a little clearance for the door to swing.
+            It depends on the site. The smallest is 22.8" wide, 26" deep, and 76" tall — about
+            the footprint of a household refrigerator. The largest is a 53.9" double-door cooler.
+            Every one needs a standard wall outlet nearby and a little clearance for the door to
+            swing. <a href="/machines/" class="text-ink underline underline-offset-2">See the full lineup.</a>
           </p>
         </FaqItem>
         <FaqItem question="What if something goes wrong with it?">

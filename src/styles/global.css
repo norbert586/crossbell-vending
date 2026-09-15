@@ -146,3 +146,73 @@ h3 {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
+
+/* Machine lineup cards (/machines/, MachineCard.astro). Built on <details>
+   like the FAQ. An open card stretches across the grid row; the face collapses
+   to a title bar and the spec panel shows beneath it. */
+.machine-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) {
+  .machine-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .machine--wide {
+    grid-column: 1 / -1;
+  }
+}
+@media (min-width: 1024px) {
+  .machine-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.machine:has(.machine-details[open]) {
+  grid-column: 1 / -1;
+}
+.machine-face {
+  list-style: none;
+}
+.machine-face::-webkit-details-marker {
+  display: none;
+}
+.machine-face-media {
+  border-bottom-width: 1px;
+}
+/* Single-machine sections: lay the collapsed card sideways */
+@media (min-width: 640px) {
+  .machine--wide .machine-details:not([open]) .machine-face {
+    display: grid;
+    grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+    height: 100%;
+  }
+  .machine--wide .machine-details:not([open]) .machine-face-text {
+    max-width: 30rem;
+    align-self: center;
+  }
+  .machine--wide .machine-details:not([open]) .machine-face-media {
+    border-bottom-width: 0;
+    border-right-width: 1px;
+  }
+}
+/* Open: only the title bar of the face remains */
+.machine-details[open] .machine-face-media,
+.machine-details[open] .machine-face-hide {
+  display: none;
+}
+.machine-details[open] .machine-face-text {
+  padding: 1rem 1.25rem;
+}
+.machine-face-toggle-close {
+  display: none;
+}
+.machine-details[open] .machine-face-toggle-open {
+  display: none;
+}
+.machine-details[open] .machine-face-toggle-close {
+  display: inline;
+}
+.machine-face:hover .machine-face-toggle {
+  color: var(--color-ink);
+}

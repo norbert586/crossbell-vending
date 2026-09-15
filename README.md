@@ -1,7 +1,7 @@
 # Crossbell Vending — marketing site
 
-Static brochure site (Astro + Tailwind CSS v4 + TypeScript) for Crossbell Vending: one home page
-plus a contact page. No CMS, no database, no client-side framework.
+Static brochure site (Astro + Tailwind CSS v4 + TypeScript) for Crossbell Vending: a home page,
+a machine lineup page, and a contact page. No CMS, no database, no client-side framework.
 
 ## Local development
 
@@ -68,6 +68,41 @@ as long as the ratio is close. Shoot with the lights on and no other company's l
 
 These photos feed the email pamphlet too. After swapping one, run `node email/build-assets.mjs`
 to regenerate `public/email/` and commit it alongside — see [Email pamphlet](#email-pamphlet).
+
+## The machine lineup (`/machines/`)
+
+The lineup page is generated from **`src/data/machines.ts`** — one row per machine, grouped into
+sections by `type` (single-door, double-door, freezer). Change a spec there and the card, the
+expanded panel, and the "from X to Y wide" range on the home page all update.
+
+**Photos** live in `src/assets/machines/` as `<slug>-front.jpg` (required) and `<slug>-angle.jpg`
+(optional). The front shot is the card face; the panel shows both when the angle exists and just
+the front when it doesn't. Machine on white, straight-on, 800px square minimum — larger is better
+for the expanded view. Currently missing angle shots: `mini-360`, `freezer-550`.
+
+**To add a machine:** drop the photo(s) in, import them at the top of `machines.ts`, add a row with
+the same `type` as its section. No page code changes.
+
+**Where the numbers came from.** The manufacturer publishes three different sets of figures
+(store spec tables, homepage carousel, Amazon listings) that disagree with each other, and two
+of the store pages are copy-pasted from another model. Dimensions and weights are from the store
+spec tables; shelf layouts and the "~N drinks" capacities are from the homepage carousel, which is
+the one set that matched the operator's own spec sheet. Capacity is a drinks-only count and is
+always shown with a "~" — never promise it as exact.
+
+**How the cards work.** Each card is a native `<details>` (like the FAQ), so it opens without
+JavaScript and works on the keyboard and in screen readers. `name="machine"` makes them an
+exclusive accordion in browsers that support it. The page script only adds motion: a FLIP slide
+for the cards that get pushed around when one expands, and a fade on the panel. Reduced-motion
+users get the plain open/close. `/machines/#pro-542` deep-links to an open card.
+
+**Lead attribution.** "Ask about the Pro 542" links to `/contact/?machine=pro-542`.
+`Attribution.astro` stamps the slug onto the hidden `machine` field of the business-inquiry form
+(declared in `ContactSection.astro` so Netlify picks it up) and pre-fills the message with
+"Interested in the Pro 542." so the visitor can see it carried over.
+
+The manufacturer's name appears only in the "Made by" row of the expanded panel, nowhere else on
+the site — deliberate.
 
 ## Where form submissions land
 
