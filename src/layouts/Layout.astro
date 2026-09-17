@@ -26,12 +26,6 @@ const localBusinessSchema = {
   areaServed: site.serviceArea
     .flatMap((entry) => entry.name.split("/").map((c) => c.trim()))
     .map((city) => ({ "@type": "City", name: `${city}, MI` })),
-  openingHoursSpecification: {
-    "@type": "OpeningHoursSpecification",
-    dayOfWeek: site.hours.days,
-    opens: site.hours.opens,
-    closes: site.hours.closes,
-  },
   description,
 };
 ---

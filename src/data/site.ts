@@ -22,18 +22,18 @@ export const site = {
     { name: "Clinton Township", lat: 42.587, lon: -82.92 },
   ],
   serviceAreaNote: "and surrounding Macomb and Oakland County communities",
-  // Shown in the LocalBusiness schema. Adjust to match how you actually answer calls.
-  hours: {
-    days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-    opens: "08:00",
-    closes: "17:00",
-  },
+  // The kinds of sites we place coolers at. Drives both the "Where we place them"
+  // grid on the home page (`plural` + `icon`) and the contact form's location-type
+  // dropdown (`label`), so the two never drift apart. Icons are drawn in
+  // src/pages/index.astro. The dropdown adds "Other" and the grid adds "And many
+  // more" on their own.
   locationTypes: [
-    "Break room",
-    "Gym",
-    "Apartment community",
-    "Auto shop",
-    "Light industrial site",
-    "Other",
+    { label: "Break room", plural: "Break rooms", icon: "mug" },
+    { label: "Gym", plural: "Gyms", icon: "barbell" },
+    { label: "Apartment community", plural: "Apartment communities", icon: "building" },
+    { label: "Auto shop", plural: "Auto shops", icon: "wrench" },
+    { label: "Office", plural: "Offices", icon: "desk" },
+    { label: "School", plural: "Schools", icon: "school" },
+    { label: "Warehouse", plural: "Warehouses", icon: "boxes" },
   ],
 } as const;
