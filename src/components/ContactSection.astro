@@ -86,7 +86,8 @@ const {
               name="location_type"
               class="border border-line bg-paper px-3 py-2.5 text-[1.0625rem] focus:border-indigo focus:outline-2 focus:outline-indigo focus:outline-offset-1"
             >
-              {site.locationTypes.map((t) => <option>{t}</option>)}
+              {site.locationTypes.map((t) => <option>{t.label}</option>)}
+              <option>Other</option>
             </select>
           </div>
         </div>

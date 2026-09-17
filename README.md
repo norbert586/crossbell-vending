@@ -17,8 +17,9 @@ Requires Node 22+.
 ## Changing the phone number, email, or service area
 
 Everything site-wide reads from **`src/data/site.ts`**. Edit the values there — phone, email,
-service-area towns, business hours, location types in the contact form dropdown — and every
-page updates. You should not need to touch phone numbers or town names anywhere else in the
+service-area towns, location types — and every page updates. `locationTypes` feeds both the
+"Where we place them" grid on the home page and the contact form dropdown, so adding a site type
+there shows up in both. You should not need to touch phone numbers or town names anywhere else in the
 codebase.
 
 Each `serviceArea` entry carries a `name` plus a `lat`/`lon`. The name is what every page
@@ -30,8 +31,9 @@ the only hand-tuned part of the map.
 
 **TODO before launch:** the site currently uses `crossbellvending@gmail.com`. A domain address
 (e.g. `info@crossbellvending.com`) reads as more established — set one up and swap it into
-`site.ts` when ready. Also confirm the business hours in `site.ts` (`hours` field) — they're a
-placeholder (Mon–Fri, 8–5) used in the LocalBusiness schema.
+`site.ts` when ready. The LocalBusiness schema deliberately carries no opening hours: there is
+no storefront, and "Open 24 hours" or a made-up window on a Google card would promise more than
+the page does.
 
 ## Brand assets
 
