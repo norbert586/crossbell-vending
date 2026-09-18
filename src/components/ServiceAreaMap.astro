@@ -1,11 +1,7 @@
 ---
-// Locator map for the service area: a Michigan inset with our corner boxed,
-// and the two counties we run, with every town from site.serviceArea plotted.
-//
-// Outlines are real longitude/latitude, projected at build time (equirectangular,
-// with longitude shortened by cos(latitude) so nothing looks stretched). To move
-// a town, edit its lat/lon in src/data/site.ts — the dot follows. Only the label
-// nudges below are hand-set, to keep names from colliding.
+// A route board rather than a conventional locator map. The county geometry
+// and town positions use real longitude/latitude, but the names live in a
+// linked index so the map remains legible on a phone.
 import { site } from "../data/site";
 
 type Pt = readonly [number, number]; // [lon, lat]
@@ -14,7 +10,7 @@ interface Projection {
   lonMin: number;
   latMax: number;
   midLat: number;
-  scale: number; // pixels per degree of latitude
+  scale: number;
   x0: number;
   y0: number;
 }
@@ -31,51 +27,16 @@ function path(points: readonly Pt[], project: (pt: Pt) => [number, number]): str
   return points.map((pt, i) => `${i === 0 ? "M" : "L"}${project(pt).join(" ")}`).join("") + "Z";
 }
 
-/* ---------------------------------------------------------------- inset --- */
+function townId(name: string): string {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
 
-const state = projectWith({ lonMin: -90.42, latMax: 47.46, midLat: 44.6, scale: 16.06, x0: 8, y0: 38 });
+const map = projectWith({ lonMin: -83.7, latMax: 42.888, midLat: 42.66, scale: 610, x0: 28, y0: 30 });
 
-const lowerPeninsula: readonly Pt[] = [
-  [-86.82, 41.76], [-86.62, 42.0], [-86.48, 42.2], [-86.23, 42.42], [-86.21, 42.76],
-  [-86.26, 43.05], [-86.24, 43.32], [-86.43, 43.65], [-86.51, 44.05], [-86.44, 44.27],
-  [-86.26, 44.53], [-86.22, 44.76], [-86.06, 44.91], [-85.78, 45.02], [-85.6, 45.2],
-  [-85.55, 45.1], [-85.62, 44.9], [-85.62, 44.76], [-85.5, 44.8], [-85.48, 45.0],
-  [-85.4, 44.84], [-85.35, 44.74], [-85.28, 44.9], [-85.2, 45.1], [-85.35, 45.22],
-  [-85.15, 45.38], [-84.96, 45.37], [-84.78, 45.43], [-84.72, 45.65], [-84.75, 45.79],
-  [-84.45, 45.65], [-84.1, 45.5], [-83.9, 45.42], [-83.6, 45.4], [-83.42, 45.32],
-  [-83.3, 45.1], [-83.31, 44.95], [-83.45, 44.88], [-83.38, 44.7], [-83.32, 44.44],
-  [-83.42, 44.25], [-83.55, 44.05], [-83.68, 44.05], [-83.9, 43.9], [-83.94, 43.68],
-  [-83.85, 43.6], [-83.62, 43.72], [-83.35, 43.87], [-83.1, 43.96], [-82.99, 44.07],
-  [-82.77, 44.02], [-82.62, 43.85], [-82.53, 43.56], [-82.47, 43.25], [-82.42, 43.0],
-  [-82.48, 42.78], [-82.54, 42.62], [-82.78, 42.58], [-82.9, 42.45], [-83.0, 42.35],
-  [-83.13, 42.27], [-83.18, 42.05], [-83.44, 41.73], [-84.8, 41.76],
-];
-
-const upperPeninsula: readonly Pt[] = [
-  [-90.42, 46.57], [-89.9, 46.82], [-89.25, 46.85], [-88.9, 46.84], [-88.5, 47.0],
-  [-88.42, 47.25], [-88.15, 47.46], [-87.98, 47.38], [-88.2, 47.1], [-88.3, 46.9],
-  [-87.7, 46.85], [-87.38, 46.58], [-86.95, 46.5], [-86.5, 46.7], [-85.87, 46.68],
-  [-85.02, 46.76], [-84.96, 46.47], [-84.55, 46.46], [-84.12, 46.25], [-84.34, 45.98],
-  [-84.72, 45.85], [-85.05, 46.0], [-85.6, 46.05], [-86.0, 45.95], [-86.4, 45.95],
-  [-86.75, 45.75], [-87.0, 45.75], [-87.1, 45.55], [-87.35, 45.45], [-87.62, 45.35],
-  [-87.8, 45.75], [-88.1, 46.0], [-88.7, 46.02], [-89.6, 46.3], [-90.12, 46.35],
-];
-
-// Box drawn on the inset around the two counties below.
-const [insetX1, insetY1] = state([-83.7, 42.888]);
-const [insetX2, insetY2] = state([-82.72, 42.4355]);
-
-/* ----------------------------------------------------------- county map --- */
-
-const map = projectWith({ lonMin: -83.7, latMax: 42.888, midLat: 42.66, scale: 555, x0: 112, y0: 30 });
-
-// Oakland is a plain rectangle of survey townships — no natural borders at all.
 const oakland: readonly Pt[] = [
   [-83.7, 42.888], [-83.103, 42.888], [-83.103, 42.4355], [-83.7, 42.4355],
 ];
 
-// Macomb shares Oakland's north and south lines; Lake St. Clair takes the
-// southeast corner, from Anchor Bay down to the Wayne County line.
 const shoreline: readonly Pt[] = [
   [-82.75, 42.735], [-82.72, 42.69], [-82.79, 42.645], [-82.8, 42.585],
   [-82.845, 42.552], [-82.872, 42.505], [-82.886, 42.4355],
@@ -84,129 +45,193 @@ const macomb: readonly Pt[] = [
   [-83.103, 42.888], [-82.75, 42.888], ...shoreline, [-83.103, 42.4355],
 ];
 const lake: readonly Pt[] = [
-  ...shoreline.slice(1), // from New Baltimore south; the segment above it is a land border
+  ...shoreline.slice(1),
   [-82.6, 42.4355], [-82.55, 42.52], [-82.56, 42.61], [-82.61, 42.665], [-82.68, 42.7],
 ];
 
-// Label nudges, in map pixels, keyed by the town name in site.ts. Anything
-// without an entry falls back to a label set to the right of its dot.
-const labelAt: Record<string, { anchor: "start" | "end"; dx: number; dy: number }> = {
-  "Romeo / Bruce": { anchor: "start", dx: 9, dy: 4 },
-  "Washington Township": { anchor: "start", dx: 9, dy: 4 },
-  Rochester: { anchor: "end", dx: -9, dy: -2 },
-  "Rochester Hills": { anchor: "end", dx: -9, dy: 5 },
-  "Shelby Township": { anchor: "start", dx: 9, dy: -8 },
-  "Macomb Township": { anchor: "start", dx: 9, dy: 14 },
-  Utica: { anchor: "start", dx: 9, dy: 4 },
-  "Clinton Township": { anchor: "start", dx: 9, dy: 4 },
-  "Sterling Heights": { anchor: "end", dx: -9, dy: 4 },
-};
-const fallbackLabel = { anchor: "start", dx: 9, dy: 4 } as const;
-
-const towns = site.serviceArea.map((town) => {
+const towns = site.serviceArea.map((town, index) => {
   const [x, y] = map([town.lon, town.lat]);
-  return { ...town, x, y, ...(labelAt[town.name] ?? fallbackLabel) };
+  return { ...town, x, y, index: index + 1, id: townId(town.name) };
 });
 
-const caption = `Map of ${site.serviceArea.map((t) => t.name).join(", ")} — the Macomb and north Oakland County towns on our weekly route.`;
+const caption = `Macomb and north Oakland County service map with numbered locations for ${site.serviceArea.map((t) => t.name).join(", ")}.`;
 ---
 
-<figure class="border border-line bg-white p-3 sm:p-4">
-  <svg viewBox="0 0 596 310" role="img" aria-label={caption} class="w-full">
-    <!-- Surrounding land, so the counties read as a crop of a real map -->
-    <rect x="108" y="20" width="488" height="268" fill="#eceef8"></rect>
-    <path d={path(lake, map)} fill="#c3cbe8"></path>
+<div data-route-board class="route-board overflow-hidden border border-indigo-2 bg-indigo text-white">
+  <div class="grid lg:grid-cols-[minmax(0,1.35fr)_minmax(360px,0.65fr)]">
+    <figure class="relative border-b border-indigo-2 bg-paper lg:border-r lg:border-b-0">
+      <div class="absolute top-4 left-4 z-10 border border-indigo/25 bg-white/90 px-3 py-2 backdrop-blur-sm">
+        <span class="block font-mono text-[0.62rem] font-semibold tracking-[0.15em] text-accent-dim uppercase">Michigan</span>
+        <span class="mt-0.5 block font-display text-lg font-semibold leading-none text-indigo">Our weekly route</span>
+      </div>
 
-    <!-- Michigan locator -->
-    <g fill="#d6d9ee" stroke="#8b8fb8" stroke-width="1" stroke-linejoin="round">
-      <path d={path(lowerPeninsula, state)}></path>
-      <path d={path(upperPeninsula, state)}></path>
-    </g>
-    <rect
-      x={insetX1 - 2.5}
-      y={insetY1 - 3}
-      width={insetX2 - insetX1 + 5}
-      height={insetY2 - insetY1 + 6}
-      fill="none"
-      stroke="#c49350"
-      stroke-width="1.8"></rect>
-    <text x="54" y="148" text-anchor="middle" class="map-inset-label font-mono" font-weight="600" letter-spacing="1.4" fill="#4f5168">MICHIGAN</text>
-    <text x="54" y="161" text-anchor="middle" class="map-inset-label font-mono" font-weight="700" letter-spacing="1.4" fill="#96692f">OUR CORNER</text>
+      <svg viewBox="0 0 560 340" role="img" aria-label={caption} class="block h-auto w-full">
+        <rect width="560" height="340" fill="#f6f7ff"></rect>
+        <path d={path(lake, map)} fill="#cbd5ee"></path>
 
-    <!-- The two counties -->
-    <g stroke="#2a2a5c" stroke-width="1.6" stroke-linejoin="round">
-      <path d={path(oakland, map)} fill="#f6f7ff"></path>
-      <path d={path(macomb, map)} fill="#e6e8ff"></path>
-    </g>
-    <g class="map-label font-mono" font-weight="600" letter-spacing="1.2" fill="#2a2a5c" fill-opacity="0.55" text-anchor="middle">
-      <text x="205" y="108">OAKLAND CO.</text>
-      <text x="428" y="50">MACOMB CO.</text>
-    </g>
-    <text
-      x="578"
-      y="248"
-      text-anchor="end"
-      class="map-label"
-      font-style="italic"
-      fill="#4f5168"
-      stroke="#c3cbe8"
-      stroke-width="3"
-      stroke-linejoin="round"
-      paint-order="stroke fill">Lake St. Clair</text>
+        <g class="county-shapes" stroke="#2a2a5c" stroke-width="2.2" stroke-linejoin="round">
+          <path data-county-outline d={path(oakland, map)} fill="#ffffff"></path>
+          <path data-county-outline d={path(macomb, map)} fill="#e6e8ff"></path>
+        </g>
 
-    <!-- Towns on the route -->
-    <g class="map-town-labels" font-size="10.5" font-weight="600" fill="#141420" stroke="#ffffff" stroke-width="3.2" stroke-linejoin="round" paint-order="stroke fill">
-      {towns.map((t) => (
-        <text x={t.x + t.dx} y={t.y + t.dy} text-anchor={t.anchor}>{t.name}</text>
-      ))}
-    </g>
-    <g>
-      {towns.map((t) => (
-        <circle cx={t.x} cy={t.y} r="4.2" fill="#c49350" stroke="#141420" stroke-width="1.2"></circle>
-      ))}
-    </g>
+        <g class="font-mono" font-weight="700" letter-spacing="1.5" fill="#2a2a5c" fill-opacity="0.56" text-anchor="middle">
+          <text x="158" y="82" font-size="12">NORTH OAKLAND</text>
+          <text x="398" y="64" font-size="12">MACOMB</text>
+        </g>
+        <text
+          x="535"
+          y="282"
+          text-anchor="end"
+          font-size="11"
+          font-style="italic"
+          fill="#4f5168"
+          stroke="#cbd5ee"
+          stroke-width="4"
+          stroke-linejoin="round"
+          paint-order="stroke fill">Lake St. Clair</text>
 
-    <!-- Legend -->
-    <g>
-      <circle cx="116" cy="300" r="4.2" fill="#c49350" stroke="#141420" stroke-width="1.2"></circle>
-      <text x="127" y="304" class="map-label" fill="#4f5168">On our weekly route</text>
-    </g>
-  </svg>
-</figure>
+        <g aria-hidden="true">
+          {towns.map((town) => (
+            <g
+              data-town-id={town.id}
+              class="route-location"
+              transform={`translate(${town.x} ${town.y})`}
+            >
+              <g class="route-pin">
+                <circle r="13" fill="#c49350" stroke="#141420" stroke-width="1.8"></circle>
+                <text
+                  y="0.5"
+                  text-anchor="middle"
+                  dominant-baseline="middle"
+                  class="font-mono"
+                  font-size="11"
+                  font-weight="700"
+                  fill="#141420">{town.index}</text>
+              </g>
+            </g>
+          ))}
+        </g>
+      </svg>
+
+      <figcaption class="sr-only">{caption}</figcaption>
+    </figure>
+
+    <div class="flex flex-col p-5 sm:p-6 lg:p-7">
+      <div>
+        <h3 class="text-2xl font-semibold text-white">Towns on the route</h3>
+        <p class="mt-2 text-sm leading-relaxed text-lavender">
+          Select a town to ask about a placement there. Nearby community? Send the address and
+          we’ll check it against the route.
+        </p>
+      </div>
+
+      <ol class="mt-5 grid grid-cols-2 gap-x-4 border-t border-indigo-2">
+        {towns.map((town) => (
+          <li class="border-b border-indigo-2">
+            <a
+              href="#contact"
+              data-town-trigger={town.id}
+              aria-label={`Request vending service in ${town.name}`}
+              class="route-town-link group flex min-h-11 items-center gap-3 py-2.5 text-sm font-semibold text-white"
+            >
+              <span class="flex h-6 w-6 flex-none items-center justify-center border border-accent/60 font-mono text-[0.68rem] text-accent transition-colors group-hover:bg-accent group-hover:text-ink">
+                {town.index}
+              </span>
+              <span>{town.name}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+
+      <a
+        href="#contact"
+        class="mt-6 inline-flex min-h-11 items-center justify-center bg-accent px-5 py-3 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover"
+      >
+        Request service nearby
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { animate, inView, stagger } from "motion";
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  document.querySelectorAll<HTMLElement>("[data-route-board]").forEach((board) => {
+    const clearActiveTown = () => {
+      board.querySelectorAll(".is-active").forEach((element) => element.classList.remove("is-active"));
+    };
+
+    board.querySelectorAll<HTMLElement>("[data-town-trigger]").forEach((trigger) => {
+      const activate = () => {
+        clearActiveTown();
+        trigger.classList.add("is-active");
+        const town = trigger.dataset.townTrigger;
+        board.querySelector<HTMLElement>(`[data-town-id="${town}"]`)?.classList.add("is-active");
+      };
+
+      trigger.addEventListener("pointerenter", activate);
+      trigger.addEventListener("focus", activate);
+      trigger.addEventListener("pointerleave", clearActiveTown);
+      trigger.addEventListener("blur", clearActiveTown);
+    });
+
+    if (reducedMotion) return;
+
+    inView(
+      board,
+      () => {
+        const outlines = board.querySelectorAll<SVGPathElement>("[data-county-outline]");
+        outlines.forEach((outline, index) => {
+          const length = outline.getTotalLength();
+          outline.style.strokeDasharray = `${length}`;
+          outline.style.strokeDashoffset = `${length}`;
+          animate(
+            outline,
+            { strokeDashoffset: [length, 0] },
+            { duration: 0.72, delay: index * 0.11, ease: [0.16, 1, 0.3, 1] },
+          );
+        });
+
+        animate(
+          board.querySelectorAll(".route-pin"),
+          { opacity: [0.25, 1], scale: [0.55, 1] },
+          { duration: 0.42, delay: stagger(0.055, { startDelay: 0.22 }), ease: [0.16, 1, 0.3, 1] },
+        );
+      },
+      { amount: 0.25 },
+    );
+  });
+</script>
 
 <style>
-  /* SVG font sizes are viewBox units, so they shrink with the figure. The
-     figure is narrow both on phones and in the two-column desktop layout, so
-     size the type against the figure itself rather than the viewport. Below
-     roughly 480px the town names are too small to read at any size that still
-     fits between the dots, so they drop out — the town list sits directly
-     under the map and carries every name. */
-  figure {
-    container-type: inline-size;
+  .route-location {
+    transition: filter 180ms ease;
   }
-  .map-label {
-    font-size: 10.5px;
+
+  .route-pin {
+    transform-box: fill-box;
+    transform-origin: center;
   }
-  .map-inset-label {
-    font-size: 9.5px;
+
+  .route-location.is-active {
+    filter: drop-shadow(0 0 7px rgb(196 147 80 / 0.75));
   }
-  @container (max-width: 480px) {
-    .map-town-labels {
-      display: none;
-    }
-    .map-label {
-      font-size: 15px;
-    }
-    .map-inset-label {
-      font-size: 12px;
-    }
+
+  .route-location.is-active circle {
+    fill: #f3c475;
+    stroke-width: 2.8;
   }
-  @container (max-width: 380px) {
-    .map-label {
-      font-size: 19px;
-    }
-    .map-inset-label {
-      font-size: 15px;
+
+  .route-town-link.is-active {
+    color: #cdd1ff;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .route-location,
+    .route-location circle {
+      transition: none;
     }
   }
 </style>

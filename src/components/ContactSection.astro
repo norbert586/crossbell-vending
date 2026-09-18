@@ -8,7 +8,7 @@ interface Props {
 }
 const {
   id = "contact",
-  heading = "Contact us",
+  heading = "Request a walkthrough",
   subheading = "Tell us about your site and we'll schedule a ten-minute visit at a time that works for you.",
 } = Astro.props;
 ---
@@ -53,6 +53,7 @@ const {
               id="name"
               name="name"
               type="text"
+              autocomplete="name"
               required
               class="border border-line bg-paper px-3 py-2.5 text-[1.0625rem] focus:border-indigo focus:outline-2 focus:outline-indigo focus:outline-offset-1"
             />
@@ -63,6 +64,7 @@ const {
               id="business"
               name="business"
               type="text"
+              autocomplete="organization"
               required
               class="border border-line bg-paper px-3 py-2.5 text-[1.0625rem] focus:border-indigo focus:outline-2 focus:outline-indigo focus:outline-offset-1"
             />
@@ -75,6 +77,7 @@ const {
               id="phone"
               name="phone"
               type="tel"
+              autocomplete="tel"
               required
               class="border border-line bg-paper px-3 py-2.5 text-[1.0625rem] focus:border-indigo focus:outline-2 focus:outline-indigo focus:outline-offset-1"
             />
@@ -102,9 +105,9 @@ const {
         </div>
         <button
           type="submit"
-          class="inline-flex rounded-[3px] bg-accent px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover"
+          class="inline-flex min-h-11 items-center bg-accent px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover"
         >
-          Send request
+          Request a walkthrough
         </button>
         <p class="mt-4 text-sm text-muted">You'll hear back by the end of the business day. Your details stay with us.</p>
       </form>
@@ -144,6 +147,7 @@ const {
               id="fb-location"
               name="location"
               type="text"
+              autocomplete="street-address"
               required
               class="border border-line bg-white px-3 py-2 text-sm focus:border-indigo focus:outline-2 focus:outline-indigo focus:outline-offset-1"
             />

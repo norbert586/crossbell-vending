@@ -8,6 +8,7 @@ a machine lineup page, and a contact page. No CMS, no database, no client-side f
 ```bash
 npm install
 npm run dev       # http://localhost:4321
+npm run check     # Astro + TypeScript diagnostics
 npm run build     # outputs to dist/
 npm run preview   # serve the production build locally
 ```
@@ -25,9 +26,9 @@ codebase.
 Each `serviceArea` entry carries a `name` plus a `lat`/`lon`. The name is what every page
 prints; the coordinates place the town's dot on the service-area map
 (`src/components/ServiceAreaMap.astro`), which projects real longitude and latitude at build
-time. Adding a town with coordinates puts it on the map automatically. If two labels end up
-overlapping, nudge them with the `labelAt` table at the top of that component — that table is
-the only hand-tuned part of the map.
+time. Adding a town with coordinates puts a numbered pin on the map and a matching town link in
+the route-board index automatically; town names stay outside the SVG so they remain readable on
+phones.
 
 **TODO before launch:** the site currently uses `crossbellvending@gmail.com`. A domain address
 (e.g. `info@crossbellvending.com`) reads as more established — set one up and swap it into

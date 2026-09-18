@@ -102,7 +102,7 @@ const sections = machineTypes
       return map;
     };
 
-    const flip = (grid: HTMLElement, before: Map<Element, DOMRect>) => {
+    const flip = (before: Map<Element, DOMRect>) => {
       before.forEach((first, el) => {
         const last = el.getBoundingClientRect();
         const dx = first.left - last.left;
@@ -160,13 +160,13 @@ const sections = machineTypes
             // open, this close is the accordion's side of that card opening —
             // leave `before` for it.
             if (before && !grid.querySelector(".machine-details[open]")) {
-              flip(grid, before);
+              flip(before);
               before = null;
             }
             return;
           }
           const top = details.getBoundingClientRect().top;
-          if (before) flip(grid, before);
+          if (before) flip(before);
           before = null;
           reveal(details, top);
         },
