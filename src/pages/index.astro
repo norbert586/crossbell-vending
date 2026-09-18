@@ -3,7 +3,7 @@ import { Image } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
 import FaqItem from "../components/FaqItem.astro";
 import ContactSection from "../components/ContactSection.astro";
-import ServiceAreaMap from "../components/ServiceAreaMap.astro";
+import ServiceAreaSection from "../components/ServiceAreaSection.astro";
 import { site } from "../data/site";
 import { machineWidthRange, machines } from "../data/machines";
 import heroCooler from "../assets/photos/02-machine.jpg";
@@ -63,7 +63,7 @@ const icons: Record<(typeof site.locationTypes)[number]["icon"] | "plus", string
             href="#contact"
             class="inline-flex items-center rounded-[3px] bg-accent px-6 py-3.5 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover"
           >
-            Contact us
+            Request a walkthrough
           </a>
           <a
             href={`tel:${site.phoneTel}`}
@@ -324,12 +324,16 @@ const icons: Record<(typeof site.locationTypes)[number]["icon"] | "plus", string
           <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent-dim uppercase">What's inside</p>
           <h2 class="mt-2 text-[clamp(1.9rem,3.4vw,2.6rem)] font-semibold">Food, drinks, and premium amenities, picked for your site.</h2>
         </div>
-        <div class="flex gap-2">
+        <div class="flex items-center gap-2">
+          <span data-carousel-status class="mr-1 font-mono text-xs font-semibold text-muted" aria-live="polite">
+            1 / {inside.length}
+          </span>
           <button
             type="button"
             data-carousel-prev
             aria-label="Previous items"
-            class="flex h-11 w-11 items-center justify-center border-2 border-ink bg-white text-ink transition-colors hover:bg-ink hover:text-paper"
+            aria-controls="product-carousel"
+            class="flex h-11 w-11 items-center justify-center border-2 border-ink bg-white text-ink transition-colors hover:bg-ink hover:text-paper disabled:cursor-not-allowed disabled:border-muted/40 disabled:text-muted/40 disabled:hover:bg-white"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
           </button>
@@ -337,7 +341,8 @@ const icons: Record<(typeof site.locationTypes)[number]["icon"] | "plus", string
             type="button"
             data-carousel-next
             aria-label="Next items"
-            class="flex h-11 w-11 items-center justify-center border-2 border-ink bg-white text-ink transition-colors hover:bg-ink hover:text-paper"
+            aria-controls="product-carousel"
+            class="flex h-11 w-11 items-center justify-center border-2 border-ink bg-white text-ink transition-colors hover:bg-ink hover:text-paper disabled:cursor-not-allowed disabled:border-muted/40 disabled:text-muted/40 disabled:hover:bg-white"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
           </button>
@@ -346,6 +351,7 @@ const icons: Record<(typeof site.locationTypes)[number]["icon"] | "plus", string
     </div>
     <div class="mx-auto max-w-[1120px] sm:px-8">
       <ul
+        id="product-carousel"
         data-carousel
         class="carousel flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-5 pb-4 sm:px-0"
         aria-label="Product categories"
@@ -376,71 +382,35 @@ const icons: Record<(typeof site.locationTypes)[number]["icon"] | "plus", string
       // scrolls by touch, trackpad, or keyboard.
       document.querySelectorAll<HTMLElement>("[data-carousel]").forEach((track) => {
         const section = track.closest("section");
+        const previous = section?.querySelector<HTMLButtonElement>("[data-carousel-prev]");
+        const next = section?.querySelector<HTMLButtonElement>("[data-carousel-next]");
+        const status = section?.querySelector<HTMLElement>("[data-carousel-status]");
         const step = () => ((track.firstElementChild as HTMLElement | null)?.offsetWidth ?? 280) + 16;
-        section?.querySelector("[data-carousel-prev]")?.addEventListener("click", () => {
+
+        const update = () => {
+          const max = track.scrollWidth - track.clientWidth;
+          if (previous) previous.disabled = track.scrollLeft <= 2;
+          if (next) next.disabled = track.scrollLeft >= max - 2;
+          if (status) {
+            const current = Math.min(track.children.length, Math.round(track.scrollLeft / step()) + 1);
+            status.textContent = `${current} / ${track.children.length}`;
+          }
+        };
+
+        previous?.addEventListener("click", () => {
           track.scrollBy({ left: -step(), behavior: "smooth" });
         });
-        section?.querySelector("[data-carousel-next]")?.addEventListener("click", () => {
+        next?.addEventListener("click", () => {
           track.scrollBy({ left: step(), behavior: "smooth" });
         });
+        track.addEventListener("scroll", update, { passive: true });
+        window.addEventListener("resize", update);
+        requestAnimationFrame(update);
       });
     </script>
   </section>
 
-  <!-- Service area -->
-  <section id="area" class="scroll-mt-20 bg-lavender-tint py-14 sm:py-20">
-    <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
-      <div class="grid gap-10 md:grid-cols-[1fr_1.1fr] md:items-start">
-        <div>
-          <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent-dim uppercase">Service area</p>
-          <h2 class="mt-2 text-[clamp(1.9rem,3.4vw,2.6rem)] font-semibold">
-            We live here. That's why your machine stays full.
-          </h2>
-          <p class="mt-4 max-w-[48ch] text-muted">
-            Crossbell is a small Michigan business running a weekly route through Macomb and
-            north Oakland County. The person who answers the phone is the person who pulls up
-            with the restock — not a call center three states away with your site on a
-            spreadsheet.
-          </p>
-          <p class="mt-3.5 max-w-[48ch] text-muted">
-            Being ten minutes up the road is also why we can ask your staff and your customers
-            what they actually want in the cooler, and have it on the shelf the following week.
-          </p>
-        </div>
-        <ServiceAreaMap />
-      </div>
-      <ul class="mt-10 grid grid-cols-2 gap-px border border-line bg-line sm:grid-cols-3 md:grid-cols-5">
-        {site.serviceArea.map((city) => (
-          <li class="bg-white px-4 py-3.5 text-sm font-semibold">{city.name}</li>
-        ))}
-        <li class="bg-lavender-tint px-4 py-3.5 text-sm font-semibold text-indigo/70">
-          Not listed? Ask us.
-        </li>
-      </ul>
-      <p class="mt-3.5 text-sm text-muted">
-        Our weekly route covers these towns {site.serviceAreaNote} — and it grows with every
-        placement.
-      </p>
-      <div class="mt-10 grid gap-6 border-l-[3px] border-accent bg-white p-6 sm:p-8 md:grid-cols-[1.5fr_1fr] md:items-center">
-        <div>
-          <h3 class="font-mono text-sm font-bold tracking-[0.1em] uppercase">
-            Already have a machine nobody services?
-          </h3>
-          <p class="mt-2.5 max-w-[62ch] text-[0.96rem] text-muted">
-            Half empty for weeks, card reader down, nobody calls you back? That's the call we most
-            like getting. We'll look at what you have, tell you straight whether it's worth
-            replacing, and swap it out if it is.
-          </p>
-        </div>
-        <a
-          href="#contact"
-          class="inline-flex items-center justify-center rounded-[3px] bg-accent px-6 py-3.5 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover md:justify-self-end"
-        >
-          Tell us about your current setup
-        </a>
-      </div>
-    </div>
-  </section>
+  <ServiceAreaSection />
 
   <!-- FAQ -->
   <section id="faq" class="scroll-mt-20 py-14 sm:py-20">

@@ -1,0 +1,53 @@
+---
+import ServiceAreaMap from "./ServiceAreaMap.astro";
+---
+
+<section id="area" class="scroll-mt-20 bg-lavender-tint py-14 sm:py-20">
+  <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
+    <div class="grid gap-6 md:grid-cols-[0.9fr_1.1fr] md:items-end md:gap-12">
+      <h2 class="max-w-[15ch] text-[clamp(2.15rem,4.2vw,3.45rem)] font-semibold">
+        We live here. That’s why your machine stays full.
+      </h2>
+      <p class="max-w-[60ch] text-[1.03rem] leading-relaxed text-muted md:justify-self-end">
+        Crossbell runs a weekly route through Macomb and north Oakland County. The person who
+        answers the phone is close enough to learn what your site wants, bring it the following
+        week, and respond when something needs attention.
+      </p>
+    </div>
+
+    <dl class="my-8 grid border-y border-indigo/20 sm:grid-cols-3 sm:divide-x sm:divide-indigo/20">
+      <div class="flex items-baseline justify-between gap-4 py-4 sm:block sm:px-5 sm:first:pl-0">
+        <dt class="text-sm text-muted">Restocking</dt>
+        <dd class="font-display text-2xl font-semibold">Weekly</dd>
+      </div>
+      <div class="flex items-baseline justify-between gap-4 border-t border-indigo/20 py-4 sm:block sm:border-t-0 sm:px-5">
+        <dt class="text-sm text-muted">Messages</dt>
+        <dd class="font-display text-2xl font-semibold">Same-day reply</dd>
+      </div>
+      <div class="flex items-baseline justify-between gap-4 border-t border-indigo/20 py-4 sm:block sm:border-t-0 sm:px-5 sm:last:pr-0">
+        <dt class="text-sm text-muted">Coverage</dt>
+        <dd class="font-display text-2xl font-semibold">Two-county route</dd>
+      </div>
+    </dl>
+
+    <ServiceAreaMap />
+
+    <div class="mt-8 grid gap-5 border border-line bg-white p-6 sm:p-8 md:grid-cols-[1.5fr_1fr] md:items-center">
+      <div>
+        <h3 class="font-mono text-sm font-bold tracking-[0.1em] uppercase">
+          Already have a machine nobody services?
+        </h3>
+        <p class="mt-2.5 max-w-[62ch] text-[0.96rem] text-muted">
+          Half empty for weeks, card reader down, nobody calls you back? We’ll assess the setup,
+          tell you whether it is worth replacing, and swap it out if it is.
+        </p>
+      </div>
+      <a
+        href="#contact"
+        class="inline-flex min-h-11 items-center justify-center bg-accent px-6 py-3.5 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover md:justify-self-end"
+      >
+        Request a replacement review
+      </a>
+    </div>
+  </div>
+</section>

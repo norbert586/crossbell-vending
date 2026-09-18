@@ -39,6 +39,17 @@ body {
   font-family: var(--font-body);
 }
 
+::selection {
+  background: var(--color-lavender);
+  color: var(--color-ink);
+}
+
+input,
+textarea,
+select {
+  caret-color: var(--color-accent-dim);
+}
+
 h1,
 h2,
 h3 {
@@ -50,6 +61,12 @@ h3 {
 :focus-visible {
   outline: 3px solid var(--color-indigo);
   outline-offset: 2px;
+}
+
+.bg-indigo :focus-visible,
+footer :focus-visible,
+.route-board :focus-visible {
+  outline-color: var(--color-accent);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -95,8 +112,21 @@ h3 {
 /* Clears the fixed mobile call/contact bar so it never covers footer content */
 @media (max-width: 720px) {
   body {
-    padding-bottom: 56px;
+    padding-bottom: calc(56px + env(safe-area-inset-bottom));
   }
+
+  .mobile-action-bar {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Native disclosure marker cleanup for the mobile navigation. */
+.mobile-menu > summary::-webkit-details-marker {
+  display: none;
+}
+.mobile-menu[open] > summary {
+  background: var(--color-lavender-tint);
+  border-color: var(--color-indigo);
 }
 
 /* Native details/summary marker cleanup, kept semantic for no-JS + a11y */
