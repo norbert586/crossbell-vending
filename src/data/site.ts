@@ -8,6 +8,8 @@ export const site = {
   email: "crossbellvending@gmail.com",
   url: "https://crossbellvending.com",
   domain: "crossbellvending.com",
+  description:
+    "Crossbell Vending installs, stocks, and services free smart cooler vending machines for workplaces and shared spaces across Macomb and north Oakland County, Michigan.",
   // Towns on the weekly route. `lat`/`lon` place the dot on the service-area
   // map (src/components/ServiceAreaMap.astro); the name is what every page prints.
   serviceArea: [

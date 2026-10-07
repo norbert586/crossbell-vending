@@ -1,9 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import MachineCard from "../components/MachineCard.astro";
-import { machines, machineTypes } from "../data/machines";
+import { formatFootprint, machineCommon, machines, machineTypes } from "../data/machines";
 
-const title = "Smart Vending Machines — The Lineup | Crossbell Vending";
+const title = "Smart Vending Coolers & Freezers | Crossbell Vending";
 const description =
   "Six sizes of AI-powered smart cooler, from a single-door unit the size of a household fridge to a double-door cooler and a freezer. Every one is free to your business.";
 
@@ -18,7 +18,7 @@ const sections = machineTypes
     <div class="mx-auto max-w-[1120px] px-5 py-14 sm:px-8 sm:py-20">
       <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent uppercase">The lineup</p>
       <h1 class="mt-3 text-[clamp(2.4rem,5vw,4rem)] font-bold leading-[1.02] text-white">
-        Six sizes. <span class="text-accent">All free.</span>
+        Six smart vending cooler sizes. <span class="text-accent">All free to the host.</span>
       </h1>
       <p class="mt-5 max-w-[52ch] text-lg text-lavender">
         Every machine in the line comes on the same terms: the machine, delivery, product, and
@@ -43,9 +43,57 @@ const sections = machineTypes
     </div>
   </section>
 
+  <!-- Always-visible comparison for people and answer engines. -->
+  <section class="py-14 sm:py-20" aria-labelledby="compare-heading">
+    <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
+      <div class="max-w-[62ch]">
+        <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent-dim uppercase">Compare the lineup</p>
+        <h2 id="compare-heading" class="mt-2 text-[clamp(1.9rem,3.4vw,2.6rem)] font-semibold">
+          Which smart cooler fits your location?
+        </h2>
+        <p class="mt-3 text-muted">
+          Every model accepts tap, swipe, Apple Pay, and Google Pay. Each uses one standard wall
+          outlet and is installed, stocked, and serviced by Crossbell at no cost to the host.
+        </p>
+      </div>
+      <div class="mt-8 overflow-x-auto border border-line bg-white">
+        <table class="w-full min-w-[940px] border-collapse text-left text-sm">
+          <caption class="sr-only">Comparison of Crossbell smart vending coolers and freezers</caption>
+          <thead class="bg-indigo text-paper">
+            <tr>
+              <th scope="col" class="px-4 py-3 font-semibold">Machine</th>
+              <th scope="col" class="px-4 py-3 font-semibold">Footprint</th>
+              <th scope="col" class="px-4 py-3 font-semibold">Capacity</th>
+              <th scope="col" class="px-4 py-3 font-semibold">Door</th>
+              <th scope="col" class="px-4 py-3 font-semibold">Power</th>
+              <th scope="col" class="px-4 py-3 font-semibold">Best fit</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-line">
+            {machines.map((machine) => (
+              <tr class="align-top">
+                <th scope="row" class="whitespace-nowrap px-4 py-4 font-semibold">
+                  <a class="underline decoration-accent decoration-2 underline-offset-4" href={`#${machine.slug}`}>
+                    {machine.name}
+                  </a>
+                </th>
+                <td class="whitespace-nowrap px-4 py-4">{formatFootprint(machine.footprint)}</td>
+                <td class="px-4 py-4">About {machine.holds} drinks</td>
+                <td class="px-4 py-4">{machine.door}</td>
+                <td class="px-4 py-4">Standard outlet</td>
+                <td class="min-w-[260px] px-4 py-4">{machine.bestFor}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-3 text-sm text-muted">Power: {machineCommon.power}</p>
+    </div>
+  </section>
+
   <!-- One section per machine type -->
   {sections.map((s, i) => (
-    <section id={s.id} class:list={["scroll-mt-20 py-14 sm:py-20", { "bg-lavender-tint": i % 2 === 1 }]}>
+    <section id={s.id} class:list={["scroll-mt-20 py-14 sm:py-20", { "bg-lavender-tint": i % 2 === 0 }]}>
       <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
         <div class="mb-8 max-w-[56ch]">
           <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent-dim uppercase">
