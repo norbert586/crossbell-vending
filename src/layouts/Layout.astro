@@ -14,19 +14,54 @@ interface Props {
 }
 const { title, description, contactHref = "/contact", noindex = false } = Astro.props;
 
-const localBusinessSchema = {
+const canonicalUrl = new URL(Astro.url.pathname, site.url).toString();
+const serviceArea = site.serviceArea
+  .flatMap((entry) => entry.name.split("/").map((city) => city.trim()))
+  .map((city) => ({ "@type": "City", name: `${city}, MI` }));
+
+// Crossbell is a service-area business without a public storefront. Keep one
+// stable Organization entity on the home page instead of presenting an
+// incomplete LocalBusiness entity with a different description on every URL.
+const homePageSchema = {
   "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  name: site.name,
-  legalName: site.legalName,
-  telephone: site.phone,
-  email: site.email,
-  url: site.url,
-  // "Romeo / Bruce" is one row on the site but two municipalities to Google.
-  areaServed: site.serviceArea
-    .flatMap((entry) => entry.name.split("/").map((c) => c.trim()))
-    .map((city) => ({ "@type": "City", name: `${city}, MI` })),
-  description,
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${site.url}/#organization`,
+      name: site.name,
+      legalName: site.legalName,
+      url: `${site.url}/`,
+      logo: new URL("/brand/crossbell-crest.png", site.url).toString(),
+      image: new URL("/og.png", site.url).toString(),
+      telephone: site.phoneTel,
+      email: site.email,
+      description: site.description,
+      areaServed: serviceArea,
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${site.url}/#website`,
+      url: `${site.url}/`,
+      name: site.name,
+      publisher: { "@id": `${site.url}/#organization` },
+      inLanguage: "en-US",
+    },
+    {
+      "@type": "Service",
+      "@id": `${site.url}/#smart-cooler-vending-service`,
+      name: "Smart cooler vending service",
+      serviceType: "Smart cooler vending machine installation, stocking, and service",
+      description: site.description,
+      provider: { "@id": `${site.url}/#organization` },
+      areaServed: serviceArea,
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+        description: "No-cost machine, delivery, stocking, maintenance, or service for the host location.",
+      },
+    },
+  ],
 };
 ---
 
@@ -38,7 +73,7 @@ const localBusinessSchema = {
     <title>{title}</title>
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex" />}
-    <link rel="canonical" href={new URL(Astro.url.pathname, site.url).toString()} />
+    <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -46,7 +81,7 @@ const localBusinessSchema = {
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={new URL(Astro.url.pathname, site.url).toString()} />
+    <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={new URL("/og.png", site.url).toString()} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -54,7 +89,9 @@ const localBusinessSchema = {
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={new URL("/og.png", site.url).toString()} />
 
-    <script type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />
+    {Astro.url.pathname === "/" && (
+      <script type="application/ld+json" set:html={JSON.stringify(homePageSchema)} />
+    )}
   </head>
   <body>
     <a href="#main" class="skip-link">Skip to content</a>
