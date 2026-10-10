@@ -19,8 +19,8 @@ const year = new Date().getFullYear();
       />
       <h2 class="mb-3 font-body text-base font-semibold text-white">Crossbell Vending</h2>
       <p class="max-w-[32ch] text-sm text-lavender">
-        AI-powered smart coolers for break rooms, gyms, auto shops, offices, and light industrial
-        sites in Macomb and north Oakland County.
+        Smart coolers and secure smart markets for break rooms, gyms, offices, apartment
+        communities, and industrial sites in Macomb and north Oakland County.
       </p>
       <p class="mt-3 text-xs text-[#9EA2D6]">
         {site.legalName} &middot; Macomb County, Michigan &middot; Fully insured
@@ -34,9 +34,13 @@ const year = new Date().getFullYear();
       <p>
         <a href={`mailto:${site.email}`} class="hover:text-accent break-all">{site.email}</a>
       </p>
-      <p class="mt-3">
-        <a href="/contact" class="hover:text-accent underline underline-offset-2">Contact page</a>
-      </p>
+      <nav aria-label="Company" class="mt-4">
+        <ul class="space-y-2 text-sm">
+          <li><a href="/services/" class="hover:text-accent underline underline-offset-2">Services</a></li>
+          <li><a href="/machines/" class="hover:text-accent underline underline-offset-2">Machine lineup</a></li>
+          <li><a href="/contact/" class="hover:text-accent underline underline-offset-2">Contact page</a></li>
+        </ul>
+      </nav>
     </div>
     <div>
       <h2 class="mb-3 font-body text-base font-semibold text-white">Service area</h2>

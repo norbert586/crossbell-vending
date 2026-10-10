@@ -1,0 +1,390 @@
+---
+import { Image } from "astro:assets";
+import Layout from "../layouts/Layout.astro";
+import ContactSection from "../components/ContactSection.astro";
+import FaqItem from "../components/FaqItem.astro";
+import ServiceAreaSection from "../components/ServiceAreaSection.astro";
+import { site } from "../data/site";
+import plus440 from "../assets/machines/plus-440-angle.jpg";
+import max620 from "../assets/machines/max-620-angle.jpg";
+import ultra1200 from "../assets/machines/ultra-1200-angle.jpg";
+import freezer550 from "../assets/machines/freezer-550-front.jpg";
+
+const title = "Smart Cooler & Smart Market Services | Crossbell Vending";
+const description =
+  "Compare Crossbell smart cooler vending and secure smart market service for workplaces and shared spaces across Macomb and north Oakland County, Michigan.";
+
+const areaServed = site.serviceArea
+  .flatMap((entry) => entry.name.split("/").map((city) => city.trim()))
+  .map((city) => ({ "@type": "City", name: `${city}, MI` }));
+
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": `${site.url}/services/#managed-smart-vending`,
+  name: "Managed smart vending service",
+  serviceType: "Smart cooler vending and secure smart market installation, stocking, and service",
+  description,
+  url: `${site.url}/services/`,
+  provider: { "@id": `${site.url}/#organization` },
+  areaServed,
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Smart vending formats",
+    itemListElement: [
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Smart cooler vending",
+          description: "A single secure, cashless smart cooler installed, stocked, and serviced by Crossbell Vending.",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Smart market service",
+          description: "A coordinated group of secure smart coolers and freezers managed as one onsite market.",
+        },
+      },
+    ],
+  },
+};
+---
+
+<Layout title={title} description={description} contactHref="#contact" schema={serviceSchema}>
+  <!-- Hero: the measured bay is a real equipment decision, not decoration. -->
+  <section class="overflow-hidden bg-indigo text-paper">
+    <div class="mx-auto grid max-w-[1280px] lg:grid-cols-[1.05fr_0.95fr]">
+      <div class="flex flex-col justify-center px-5 py-14 sm:px-8 sm:py-20 lg:py-24 lg:pr-14 lg:pl-[max(2rem,calc((100vw-1120px)/2+2rem))]">
+        <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent uppercase">
+          Smart vending, sized to the room
+        </p>
+        <h1 class="mt-4 max-w-[15.5ch] text-[clamp(2.7rem,5vw,4.25rem)] font-bold leading-[0.98] text-white">
+          One cooler when that's enough. A complete smart market when it isn't.
+        </h1>
+        <p class="mt-6 max-w-[52ch] text-lg leading-relaxed text-lavender">
+          Crossbell builds the setup around your traffic, floor space, and the food people ask for.
+          We install it, stock it, monitor it, and keep it running on our Macomb and north Oakland route.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3.5">
+          <a
+            href="#contact"
+            class="inline-flex min-h-11 items-center rounded-[3px] bg-accent px-6 py-3.5 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover"
+          >
+            Request a site visit
+          </a>
+          <a
+            href="#compare"
+            class="inline-flex min-h-11 items-center rounded-[3px] border-2 border-lavender px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white hover:text-indigo"
+          >
+            Compare the formats
+          </a>
+        </div>
+        <p class="mt-4 text-sm text-lavender">No-cost equipment and service for qualifying locations.</p>
+      </div>
+
+      <div class="relative border-t border-indigo-2 bg-white px-5 pt-10 pb-7 text-ink sm:px-10 lg:border-t-0 lg:border-l">
+        <div class="absolute top-0 left-0 bg-accent px-4 py-2 font-mono text-[0.68rem] font-bold tracking-[0.16em] text-ink uppercase">
+          Placement study · 02 doors
+        </div>
+        <div class="flex min-h-[360px] items-end justify-center pt-7 sm:min-h-[500px]">
+          <Image
+            src={ultra1200}
+            alt="Two-door smart cooler shown at a three-quarter angle"
+            widths={[520, 760, 1000]}
+            sizes="(min-width: 1024px) 46vw, 90vw"
+            class="h-auto max-h-[480px] w-full object-contain"
+            loading="eager"
+            decoding="sync"
+            fetchpriority="high"
+          />
+        </div>
+        <div class="relative mt-2 border-t-2 border-ink pt-4">
+          <span class="absolute -top-2 left-0 h-4 border-l-2 border-ink"></span>
+          <span class="absolute -top-2 right-0 h-4 border-r-2 border-ink"></span>
+          <div class="flex items-start justify-between gap-6 font-mono text-[0.68rem] font-semibold tracking-[0.08em] uppercase">
+            <span>53.9 in cabinet width</span>
+            <span class="text-right text-accent-dim">Tap · take · close</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-accent text-ink" aria-label="Service commitments">
+    <dl class="mx-auto grid max-w-[1120px] divide-y divide-ink/20 px-5 sm:grid-cols-3 sm:divide-x sm:divide-y-0 sm:px-8">
+      <div class="py-6 sm:pr-8">
+        <dt class="font-mono text-xs font-bold tracking-[0.14em] uppercase">One local operator</dt>
+        <dd class="mt-2 text-sm font-medium">The people who answer also run the route.</dd>
+      </div>
+      <div class="py-6 sm:px-8">
+        <dt class="font-mono text-xs font-bold tracking-[0.14em] uppercase">Remote + weekly</dt>
+        <dd class="mt-2 text-sm font-medium">Inventory is watched between scheduled visits.</dd>
+      </div>
+      <div class="py-6 sm:pl-8">
+        <dt class="font-mono text-xs font-bold tracking-[0.14em] uppercase">Right-sized first</dt>
+        <dd class="mt-2 text-sm font-medium">We recommend the smallest setup that serves the site well.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <!-- Two formats, presented as a decision rather than a generic feature grid. -->
+  <section id="compare" class="scroll-mt-20 py-14 sm:py-20" aria-labelledby="format-heading">
+    <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
+      <div class="max-w-[60ch]">
+        <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent-dim uppercase">Choose by use, not by model</p>
+        <h2 id="format-heading" class="mt-2 text-[clamp(2rem,3.8vw,3rem)] font-semibold">
+          Start with the room. Then choose the hardware.
+        </h2>
+        <p class="mt-4 text-[1.04rem] leading-relaxed text-muted">
+          Both formats use the same secure, cashless checkout and the same Crossbell service route.
+          The difference is how much selection the location can support.
+        </p>
+      </div>
+
+      <div class="mt-10 border-y-2 border-ink">
+        <article id="smart-cooler" class="grid scroll-mt-24 gap-5 border-b border-line py-7 md:grid-cols-[90px_1fr_240px] md:items-start md:gap-8">
+          <div class="font-mono text-sm font-bold text-accent-dim">FORMAT 01</div>
+          <div>
+            <h3 class="text-[clamp(1.65rem,3vw,2.2rem)] font-semibold">Smart cooler vending</h3>
+            <p class="mt-2 max-w-[58ch] text-muted">
+              One secure glass-door cooler with automatic checkout. It gives a smaller break room,
+              gym, lobby, or waiting area a useful mix without taking over the wall.
+            </p>
+            <a href="#cooler-detail" class="mt-4 inline-flex text-sm font-semibold underline decoration-accent decoration-2 underline-offset-4">
+              See the single-station setup ↓
+            </a>
+          </div>
+          <dl class="grid grid-cols-2 gap-4 border-l-0 border-line md:grid-cols-1 md:border-l md:pl-6">
+            <div><dt class="font-mono text-[0.66rem] font-semibold tracking-[0.12em] text-muted uppercase">Doors</dt><dd class="mt-1 font-semibold">One or two</dd></div>
+            <div><dt class="font-mono text-[0.66rem] font-semibold tracking-[0.12em] text-muted uppercase">Best fit</dt><dd class="mt-1 font-semibold">Compact spaces</dd></div>
+          </dl>
+        </article>
+
+        <article id="smart-market" class="grid scroll-mt-24 gap-5 py-7 md:grid-cols-[90px_1fr_240px] md:items-start md:gap-8">
+          <div class="font-mono text-sm font-bold text-accent-dim">FORMAT 02</div>
+          <div>
+            <h3 class="text-[clamp(1.65rem,3vw,2.2rem)] font-semibold">Smart market</h3>
+            <p class="mt-2 max-w-[58ch] text-muted">
+              A coordinated group of coolers and freezers managed as one onsite store. It adds
+              room for more drinks, snacks, fresh choices, frozen items, and site-specific essentials.
+            </p>
+            <a href="#market-detail" class="mt-4 inline-flex text-sm font-semibold underline decoration-accent decoration-2 underline-offset-4">
+              See how the market grows ↓
+            </a>
+          </div>
+          <dl class="grid grid-cols-2 gap-4 border-l-0 border-line md:grid-cols-1 md:border-l md:pl-6">
+            <div><dt class="font-mono text-[0.66rem] font-semibold tracking-[0.12em] text-muted uppercase">Doors</dt><dd class="mt-1 font-semibold">Two or more</dd></div>
+            <div><dt class="font-mono text-[0.66rem] font-semibold tracking-[0.12em] text-muted uppercase">Best fit</dt><dd class="mt-1 font-semibold">Busy, multi-shift sites</dd></div>
+          </dl>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="cooler-detail" class="scroll-mt-20 bg-lavender-tint py-14 sm:py-20">
+    <div class="mx-auto grid max-w-[1120px] gap-10 px-5 sm:px-8 md:grid-cols-[0.82fr_1.18fr] md:items-center">
+      <figure class="border border-line bg-white p-5 sm:p-8">
+        <Image
+          src={plus440}
+          alt="Single-door smart cooler shown at a three-quarter angle"
+          widths={[460, 720, 900]}
+          sizes="(min-width: 768px) 38vw, 90vw"
+          class="mx-auto h-auto max-h-[520px] w-full object-contain"
+          loading="lazy"
+        />
+        <figcaption class="mt-4 border-t border-line pt-3 font-mono text-[0.68rem] font-semibold tracking-[0.1em] text-muted uppercase">
+          Single station · 26.8 in example footprint
+        </figcaption>
+      </figure>
+      <div>
+        <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent-dim uppercase">Smart cooler vending</p>
+        <h2 class="mt-2 text-[clamp(2rem,3.8vw,3rem)] font-semibold">A small store behind one door.</h2>
+        <p class="mt-4 max-w-[56ch] text-[1.04rem] leading-relaxed text-muted">
+          Customers tap a card or phone to unlock, take one item or several, and close the door.
+          The cooler records what left and completes the purchase automatically—no product coils,
+          no barcode scanning, and no separate kiosk.
+        </p>
+        <dl class="mt-7 grid gap-x-8 gap-y-5 border-t border-line pt-6 sm:grid-cols-2">
+          <div><dt class="font-mono text-xs font-semibold tracking-[0.12em] text-accent-dim uppercase">Selection</dt><dd class="mt-1">Cold drinks, snacks, protein, fresh options, and premium items.</dd></div>
+          <div><dt class="font-mono text-xs font-semibold tracking-[0.12em] text-accent-dim uppercase">Checkout</dt><dd class="mt-1">Credit or debit card, Apple Pay, and Google Pay.</dd></div>
+          <div><dt class="font-mono text-xs font-semibold tracking-[0.12em] text-accent-dim uppercase">Site needs</dt><dd class="mt-1">A level indoor spot, service access, and one standard outlet.</dd></div>
+          <div><dt class="font-mono text-xs font-semibold tracking-[0.12em] text-accent-dim uppercase">Service</dt><dd class="mt-1">Weekly route visits with remote inventory checks in between.</dd></div>
+        </dl>
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+          <a href="/machines/" class="inline-flex min-h-11 items-center rounded-[3px] bg-accent px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover">
+            Compare cooler sizes
+          </a>
+          <a href="/contact/?service=smart-cooler" class="text-sm font-semibold underline decoration-accent decoration-2 underline-offset-4">
+            Ask about a cooler
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="market-detail" class="scroll-mt-20 py-14 sm:py-20">
+    <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
+      <div class="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end">
+        <div class="pb-1">
+          <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent-dim uppercase">Smart market</p>
+          <h2 class="mt-2 text-[clamp(2rem,3.8vw,3rem)] font-semibold">Build the market one bay at a time.</h2>
+          <p class="mt-4 max-w-[50ch] text-[1.04rem] leading-relaxed text-muted">
+            A smart market is not one oversized machine. It is a deliberate mix of refrigerated
+            and frozen capacity, matched to the room and serviced as one Crossbell location.
+          </p>
+          <p class="mt-4 max-w-[50ch] text-muted">
+            Start with the traffic and the product mix. Add doors only when the site needs them.
+            That keeps the footprint useful instead of filling a wall for appearance's sake.
+          </p>
+        </div>
+
+        <!-- Signature service-bay diagram using approved, model-specific product imagery. -->
+        <figure class="border-2 border-ink bg-white">
+          <div class="flex items-center justify-between border-b border-line px-4 py-3">
+            <span class="font-mono text-[0.68rem] font-bold tracking-[0.14em] uppercase">Example service bay</span>
+            <span class="font-mono text-[0.68rem] font-semibold text-accent-dim uppercase">Configured after walkthrough</span>
+          </div>
+          <div class="grid grid-cols-[0.78fr_1.42fr_0.8fr] divide-x divide-line">
+            <div class="flex min-w-0 flex-col px-2 pt-4 sm:px-4">
+              <span class="font-mono text-[0.62rem] font-semibold tracking-[0.1em] text-muted uppercase">Cooler</span>
+              <Image src={max620} alt="Single-door smart cooler module" widths={[260, 420]} sizes="20vw" class="mt-auto h-auto w-full object-contain" loading="lazy" />
+            </div>
+            <div class="flex min-w-0 flex-col px-2 pt-4 sm:px-4">
+              <span class="font-mono text-[0.62rem] font-semibold tracking-[0.1em] text-muted uppercase">Double-door cooler</span>
+              <Image src={ultra1200} alt="Double-door smart cooler module" widths={[380, 620]} sizes="32vw" class="mt-auto h-auto w-full object-contain" loading="lazy" />
+            </div>
+            <div class="flex min-w-0 flex-col px-2 pt-4 sm:px-4">
+              <span class="font-mono text-[0.62rem] font-semibold tracking-[0.1em] text-muted uppercase">Freezer</span>
+              <Image src={freezer550} alt="Single-door smart freezer module" widths={[260, 420]} sizes="20vw" class="mt-auto h-auto w-full object-contain" loading="lazy" />
+            </div>
+          </div>
+          <figcaption class="border-t-2 border-ink px-4 py-3 text-sm text-muted">
+            An example, not a fixed package. The final mix depends on space, traffic, shifts, and what people will buy.
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="mt-10 grid gap-px border border-line bg-line md:grid-cols-4">
+        <div class="bg-paper p-5"><div class="font-mono text-[0.68rem] font-bold tracking-[0.12em] text-accent-dim uppercase">Drinks</div><p class="mt-2 text-sm text-muted">Water, soda, energy, sports drinks, juice, and cold brew.</p></div>
+        <div class="bg-paper p-5"><div class="font-mono text-[0.68rem] font-bold tracking-[0.12em] text-accent-dim uppercase">Snacks</div><p class="mt-2 text-sm text-muted">Everyday favorites, protein, better-for-you choices, and local requests.</p></div>
+        <div class="bg-paper p-5"><div class="font-mono text-[0.68rem] font-bold tracking-[0.12em] text-accent-dim uppercase">Fresh + frozen</div><p class="mt-2 text-sm text-muted">Ready-to-eat options and frozen items where the location supports them.</p></div>
+        <div class="bg-paper p-5"><div class="font-mono text-[0.68rem] font-bold tracking-[0.12em] text-accent-dim uppercase">Site essentials</div><p class="mt-2 text-sm text-muted">Personal care, convenience, or premium items chosen for the audience.</p></div>
+      </div>
+
+      <aside class="mt-8 grid gap-4 border-l-4 border-accent bg-lavender-tint p-5 sm:p-7 md:grid-cols-[180px_1fr] md:gap-8">
+        <h3 class="font-body text-base font-semibold">Why “smart market”?</h3>
+        <p class="text-[0.98rem] leading-relaxed text-muted">
+          A traditional micro market puts products on open shelves and checks customers out at a
+          central kiosk. Crossbell's smart market keeps products inside secure coolers and freezers;
+          checkout happens at each door. It delivers broad selection without an open retail floor.
+        </p>
+      </aside>
+
+      <div class="mt-8">
+        <a href="/contact/?service=smart-market" class="inline-flex min-h-11 items-center rounded-[3px] bg-accent px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover">
+          Ask about a smart market
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-indigo py-14 text-paper sm:py-20" aria-labelledby="checkout-heading">
+    <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
+      <div class="max-w-[56ch]">
+        <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent uppercase">The customer side</p>
+        <h2 id="checkout-heading" class="mt-2 text-[clamp(2rem,3.8vw,3rem)] font-semibold text-white">Four actions. No kiosk lesson.</h2>
+      </div>
+      <ol class="mt-10 grid border-y border-indigo-2 sm:grid-cols-4 sm:divide-x sm:divide-indigo-2">
+        <li class="border-b border-indigo-2 py-6 sm:border-b-0 sm:px-5 sm:first:pl-0">
+          <div class="font-mono text-xs font-bold text-accent">01 / TAP</div><p class="mt-2 text-sm text-lavender">Tap a card or mobile wallet at the reader.</p>
+        </li>
+        <li class="border-b border-indigo-2 py-6 sm:border-b-0 sm:px-5">
+          <div class="font-mono text-xs font-bold text-accent">02 / OPEN</div><p class="mt-2 text-sm text-lavender">The door unlocks after payment authorization.</p>
+        </li>
+        <li class="border-b border-indigo-2 py-6 sm:border-b-0 sm:px-5">
+          <div class="font-mono text-xs font-bold text-accent">03 / TAKE</div><p class="mt-2 text-sm text-lavender">Choose one item or several in the same visit.</p>
+        </li>
+        <li class="py-6 sm:pr-0 sm:pl-5">
+          <div class="font-mono text-xs font-bold text-accent">04 / CLOSE</div><p class="mt-2 text-sm text-lavender">The system records the items and completes checkout.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="py-14 sm:py-20" aria-labelledby="responsibility-heading">
+    <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
+      <div class="max-w-[58ch]">
+        <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent-dim uppercase">Clear responsibilities</p>
+        <h2 id="responsibility-heading" class="mt-2 text-[clamp(2rem,3.8vw,3rem)] font-semibold">You provide the place. We run the market.</h2>
+      </div>
+      <div class="mt-9 grid border-2 border-ink md:grid-cols-2 md:divide-x md:divide-ink">
+        <div class="p-6 sm:p-8">
+          <h3 class="font-body text-lg font-semibold">Crossbell handles</h3>
+          <ul class="mt-5 grid gap-3 text-muted sm:grid-cols-2">
+            <li class="border-t border-line pt-3">Equipment and delivery</li>
+            <li class="border-t border-line pt-3">Installation and setup</li>
+            <li class="border-t border-line pt-3">Product selection</li>
+            <li class="border-t border-line pt-3">Stocking and rotation</li>
+            <li class="border-t border-line pt-3">Remote inventory checks</li>
+            <li class="border-t border-line pt-3">Cleaning, service, and repairs</li>
+          </ul>
+        </div>
+        <div class="border-t-2 border-ink bg-lavender-tint p-6 sm:p-8 md:border-t-0">
+          <h3 class="font-body text-lg font-semibold">Your location provides</h3>
+          <ul class="mt-5 grid gap-3 text-muted sm:grid-cols-2">
+            <li class="border-t border-line pt-3">A suitable indoor space</li>
+            <li class="border-t border-line pt-3">Standard wall power</li>
+            <li class="border-t border-line pt-3">Access for route service</li>
+            <li class="border-t border-line pt-3">Enough daily use to support the setup</li>
+            <li class="border-t border-line pt-3 sm:col-span-2">Honest feedback about what people want stocked</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ServiceAreaSection />
+
+  <section id="faq" class="scroll-mt-20 py-14 sm:py-20">
+    <div class="mx-auto max-w-[880px] px-5 sm:px-8">
+      <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent-dim uppercase">Service FAQ</p>
+      <h2 class="mt-2 text-[clamp(2rem,3.8vw,3rem)] font-semibold">Before we measure the room</h2>
+      <div class="mt-8 border-t border-line">
+        <FaqItem question="What is the difference between a smart cooler and a smart market?">
+          A smart cooler is one self-contained, cashless station. A smart market combines two or more
+          coolers or freezers to carry a broader mix at a busier location. Crossbell manages the full
+          setup as one stop on our route.
+        </FaqItem>
+        <FaqItem question="Is this the same as an open-shelf micro market?">
+          No. An open-shelf micro market uses fixtures and a central self-checkout kiosk. A Crossbell
+          smart market keeps products behind controlled doors and handles checkout at each cabinet.
+          That makes it a better fit where open shelves or a separate kiosk are not practical.
+        </FaqItem>
+        <FaqItem question="Does the host pay for the equipment or service?">
+          Qualifying locations pay no equipment, delivery, stocking, or service charge. We confirm fit
+          during the walkthrough because a larger smart market needs enough regular traffic to stay
+          fresh and useful.
+        </FaqItem>
+        <FaqItem question="How much space and power do we need?">
+          A single cooler starts at 22.8 inches wide. Larger coolers and multi-unit markets need more
+          wall space, and each cabinet needs access to standard power. We measure the actual placement,
+          door swing, walking clearance, and outlet access before recommending anything.
+        </FaqItem>
+        <FaqItem question="Who decides what gets stocked?">
+          We start with the site type, shift pattern, and expected traffic, then adjust from real sales
+          and requests. The point is not to force the same planogram into every location—it is to stock
+          the mix your people will actually use.
+        </FaqItem>
+      </div>
+    </div>
+  </section>
+
+  <ContactSection
+    id="contact"
+    heading="Request a smart vending walkthrough"
+    subheading="Tell us about the room, the people who use it, and when they are there. We'll recommend a single cooler or a smart market after a ten-minute site visit."
+  />
+</Layout>
