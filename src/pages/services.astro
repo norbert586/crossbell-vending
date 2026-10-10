@@ -56,15 +56,16 @@ const serviceSchema = {
 <Layout title={title} description={description} contactHref="#contact" schema={serviceSchema}>
   <!-- Hero: the measured bay is a real equipment decision, not decoration. -->
   <section class="overflow-hidden bg-indigo text-paper">
-    <div class="mx-auto grid max-w-[1280px] lg:grid-cols-[1.05fr_0.95fr]">
-      <div class="flex flex-col justify-center px-5 py-14 sm:px-8 sm:py-20 lg:py-24 lg:pr-14 lg:pl-[max(2rem,calc((100vw-1120px)/2+2rem))]">
+    <div class="grid lg:grid-cols-2">
+      <div class="flex flex-col justify-center px-5 py-14 sm:px-8 sm:py-20 lg:min-h-[640px] lg:py-20 lg:pr-14 lg:pl-[max(2rem,calc((100vw-1120px)/2+2rem))] xl:min-h-[680px]">
         <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent uppercase">
           Smart vending, sized to the room
         </p>
-        <h1 class="mt-4 max-w-[15.5ch] text-[clamp(2.7rem,5vw,4.25rem)] font-bold leading-[0.98] text-white">
-          One cooler when that's enough. A complete smart market when it isn't.
+        <h1 class="mt-4 max-w-[15.5ch] text-[clamp(2.7rem,4.1vw,4rem)] font-bold leading-[0.98] text-white">
+          <span class="block">One smart cooler.</span>
+          <span class="block">Or a full market, sized to your space.</span>
         </h1>
-        <p class="mt-6 max-w-[52ch] text-lg leading-relaxed text-lavender">
+        <p class="mt-6 max-w-[46ch] text-lg leading-relaxed text-lavender">
           Crossbell builds the setup around your traffic, floor space, and the food people ask for.
           We install it, stock it, monitor it, and keep it running on our Macomb and north Oakland route.
         </p>
@@ -85,9 +86,9 @@ const serviceSchema = {
         <p class="mt-4 text-sm text-lavender">No-cost equipment and service for qualifying locations.</p>
       </div>
 
-      <div class="relative border-t border-indigo-2 bg-white px-5 pt-10 pb-7 text-ink sm:px-10 lg:border-t-0 lg:border-l">
+      <div class="relative border-t border-indigo-2 bg-white px-5 pt-10 pb-7 text-ink sm:px-10 lg:min-h-[640px] lg:border-t-0 lg:border-l lg:pt-10 lg:pr-[max(2rem,calc((100vw-1120px)/2+2rem))] lg:pb-8 lg:pl-14 xl:min-h-[680px]">
         <div class="absolute top-0 left-0 bg-accent px-4 py-2 font-mono text-[0.68rem] font-bold tracking-[0.16em] text-ink uppercase">
-          Placement study · 02 doors
+          Example market bay · 02 doors
         </div>
         <div class="flex min-h-[360px] items-end justify-center pt-7 sm:min-h-[500px]">
           <Image
@@ -95,7 +96,7 @@ const serviceSchema = {
             alt="Two-door smart cooler shown at a three-quarter angle"
             widths={[520, 760, 1000]}
             sizes="(min-width: 1024px) 46vw, 90vw"
-            class="h-auto max-h-[480px] w-full object-contain"
+            class="h-auto max-h-[430px] w-full object-contain"
             loading="eager"
             decoding="sync"
             fetchpriority="high"
@@ -274,7 +275,7 @@ const serviceSchema = {
         <div class="bg-paper p-5"><div class="font-mono text-[0.68rem] font-bold tracking-[0.12em] text-accent-dim uppercase">Site essentials</div><p class="mt-2 text-sm text-muted">Personal care, convenience, or premium items chosen for the audience.</p></div>
       </div>
 
-      <aside class="mt-8 grid gap-4 border-l-4 border-accent bg-lavender-tint p-5 sm:p-7 md:grid-cols-[180px_1fr] md:gap-8">
+      <aside class="mt-8 grid gap-4 border border-line bg-lavender-tint p-5 sm:p-7 md:grid-cols-[180px_1fr] md:gap-8">
         <h3 class="font-body text-base font-semibold">Why “smart market”?</h3>
         <p class="text-[0.98rem] leading-relaxed text-muted">
           A traditional micro market puts products on open shelves and checks customers out at a
