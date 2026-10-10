@@ -11,8 +11,9 @@ interface Props {
   description: string;
   contactHref?: string;
   noindex?: boolean;
+  schema?: Record<string, unknown>;
 }
-const { title, description, contactHref = "/contact", noindex = false } = Astro.props;
+const { title, description, contactHref = "/contact", noindex = false, schema } = Astro.props;
 
 const canonicalUrl = new URL(Astro.url.pathname, site.url).toString();
 const serviceArea = site.serviceArea
@@ -92,6 +93,7 @@ const homePageSchema = {
     {Astro.url.pathname === "/" && (
       <script type="application/ld+json" set:html={JSON.stringify(homePageSchema)} />
     )}
+    {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
   </head>
   <body>
     <a href="#main" class="skip-link">Skip to content</a>

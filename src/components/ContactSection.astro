@@ -94,6 +94,19 @@ const {
             </select>
           </div>
         </div>
+        <div class="mb-5 flex flex-col gap-1.5">
+          <label for="service-interest" class="text-sm font-semibold">What are you considering?</label>
+          <select
+            id="service-interest"
+            name="service_interest"
+            class="border border-line bg-paper px-3 py-2.5 text-[1.0625rem] focus:border-indigo focus:outline-2 focus:outline-indigo focus:outline-offset-1"
+          >
+            <option value="recommendation">Not sure — recommend a setup</option>
+            <option value="smart-cooler">Smart cooler vending</option>
+            <option value="smart-market">Smart market</option>
+            <option value="machine-lineup">A specific machine</option>
+          </select>
+        </div>
         <div class="mb-6 flex flex-col gap-1.5">
           <label for="message" class="text-sm font-semibold">Anything we should know</label>
           <textarea

@@ -1,7 +1,12 @@
 # Crossbell Vending — marketing site
 
 Static brochure site (Astro + Tailwind CSS v4 + TypeScript) for Crossbell Vending: a home page,
-a machine lineup page, and a contact page. No CMS, no database, no client-side framework.
+a services page, a machine lineup page, and a contact page. No CMS, no database, no client-side framework.
+
+The `/services/` page explains the two managed formats Crossbell offers: a standalone smart cooler
+and a multi-unit smart market. It deliberately distinguishes the secure cooler/freezer format from
+an open-shelf micro market, then routes inquiries into the shared Netlify form with a visible
+`service_interest` selection.
 
 ## Local development
 
