@@ -15,7 +15,8 @@ export default defineConfig({
   integrations: [
     sitemap({
       // Form success page — reachable only by submitting a form, not for search.
-      filter: (page) => !page.includes('/thanks/'),
+      // The pack page (/pack/) is reached from the resident welcome email only.
+      filter: (page) => !page.includes('/thanks/') && !page.includes('/pack/'),
     }),
   ]
 });

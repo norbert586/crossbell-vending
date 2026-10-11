@@ -11,9 +11,11 @@ interface Props {
   description: string;
   contactHref?: string;
   noindex?: boolean;
+  /** The fixed mobile call/contact bar. Off on pages for residents, not hosts. */
+  actionBar?: boolean;
   schema?: Record<string, unknown>;
 }
-const { title, description, contactHref = "/contact", noindex = false, schema } = Astro.props;
+const { title, description, contactHref = "/contact", noindex = false, actionBar = true, schema } = Astro.props;
 
 const canonicalUrl = new URL(Astro.url.pathname, site.url).toString();
 const serviceArea = site.serviceArea
@@ -95,14 +97,14 @@ const homePageSchema = {
     )}
     {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
   </head>
-  <body>
+  <body class:list={{ "no-action-bar": !actionBar }}>
     <a href="#main" class="skip-link">Skip to content</a>
     <Header contactHref={contactHref} />
     <main id="main">
       <slot />
     </main>
     <Footer />
-    <MobileBar contactHref={contactHref} />
+    {actionBar && <MobileBar contactHref={contactHref} />}
     <Attribution />
   </body>
 </html>
