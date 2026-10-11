@@ -118,6 +118,10 @@ footer :focus-visible,
   .mobile-action-bar {
     padding-bottom: env(safe-area-inset-bottom);
   }
+
+  body.no-action-bar {
+    padding-bottom: 0;
+  }
 }
 
 /* Native disclosure marker cleanup for the mobile navigation. */

@@ -119,7 +119,9 @@
       // the machine, not reading the sales pitch. Keyed off the params of THIS
       // page load rather than stored attribution, so it fires only on the
       // actual scan landing and not on every later page in the session.
-      if (clean(params.get("utm_source")) !== "cooler") return;
+      // A `loc` link (the pack page and resident welcome email use
+      // /contact/?loc=<slug>#feedback) is a resident too, wherever it came from.
+      if (clean(params.get("utm_source")) !== "cooler" && !params.get("loc")) return;
 
       var input = document.getElementById("fb-location");
       if (!input) return;
