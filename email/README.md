@@ -8,7 +8,7 @@ goes in it, and a way to reply. About two iPhone screens of scroll.
 | `follow-up-pamphlet.html` | The template. Open it in a browser and copy from there — see below. |
 | `welcome-residents.html` | Welcome email for residents of a new location. See [Resident welcome](#resident-welcome) at the end. |
 | `build-assets.mjs` | Regenerates the hosted images in `public/email/` from the site photos. |
-| `build-pack-preview.mjs` | Renders `public/email/pack.jpg`, the still of the Crossbell Pack, from the live `/pack/` page. |
+| `build-pack-preview.mjs` | Renders `public/email/pack.jpg`, the still of the Crossbell Pack, from the live `/promotions/` page. |
 
 ## Before the first send — deploy once
 
@@ -135,17 +135,17 @@ into a Gmail draft and send it to yourself.
 ## Resident welcome
 
 `welcome-residents.html` goes to the people who live or work where a cooler was just installed —
-not to the host. It does two things: sends them to the **Crossbell Pack**
-(<https://crossbellvending.com/pack/>), a tap-to-open pack with one card inside, and gives them a
-way to ask for a product. Send it the same way as the pamphlet: open in a browser, copy, paste
+not to the host. It does two things: sends them to the **promotions page**
+(<https://crossbellvending.com/promotions/>) — a tap-to-open Crossbell Pack with one card inside,
+then whatever promotions are running below it — and gives them a way to ask for a product. Send it the same way as the pamphlet: open in a browser, copy, paste
 into Gmail.
 
 Subject: `Welcome, Kirkway — meet Crossbell`. Gmail uses the opening line as the inbox preview,
 so there is no hidden preheader (one would survive the paste as visible text).
 
 The email says there is a launch-week offer in the pack and deliberately does **not** say what it
-is — that is the reason to tap. The card itself lives in `src/data/pack.ts`: price, product,
-dates, fine print. Once the offer's last day has passed, the page shows the "What should come
+is — that is the reason to tap. The card and the promotions list live in `src/data/promotions.ts`: price, product,
+dates, fine print, promo images. Once the offer's last day has passed, the page shows the "What should come
 next?" card instead, without a redeploy.
 
 ### Before sending
@@ -155,12 +155,11 @@ next?" card instead, without a redeploy.
 | `[where in the building]` | Opening paragraph — "the clubhouse", "the lobby by the mailboxes". |
 | `[Street address], [City], MI [ZIP]` | Footer. Required, as with the pamphlet. |
 | `[how you got their address …]` | Footer. One honest line on why they are hearing from you. |
-| Offer dates | `src/data/pack.ts` (`starts`, `ends`). Deploy before sending. |
-| Cooler photo | Still the generic shot. Swap in the real cooler when you have it. |
+| Offer dates | `src/data/promotions.ts` (`starts`, `ends`). Deploy before sending. |
 | "Coming soon" line | Keep anything not in the cooler on send day marked as coming soon. |
 | The $2 price | Set it in the cooler's pricing for the offer dates — the page only announces it. |
 
-Deploy first: `pack.jpg` and the `/pack/` page ship with the site, so check
+Deploy first: `pack.jpg`, `kirkway-cooler.jpg` and the `/promotions/` page ship with the site, so check
 <https://crossbellvending.com/email/pack.jpg> loads before the first send.
 
 Opt-outs arrive as replies saying "unsubscribe". Keep a list and leave those people off the next
@@ -171,7 +170,8 @@ send.
 Copy the file, then change "Kirkway" (letterhead, greeting, the three `utm_campaign=kirkway`
 links, and `loc=kirkway` on the request link) and the footer line. The `loc` slug is what the
 feedback form fills in as the location; use the same slug as that cooler's QR sticker. The pack
-page itself is shared: its card is set up for one location at a time in `src/data/pack.ts`.
+page itself is shared: its card and promotions are set up for one location at a time in
+`src/data/promotions.ts`. Old `/pack/` links redirect to `/promotions/` (`netlify.toml`).
 
 All links carry `utm_source=email&utm_medium=welcome&utm_campaign=<location>`, so requests that
 start from this email show up as `email / welcome / kirkway` in Netlify Forms.

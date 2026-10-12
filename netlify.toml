@@ -38,6 +38,20 @@
   status = 302
   force = true
 
+# The promotions page was first published as /pack/ (the Crossbell Pack).
+# Keep old links working; the query string (utm_ tags) carries over.
+[[redirects]]
+  from = "/pack/*"
+  to = "/promotions/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/pack"
+  to = "/promotions/"
+  status = 301
+  force = true
+
 [[headers]]
   for = "/*"
   [headers.values]
