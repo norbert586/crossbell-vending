@@ -150,14 +150,16 @@ next?" card instead, without a redeploy.
 
 ### Before sending
 
+The Kirkway copy is filled in: the cooler is in the business center at 8891 Christopher Street,
+and the footer carries the Crossbell Vending LLC address (13023 Azure Drive, Shelby Township) and
+opt-out. Still check, each time:
+
 | What | Where |
 |---|---|
-| `[where in the building]` | Opening paragraph — "the clubhouse", "the lobby by the mailboxes". |
-| `[Street address], [City], MI [ZIP]` | Footer. Required, as with the pamphlet. |
-| `[how you got their address …]` | Footer. One honest line on why they are hearing from you. |
 | Offer dates | `src/data/promotions.ts` (`starts`, `ends`). Deploy before sending. |
 | "Coming soon" line | Keep anything not in the cooler on send day marked as coming soon. |
 | The $2 price | Set it in the cooler's pricing for the offer dates — the page only announces it. |
+| Recipients | Put residents in **Bcc**, never To or Cc, so nobody sees anyone else's address. |
 
 Deploy first: `pack.jpg`, `kirkway-cooler.jpg` and the `/promotions/` page ship with the site, so check
 <https://crossbellvending.com/email/pack.jpg> loads before the first send.
@@ -167,8 +169,9 @@ send.
 
 ### Another location
 
-Copy the file, then change "Kirkway" (letterhead, greeting, the three `utm_campaign=kirkway`
-links, and `loc=kirkway` on the request link) and the footer line. The `loc` slug is what the
+Copy the file, then change "Kirkway" (letterhead, greeting, the "Find it" block, the
+`utm_campaign=kirkway` links, `loc=kirkway` on the request link, and the footer's "why you're
+getting this" line) and swap in that location's cooler photo. The `loc` slug is what the
 feedback form fills in as the location; use the same slug as that cooler's QR sticker. The pack
 page itself is shared: its card and promotions are set up for one location at a time in
 `src/data/promotions.ts`. Old `/pack/` links redirect to `/promotions/` (`netlify.toml`).
