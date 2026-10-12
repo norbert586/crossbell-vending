@@ -88,19 +88,30 @@ const bodyClip = `polygon(${xs.map((x, i) => `${x} ${i % 2 ? "0" : `${TOOTH}px`}
             </article>
           </div>
 
+          <!-- The tear strip is drawn twice: the piece that rips away and the
+               piece still attached to the pack. Each is clipped to its side of
+               the tear point (--p, 0..1) so together they always look like
+               one strip torn exactly as far as the finger has gone. -->
           <button type="button" class="pack" data-pack aria-label="Open the Crossbell pack">
-            <span class="pack-body" aria-hidden="true">
-              <span class="pack-frame"></span>
-              <span class="pack-count">1 card</span>
-              <Image src={crest} alt="" width={120} height={140} densities={[1, 2]} class="pack-crest" loading="eager" />
-              <span class="pack-name">Crossbell</span>
-              <span class="pack-rule"></span>
-              <span class="pack-kind">Discovery Pack</span>
-              <span class="pack-cta">Open to see what's inside.</span>
-              <span class="pack-crimp"></span>
-            </span>
-            <span class="pack-top" aria-hidden="true">
-              <span class="pack-tear">Tear to open</span>
+            <span class="pack-inner" data-pack-inner>
+              <span class="pack-body" aria-hidden="true">
+                <span class="pack-frame"></span>
+                <span class="pack-count">1 card</span>
+                <Image src={crest} alt="" width={120} height={140} densities={[1, 2]} class="pack-crest" loading="eager" />
+                <span class="pack-name">Crossbell</span>
+                <span class="pack-rule"></span>
+                <span class="pack-kind">Discovery Pack</span>
+                <span class="pack-cta">Open to see what's inside.</span>
+                <span class="pack-crimp"></span>
+                <span class="pack-shine"></span>
+              </span>
+              <span class="tear tear--on" aria-hidden="true">
+                <span class="pack-top"><span class="pack-tear">Tear to open</span><span class="pack-shine"></span></span>
+              </span>
+              <span class="tear tear--off" data-tear-off aria-hidden="true">
+                <span class="pack-top"><span class="pack-tear">Tear to open</span><span class="pack-shine"></span></span>
+              </span>
+              <span class="tear-front" aria-hidden="true"></span>
             </span>
           </button>
         </div>
@@ -121,7 +132,7 @@ const bodyClip = `polygon(${xs.map((x, i) => `${x} ${i % 2 ? "0" : `${TOOTH}px`}
           })();
         </script>
 
-        <p class="pack-hint" data-pack-hint>Tap the pack to open it.</p>
+        <p class="pack-hint" data-pack-hint aria-live="polite">Swipe across the top to tear it open &mdash; or just tap.</p>
 
         <div class="pack-actions" data-pack-actions>
           <a
@@ -294,6 +305,30 @@ const bodyClip = `polygon(${xs.map((x, i) => `${x} ${i % 2 ? "0" : `${TOOTH}px`}
       text-align: center;
       transition: box-shadow 500ms ease;
     }
+    .pack-card {
+      perspective: 900px;
+    }
+    .is-open .card {
+      transform: rotateX(calc(var(--cy, 0) * -8deg)) rotateY(calc(var(--cx, 0) * 10deg));
+      transition: transform 180ms ease-out, box-shadow 500ms ease;
+    }
+    /* Holo glare that follows the finger once the card is out */
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at calc(50% + var(--cx, 0) * 60%) calc(50% + var(--cy, 0) * 60%), rgb(255 255 255 / 0.55), transparent 45%),
+        linear-gradient(calc(115deg + var(--cx, 0) * 30deg), transparent 35%, rgb(205 209 255 / 0.35) 47%, rgb(246 220 170 / 0.35) 53%, transparent 65%);
+      mix-blend-mode: soft-light;
+      opacity: 0;
+      transition: opacity 300ms ease;
+    }
+    .is-open .card.is-lit::before {
+      opacity: 1;
+    }
     /* One pass of light across the card as it lands (run from the script). */
     .card::after {
       content: "";
@@ -389,6 +424,19 @@ const bodyClip = `polygon(${xs.map((x, i) => `${x} ${i % 2 ? "0" : `${TOOTH}px`}
         drop-shadow(0 0 36px rgb(196 147 80 / 0.28))
         drop-shadow(0 22px 24px rgb(0 0 0 / 0.45));
       border-radius: 4px;
+      perspective: 900px;
+      /* Horizontal drags are ours (the tear); vertical ones still scroll. */
+      touch-action: pan-y;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    /* Follows the finger or cursor: a few degrees of tilt, no more. */
+    .pack-inner {
+      position: absolute;
+      inset: 0;
+      transform: rotateX(calc(var(--my, 0) * -7deg)) rotateY(calc(var(--mx, 0) * 9deg));
+      transition: transform 160ms ease-out;
     }
     .pack-body,
     .pack-top {
@@ -401,18 +449,12 @@ const bodyClip = `polygon(${xs.map((x, i) => `${x} ${i % 2 ? "0" : `${TOOTH}px`}
         repeating-linear-gradient(90deg, rgb(255 255 255 / 0.025) 0 1px, transparent 1px 5px),
         linear-gradient(115deg, #23234f 0%, #2f2f66 34%, #4b4b8c 46%, #33336c 58%, #202048 100%);
       background-size: auto, 220% 100%;
-      background-position: 0 0, 30% 0;
-      transition: background-position 600ms ease;
-    }
-    .pack:hover .pack-body,
-    .pack:hover .pack-top,
-    .pack:focus-visible .pack-body,
-    .pack:focus-visible .pack-top {
-      background-position: 0 0, 55% 0;
+      /* The highlight band slides with the pointer, like foil under a lamp. */
+      background-position: 0 0, calc(32% + var(--mx, 0) * 30%) 0;
     }
     .pack-top {
       top: 0;
-      height: 17%;
+      height: 100%;
       clip-path: var(--top-clip);
       transform-origin: 0% 100%;
       display: flex;
@@ -438,6 +480,64 @@ const bodyClip = `polygon(${xs.map((x, i) => `${x} ${i % 2 ? "0" : `${TOOTH}px`}
       color: var(--color-lavender);
       opacity: 0.85;
     }
+    /* ---------- the tear ---------- */
+    .tear {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 17%;
+    }
+    .tear--on {
+      clip-path: inset(-5% 0 -5% calc(var(--p, 0) * 100%));
+    }
+    .tear--off {
+      clip-path: inset(-60% calc((1 - var(--p, 0)) * 100%) -5% -10%);
+      transform-origin: calc(var(--p, 0) * 100%) 100%;
+      transform: translateY(calc(var(--p, 0) * -14%)) rotate(calc(var(--p, 0) * -12deg));
+      filter: brightness(1.18);
+    }
+    .is-rtl .tear--on {
+      clip-path: inset(-5% calc(var(--p, 0) * 100%) -5% 0);
+    }
+    .is-rtl .tear--off {
+      clip-path: inset(-60% -10% -5% calc((1 - var(--p, 0)) * 100%));
+      transform-origin: calc((1 - var(--p, 0)) * 100%) 100%;
+      transform: translateY(calc(var(--p, 0) * -14%)) rotate(calc(var(--p, 0) * 12deg));
+    }
+    /* The bright, ragged edge where foil is parting */
+    .tear-front {
+      position: absolute;
+      top: 0;
+      height: 17%;
+      left: calc(var(--p, 0) * 100%);
+      width: 5px;
+      margin-left: -2.5px;
+      opacity: 0;
+      background: linear-gradient(180deg, transparent, #fff 25%, #f6dcaa 70%, transparent);
+      clip-path: polygon(50% 0, 100% 12%, 20% 26%, 100% 40%, 10% 55%, 90% 70%, 0 84%, 60% 100%, 0 100%, 0 0);
+      filter: drop-shadow(0 0 6px rgb(226 183 117 / 0.95));
+      pointer-events: none;
+    }
+    .is-rtl .tear-front {
+      left: calc((1 - var(--p, 0)) * 100%);
+    }
+    .is-tearing .tear-front {
+      opacity: 1;
+    }
+    /* Light catching the foil where the pointer is */
+    .pack-shine {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at calc(50% + var(--mx, 0) * 55%) calc(45% + var(--my, 0) * 55%), rgb(255 255 255 / 0.32), transparent 42%),
+        linear-gradient(calc(110deg + var(--mx, 0) * 25deg), transparent 30%, rgb(205 209 255 / 0.18) 45%, rgb(226 183 117 / 0.16) 55%, transparent 70%);
+      mix-blend-mode: overlay;
+      opacity: var(--shine, 0.55);
+      transition: opacity 300ms ease;
+    }
+
     .pack-body {
       top: calc(17% - var(--tooth));
       bottom: 0;
@@ -528,6 +628,14 @@ const bodyClip = `polygon(${xs.map((x, i) => `${x} ${i % 2 ? "0" : `${TOOTH}px`}
     }
     .is-armed .pack {
       display: block;
+    }
+    .is-torn .pack {
+      touch-action: none;
+      cursor: grab;
+    }
+    .is-torn .tear--off,
+    .is-torn .tear-front {
+      visibility: hidden;
     }
     .is-armed .pack-replay {
       display: inline-flex;
@@ -627,88 +735,315 @@ const bodyClip = `polygon(${xs.map((x, i) => `${x} ${i % 2 ? "0" : `${TOOTH}px`}
   </style>
 
   <script>
-    // The opening, about 1.4 s end to end: a press, the strip tears off, the
-    // card rises out of the pack, then the pack drops away and the card comes
-    // forward. Plain Web Animations — nothing to load. Every step uses
-    // fill: "both" so a replay can cancel the lot and start clean.
+    // The Crossbell Pack, modelled on how card apps open packs (Pokemon TCG
+    // Pocket's swipe-to-tear, then pulling the card out):
+    //
+    //  1. Idle   the pack tilts a few degrees and its foil catches the light
+    //            under the finger or cursor.
+    //  2. Tear   a sideways drag rips the top strip exactly as far as the
+    //            finger has gone (--p, 0..1), either direction. Let go before
+    //            55% and it springs back; past that it finishes on its own.
+    //  3. Pull   the card peeks out of the open pack; drag it up and out.
+    //  4. Reveal the pack drops away, the card comes forward, one sweep of
+    //            light, then a gentle holo tilt under the finger.
+    //
+    // A plain tap (or Enter/Space) plays the whole thing hands-free. Reduced
+    // motion gets a short fade and no tilt. Plain Web Animations and pointer
+    // events; nothing to load.
     const scene = document.querySelector<HTMLElement>("[data-pack-scene]");
+    const stage = scene?.querySelector<HTMLElement>(".pack-stage");
     const pack = scene?.querySelector<HTMLButtonElement>("[data-pack]");
-    const top = scene?.querySelector<HTMLElement>(".pack-top");
+    const inner = scene?.querySelector<HTMLElement>("[data-pack-inner]");
+    const tearOff = scene?.querySelector<HTMLElement>("[data-tear-off]");
     const body = scene?.querySelector<HTMLElement>(".pack-body");
     const cardWrap = scene?.querySelector<HTMLElement>("[data-pack-card]");
     const actions = scene?.querySelector<HTMLElement>("[data-pack-actions]");
     const replay = scene?.querySelector<HTMLButtonElement>("[data-pack-replay]");
+    const hint = scene?.querySelector<HTMLElement>("[data-pack-hint]");
 
-    if (scene && pack && top && body && cardWrap && actions && replay) {
+    if (scene && stage && pack && inner && tearOff && body && cardWrap && actions && replay && hint) {
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const ease = "cubic-bezier(0.2, 0, 0, 1)";
       const tucked = "translateY(4%) scale(0.88)";
-      const risen = "translateY(-22%) scale(0.88)";
-      let opening = false;
+      const peek = "translateY(-16%) scale(0.88)";
+      // Mouse users drag and click; touch users swipe and tap.
+      const mouse = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+      const HINT_CLOSED = mouse
+        ? "Drag across the top to tear it open \u2014 or just click."
+        : hint.textContent ?? "";
+      hint.textContent = HINT_CLOSED;
+      const HINT_TORN = mouse ? "Now drag the card up and out \u2191" : "Now pull the card up and out \u2191";
+
+      type Phase = "closed" | "tearing" | "torn" | "revealing" | "open";
+      let phase: Phase = "closed";
+      let tear = 0; // --p
+      let touched = false;
+      let lastTick = 0;
 
       const run = (el: Element, keyframes: Keyframe[], options: KeyframeAnimationOptions) =>
         el.animate(keyframes, { fill: "both", easing: ease, ...options }).finished;
-
-      const finish = () => {
-        scene.classList.replace("is-opening", "is-open");
-        cardWrap.inert = false;
-        cardWrap.querySelector<HTMLElement>(".card:not([hidden]) .card-title")?.focus({ preventScroll: true });
-        if (!reduced) {
-          run(actions, [{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }], { duration: 300 });
-          const face = cardWrap.querySelector(".card:not([hidden])");
-          face?.animate([{ transform: "translateX(-130%)" }, { transform: "translateX(130%)" }], {
-            duration: 900,
-            delay: 80,
-            easing: "ease-in-out",
-            pseudoElement: "::after",
-          });
-        }
-        opening = false;
+      const clamp = (v: number, lo = 0, hi = 1) => Math.min(hi, Math.max(lo, v));
+      const setTear = (v: number) => {
+        tear = v;
+        scene.style.setProperty("--p", v.toFixed(4));
+        // A light tick every tenth of the way, on phones that support it.
+        const tick = Math.floor(v * 10);
+        if (tick > lastTick) navigator.vibrate?.(5);
+        lastTick = tick;
+      };
+      // Tween --p (CSS variables can't be animated with WAAPI everywhere).
+      const tweenTear = (to: number, ms: number) =>
+        new Promise<void>((resolve) => {
+          const from = tear;
+          const t0 = performance.now();
+          const step = (now: number) => {
+            const k = clamp((now - t0) / ms);
+            const e = 1 - Math.pow(1 - k, 3);
+            setTear(from + (to - from) * e);
+            if (k < 1) requestAnimationFrame(step);
+            else resolve();
+          };
+          requestAnimationFrame(step);
+        });
+      const setHint = (text: string) => {
+        if (hint.textContent !== text) hint.textContent = text;
       };
 
-      const open = async () => {
-        if (opening || scene.classList.contains("is-open")) return;
-        opening = true;
-        scene.classList.add("is-opening");
-        try {
-          if (reduced) {
-            cardWrap.style.zIndex = "3";
-            await Promise.all([
-              run(pack, [{ opacity: 1 }, { opacity: 0 }], { duration: 200 }),
-              run(cardWrap, [{ opacity: 0, transform: "none" }, { opacity: 1, transform: "none" }], { duration: 200 }),
-            ]);
-          } else {
-            await run(pack, [{ transform: "scale(1)" }, { transform: "scale(0.97)", offset: 0.4 }, { transform: "scale(1)" }], { duration: 220, easing: "ease-out" });
-            const tear = run(top, [
-              { transform: "none", opacity: 1 },
-              { transform: "rotate(-9deg)", opacity: 1, offset: 0.35 },
-              { transform: "translate(34%, -120%) rotate(-24deg)", opacity: 0 },
-            ], { duration: 560, easing: "cubic-bezier(0.4, 0, 0.6, 1)" });
-            await new Promise((r) => setTimeout(r, 240));
-            await run(cardWrap, [{ transform: tucked }, { transform: risen }], { duration: 480 });
-            cardWrap.style.zIndex = "3";
-            await Promise.all([
-              tear,
-              run(body, [{ transform: "none", opacity: 1 }, { transform: "translateY(16%)", opacity: 0 }], { duration: 380, easing: "ease-in" }),
-              run(cardWrap, [{ transform: risen }, { transform: "none" }], { duration: 460 }),
-            ]);
+      // ---- 1. tilt + foil ----
+      const aim = (el: HTMLElement, e: PointerEvent, x: string, y: string) => {
+        const r = el.getBoundingClientRect();
+        el.style.setProperty(x, (clamp((e.clientX - r.left) / r.width) * 2 - 1).toFixed(3));
+        el.style.setProperty(y, (clamp((e.clientY - r.top) / r.height) * 2 - 1).toFixed(3));
+      };
+      const settle = (el: HTMLElement, x: string, y: string) => {
+        el.style.setProperty(x, "0");
+        el.style.setProperty(y, "0");
+      };
+      if (!reduced) {
+        stage.addEventListener("pointermove", (e) => {
+          if (phase === "closed" || phase === "tearing" || phase === "torn") {
+            aim(pack, e, "--mx", "--my");
+            pack.style.setProperty("--shine", "0.9");
           }
+        });
+        stage.addEventListener("pointerleave", () => {
+          settle(pack, "--mx", "--my");
+          pack.style.removeProperty("--shine");
+        });
+      }
+
+      // ---- 2. tear, 3. pull ----
+      let drag: { id: number; x: number; y: number; moved: boolean; mode: "none" | "tear" | "pull" } | null = null;
+      let suppressClick = false;
+
+      stage.addEventListener("pointerdown", (e) => {
+        // Each touch starts clean: after a drag, the click can land on the
+        // stage rather than the pack, so a stale flag would eat the next tap.
+        suppressClick = false;
+        if (phase !== "closed" && phase !== "torn") return;
+        touched = true;
+        drag = { id: e.pointerId, x: e.clientX, y: e.clientY, moved: false, mode: "none" };
+      });
+
+      stage.addEventListener("pointermove", (e) => {
+        if (!drag || e.pointerId !== drag.id) return;
+        const dx = e.clientX - drag.x;
+        const dy = e.clientY - drag.y;
+        const w = pack.getBoundingClientRect().width;
+        if (drag.mode === "none") {
+          if (Math.hypot(dx, dy) < 8) return;
+          drag.moved = true;
+          if (phase === "closed" && Math.abs(dx) > Math.abs(dy)) {
+            drag.mode = "tear";
+            phase = "tearing";
+            scene.classList.toggle("is-rtl", dx < 0);
+            scene.classList.add("is-tearing");
+            stage.setPointerCapture(e.pointerId);
+          } else if (phase === "torn" && dy < 0) {
+            drag.mode = "pull";
+            stage.setPointerCapture(e.pointerId);
+          } else {
+            drag = null; // a scroll, not ours
+            return;
+          }
+        }
+        if (drag.mode === "tear") {
+          const dir = scene.classList.contains("is-rtl") ? -1 : 1;
+          setTear(clamp((dx * dir) / (w * 0.8)));
+          if (tear >= 1) {
+            drag = null;
+            completeTear();
+          }
+        } else if (drag.mode === "pull") {
+          const h = cardWrap.getBoundingClientRect().height;
+          const lift = clamp(-dy / h, 0, 0.6);
+          cardWrap.getAnimations().forEach((a) => a.cancel());
+          cardWrap.style.transform = `translateY(${-16 - lift * 60}%) scale(${0.88 + lift * 0.1})`;
+          if (lift > 0.32) {
+            drag = null;
+            reveal();
+          }
+        }
+      });
+
+      const endDrag = (e: PointerEvent) => {
+        if (!drag || e.pointerId !== drag.id) return;
+        const d = drag;
+        drag = null;
+        if (d.moved) suppressClick = true;
+        if (d.mode === "tear") {
+          if (tear > 0.55) completeTear();
+          else {
+            scene.classList.remove("is-tearing");
+            tweenTear(0, 260).then(() => {
+              if (phase === "tearing") phase = "closed";
+            });
+          }
+        } else if (d.mode === "pull") {
+          cardWrap.style.transform = "";
+          run(cardWrap, [{ transform: getComputedStyle(cardWrap).transform }, { transform: peek }], { duration: 260 });
+        }
+      };
+      stage.addEventListener("pointerup", endDrag);
+      stage.addEventListener("pointercancel", endDrag);
+
+      const completeTear = async () => {
+        if (phase !== "tearing" && phase !== "closed") return;
+        phase = "revealing"; // locks input during the flourish
+        scene.classList.add("is-tearing");
+        await tweenTear(1, 140);
+        navigator.vibrate?.(18);
+        const dir = scene.classList.contains("is-rtl") ? -1 : 1;
+        run(tearOff, [
+          { transform: getComputedStyle(tearOff).transform, opacity: 1 },
+          { transform: `translate(${dir * 30}%, -170%) rotate(${dir * -28}deg)`, opacity: 0 },
+        ], { duration: 520, easing: "cubic-bezier(0.3, 0, 0.6, 1)" });
+        scene.classList.remove("is-tearing");
+        await run(cardWrap, [{ transform: tucked }, { transform: peek }], { duration: 520, delay: 120 });
+        scene.classList.add("is-torn");
+        phase = "torn";
+        setHint(HINT_TORN);
+        cardWrap.querySelector(".card:not([hidden])")?.animate(
+          [{ transform: "translateY(0)" }, { transform: "translateY(-3%)" }, { transform: "translateY(0)" }],
+          { duration: 700, delay: 400, easing: "ease-in-out" },
+        );
+      };
+
+      // ---- 4. reveal ----
+      const reveal = async () => {
+        if (phase === "revealing" || phase === "open") return;
+        phase = "revealing";
+        scene.classList.add("is-opening");
+        const from = cardWrap.style.transform || getComputedStyle(cardWrap).transform;
+        cardWrap.style.transform = "";
+        cardWrap.style.zIndex = "3";
+        navigator.vibrate?.([10, 40, 14]);
+        try {
+          await Promise.all([
+            run(body, [{ transform: "none", opacity: 1 }, { transform: "translateY(18%)", opacity: 0 }], { duration: 360, easing: "ease-in" }),
+            run(pack, [{ opacity: 1 }, { opacity: 0 }], { duration: 360, delay: 120 }),
+            run(cardWrap, [{ transform: from }, { transform: "translateY(-6%) scale(1.03)", offset: 0.6 }, { transform: "none" }], { duration: 620 }),
+          ]);
         } catch {
           // An interrupted animation must not strand anyone at a closed pack.
         }
         finish();
       };
 
-      const reset = () => {
-        [pack, top, body, cardWrap, actions].forEach((el) => el.getAnimations().forEach((a) => a.cancel()));
-        cardWrap.style.zIndex = "";
-        cardWrap.inert = true;
-        scene.classList.remove("is-open");
-        pack.focus();
+      const finish = () => {
+        scene.classList.remove("is-opening", "is-torn", "is-tearing");
+        scene.classList.add("is-open");
+        phase = "open";
+        cardWrap.inert = false;
+        cardWrap.querySelector<HTMLElement>(".card:not([hidden]) .card-title")?.focus({ preventScroll: true });
+        if (!reduced) {
+          run(actions, [{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }], { duration: 300 });
+          cardWrap.querySelector(".card:not([hidden])")?.animate(
+            [{ transform: "translateX(-130%)" }, { transform: "translateX(130%)" }],
+            { duration: 900, delay: 80, easing: "ease-in-out", pseudoElement: "::after" },
+          );
+        }
       };
 
-      pack.addEventListener("click", open);
-      replay.addEventListener("click", reset);
+      // Holo tilt on the revealed card
+      if (!reduced) {
+        cardWrap.addEventListener("pointermove", (e) => {
+          if (phase !== "open") return;
+          const face = cardWrap.querySelector<HTMLElement>(".card:not([hidden])");
+          if (!face) return;
+          aim(face, e, "--cx", "--cy");
+          face.classList.add("is-lit");
+        });
+        cardWrap.addEventListener("pointerleave", () => {
+          const face = cardWrap.querySelector<HTMLElement>(".card:not([hidden])");
+          if (!face) return;
+          settle(face, "--cx", "--cy");
+          face.classList.remove("is-lit");
+        });
+      }
+
+      // ---- tap / keyboard: the whole thing, hands-free ----
+      const autoOpen = async () => {
+        if (reduced) {
+          if (phase !== "closed") return;
+          phase = "revealing";
+          scene.classList.add("is-opening");
+          cardWrap.style.zIndex = "3";
+          try {
+            await Promise.all([
+              run(pack, [{ opacity: 1 }, { opacity: 0 }], { duration: 200 }),
+              run(cardWrap, [{ opacity: 0, transform: "none" }, { opacity: 1, transform: "none" }], { duration: 200 }),
+            ]);
+          } catch {}
+          finish();
+          return;
+        }
+        if (phase === "torn") return reveal();
+        if (phase !== "closed") return;
+        phase = "tearing";
+        scene.classList.remove("is-rtl");
+        scene.classList.add("is-tearing");
+        await tweenTear(1, 420);
+        await completeTear();
+        await new Promise((r) => setTimeout(r, 150));
+        reveal();
+      };
+
+      pack.addEventListener("click", () => {
+        if (suppressClick) {
+          suppressClick = false;
+          return;
+        }
+        autoOpen();
+      });
+
+      // One unprompted half-second "show me" peel, the way games nudge you,
+      // only if nobody has touched the pack yet. Not repeated.
+      if (!reduced) {
+        setTimeout(async () => {
+          if (touched || phase !== "closed") return;
+          scene.classList.add("is-tearing");
+          await tweenTear(0.14, 380);
+          await tweenTear(0, 420);
+          scene.classList.remove("is-tearing");
+          lastTick = 0;
+        }, 2200);
+      }
+
+      // ---- replay ----
+      replay.addEventListener("click", () => {
+        [pack, inner, tearOff, body, cardWrap, actions].forEach((el) => el.getAnimations().forEach((a) => a.cancel()));
+        cardWrap.querySelectorAll(".card").forEach((c) => c.getAnimations({ subtree: true }).forEach((a) => a.cancel()));
+        cardWrap.style.transform = "";
+        cardWrap.style.zIndex = "";
+        cardWrap.inert = true;
+        scene.classList.remove("is-open", "is-torn", "is-tearing", "is-opening", "is-rtl");
+        setTear(0);
+        lastTick = 0;
+        phase = "closed";
+        setHint(HINT_CLOSED);
+        pack.focus();
+      });
     }
   </script>
 </Layout>
