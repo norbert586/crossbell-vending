@@ -54,7 +54,7 @@ export const promotions: Promotion[] = [
   {
     id: "halloween-pokemon",
     image: halloweenPokemon,
-    alt: "Halloween at Crossbell: “A little treat. A new surprise. Pokémon cards coming soon.” Sealed gold-edged foil card packs beside a carved, glowing pumpkin.",
+    alt: "Halloween at Crossbell: “A little treat. A new surprise. Pokémon cards coming soon.” Pitch Black, Chaos Rising, and Perfect Order Pokémon booster pack illustrations beside a carved, glowing pumpkin.",
     label: "Coming soon",
     title: "Pokémon cards are on the way.",
     caption: "Trading cards are coming to the Kirkway cooler soon. Tell us which sets you'd want and we'll take it into account when we stock them.",
