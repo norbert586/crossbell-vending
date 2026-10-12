@@ -39,6 +39,11 @@ const work = [
   // The machine, portrait, next to the spec list.
   () => sharp(photo("01-machine.jpg")).resize(640).jpeg(jpeg).toFile(dest("machine.jpg")),
 
+  // The Kirkway cooler as installed, for the resident welcome email. Portrait
+  // 3:4 crop of the hallway photo that keeps the whole cooler, antenna to
+  // wheels, and trims the empty wall on either side.
+  () => sharp(photo("kirkway-cooler.jpg")).extract({ left: 222, top: 478, width: 1000, height: 1333 }).resize(480).jpeg(jpeg).toFile(dest("kirkway-cooler.jpg")),
+
   // Product lineups. Sources are PNGs on transparent/white; flattened to white
   // so they sit on the white card cleanly and weigh a fraction as JPEG.
   //

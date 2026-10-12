@@ -1,12 +1,14 @@
 ---
 import { Image } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
-import { pack } from "../data/pack";
+import { pack, promotions, location } from "../data/promotions";
 import crest from "../assets/brand/crest.png";
 
-// The Crossbell Pack — the page the resident welcome email links to
-// (email/welcome-residents.html). Tap the pack, it tears open, one card
-// slides out. What the card says lives in src/data/pack.ts.
+// Promotions — the page the resident welcome email links to
+// (email/welcome-residents.html). Up top, the Crossbell Pack: tap it, it
+// tears open, one card slides out. Below, whatever promotions are running.
+// What both say lives in src/data/promotions.ts. /pack/ redirects here
+// (netlify.toml) for any link sent before the rename.
 //
 // Built so the card is the page and the pack is decoration on top of it:
 //  - Without JavaScript the card simply shows; the pack never appears.
@@ -16,10 +18,10 @@ import crest from "../assets/brand/crest.png";
 //
 // Not in the nav, not in the sitemap (astro.config.mjs), noindex: it is
 // reached from the email, not from search.
-const title = "The Crossbell Pack | Crossbell Vending";
-const description = "Open a Crossbell pack and see what's inside.";
+const title = "Promotions | Crossbell Vending";
+const description = "Open a Crossbell pack and see what's running at your cooler.";
 
-const { card, afterCard, location } = pack;
+const { card, afterCard } = pack;
 const requestHref = `/contact/?loc=${location.slug}#feedback`;
 
 // "Oct 19 – 25", or "Oct 30 – Nov 5" across a month boundary.
@@ -52,10 +54,11 @@ const bodyClip = `polygon(${xs.map((x, i) => `${x} ${i % 2 ? "0" : `${TOOTH}px`}
 ---
 
 <Layout title={title} description={description} noindex actionBar={false}>
-  <section class="overflow-hidden py-8 sm:py-12">
-    <div class="mx-auto max-w-[1120px] px-5 text-center sm:px-8">
-      <p class="font-mono text-sm font-semibold uppercase text-accent-dim">The Crossbell Pack</p>
-      <h1 class="mt-2 text-[clamp(2rem,4vw,2.75rem)] font-bold">A little something extra.</h1>
+  <section class="promo-stage">
+    <div class="relative mx-auto max-w-[1120px] px-5 pb-14 pt-9 text-center sm:px-8 sm:pb-20 sm:pt-14">
+      <p class="font-mono text-sm font-semibold uppercase tracking-[0.12em] text-[#e2b775]">Promotions · {location.name}</p>
+      <h1 class="mt-2 text-[clamp(2.1rem,4.4vw,3.1rem)] font-bold text-white">A little something extra.</h1>
+      <p class="mx-auto mt-2 max-w-[44ch] text-lavender-tint">Open your Crossbell pack, then scroll down for what else is running.</p>
 
       <div class="pack-scene" data-pack-scene style={`--top-clip:${topClip};--body-clip:${bodyClip};--tooth:${TOOTH}px`}>
         <div class="pack-stage">
@@ -130,20 +133,130 @@ const bodyClip = `polygon(${xs.map((x, i) => `${x} ${i % 2 ? "0" : `${TOOTH}px`}
           <button
             type="button"
             data-pack-replay
-            class="pack-replay inline-flex items-center rounded-[3px] border-2 border-ink px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-ink hover:text-paper"
+            class="pack-replay inline-flex items-center rounded-[3px] border-2 border-lavender px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white hover:text-indigo"
           >
             Open it again
           </button>
         </div>
+        {promotions.length > 0 && (
+          <a href="#promotions" class="pack-more">
+            More promotions <span aria-hidden="true">&darr;</span>
+          </a>
+        )}
       </div>
     </div>
   </section>
 
+  {promotions.length > 0 && (
+    <section id="promotions" class="scroll-mt-20 py-14 sm:py-20">
+      <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
+        <p class="font-mono text-sm font-semibold uppercase text-accent-dim">Now running</p>
+        <h2 class="mt-2 text-[clamp(1.9rem,3.4vw,2.6rem)] font-bold">Promotions at {location.name}</h2>
+
+        <ul class="promo-list mt-8" data-promo-list>
+          {promotions.map((promo, i) => (
+            <li data-ends={promo.ends}>
+              <article class:list={["promo", { "promo--lead": i === 0 }]} aria-labelledby={`promo-${promo.id}`}>
+                <Image
+                  src={promo.image}
+                  alt={promo.alt}
+                  widths={[640, 960, 1280, 1536]}
+                  sizes={i === 0 ? "(min-width: 1120px) 640px, (min-width: 768px) 58vw, 100vw" : "(min-width: 768px) 50vw, 100vw"}
+                  class="promo-image"
+                  loading={i === 0 ? "eager" : "lazy"}
+                />
+                <div class="promo-body">
+                  <p class="promo-label">{promo.label}</p>
+                  <h3 id={`promo-${promo.id}`} class="mt-3 text-[clamp(1.6rem,2.6vw,2.1rem)] font-bold">{promo.title}</h3>
+                  <p class="mt-3 text-[1.02rem] leading-relaxed text-muted">{promo.caption}</p>
+                  <a
+                    href={promo.action.href ?? requestHref}
+                    class="mt-6 inline-flex items-center self-start rounded-[3px] bg-indigo px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-indigo-2"
+                  >
+                    {promo.action.text} <span aria-hidden="true" class="ml-1.5">&rarr;</span>
+                  </a>
+                </div>
+              </article>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-8 text-lg text-muted" data-promo-empty hidden>
+          Nothing else running right now. Check back soon, or
+          <a href={requestHref} class="font-semibold text-ink underline underline-offset-2">tell us what you'd like to see</a>.
+        </p>
+
+        <!-- Hide promotions past their end date (end of that day, local time). -->
+        <script is:inline>
+          (function () {
+            var items = document.querySelectorAll("[data-promo-list] > li[data-ends]");
+            var left = document.querySelectorAll("[data-promo-list] > li").length;
+            items.forEach(function (li) {
+              var p = li.getAttribute("data-ends").split("-");
+              if (Date.now() >= new Date(+p[0], +p[1] - 1, +p[2] + 1).getTime()) {
+                li.hidden = true;
+                left--;
+              }
+            });
+            if (!left) {
+              document.querySelector("[data-promo-empty]").hidden = false;
+              document.querySelectorAll('a[href="#promotions"]').forEach(function (a) { a.hidden = true; });
+            }
+          })();
+        </script>
+      </div>
+    </section>
+  )}
+
   <style>
+    /* ---------- the stage ----------
+       Indigo night with a warm spotlight where the pack sits and a faint foil
+       crosshatch that fades out toward the edges. All static. */
+    .promo-stage {
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      background:
+        radial-gradient(55% 42% at 50% 58%, rgb(196 147 80 / 0.28), transparent 70%),
+        radial-gradient(130% 90% at 50% 0%, #3b3b75 0%, #2a2a5c 42%, #16162c 100%);
+    }
+    .promo-stage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        repeating-linear-gradient(135deg, rgb(255 255 255 / 0.04) 0 1px, transparent 1px 16px),
+        repeating-linear-gradient(45deg, rgb(255 255 255 / 0.025) 0 1px, transparent 1px 16px);
+      mask-image: radial-gradient(70% 60% at 50% 55%, #000 30%, transparent 80%);
+    }
+    .promo-stage::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--color-accent) 30%, var(--color-accent) 70%, transparent);
+    }
+    .promo-stage :focus-visible {
+      outline-color: var(--color-accent);
+    }
+    /* A soft pool of light on the "table" under the pack and card */
+    .pack-stage::after {
+      content: "";
+      position: absolute;
+      left: 8%;
+      right: 8%;
+      bottom: -9%;
+      height: 12%;
+      z-index: 0;
+      border-radius: 50%;
+      background: radial-gradient(closest-side, rgb(0 0 0 / 0.45), transparent);
+      pointer-events: none;
+    }
+
     /* Card and pack share one footprint, 5:7. Sized so the pack, the hint and
        the buttons fit on a phone screen under the sticky header. */
     .pack-scene {
-      --w: clamp(220px, min(300px, 74vw, calc((100svh - 330px) * 5 / 7)), 300px);
+      --w: clamp(220px, min(300px, 74vw, calc((100svh - 360px) * 5 / 7)), 300px);
       margin-top: calc(var(--w) * 0.26);
     }
     .pack-stage {
@@ -154,13 +267,18 @@ const bodyClip = `polygon(${xs.map((x, i) => `${x} ${i % 2 ? "0" : `${TOOTH}px`}
     }
 
     /* ---------- the card ---------- */
+    /* The container is the wrapper, not the card: a card's own padding in cqw
+       would otherwise resolve against the nearest container above it — none,
+       so the viewport — and blow up on a wide screen. */
     .pack-card {
       position: absolute;
       inset: 0;
       z-index: 3;
+      container-type: inline-size;
     }
     .card {
-      container-type: inline-size;
+      position: relative;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -171,8 +289,24 @@ const bodyClip = `polygon(${xs.map((x, i) => `${x} ${i % 2 ? "0" : `${TOOTH}px`}
       border: 1px solid var(--color-line);
       outline: 2px solid var(--color-accent);
       outline-offset: -3.5cqw;
-      box-shadow: 0 18px 40px -18px rgb(20 20 32 / 0.45);
+      box-shadow: 0 18px 40px -18px rgb(0 0 0 / 0.6);
+      color: var(--color-ink);
       text-align: center;
+      transition: box-shadow 500ms ease;
+    }
+    /* One pass of light across the card as it lands (run from the script). */
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / 0.75) 50%, transparent 65%);
+      transform: translateX(-130%);
+      pointer-events: none;
+    }
+    .is-open .card {
+      box-shadow:
+        0 24px 60px -20px rgb(0 0 0 / 0.65),
+        0 0 70px -10px rgb(226 183 117 / 0.45);
     }
     .card[hidden] {
       display: none;
@@ -249,7 +383,11 @@ const bodyClip = `polygon(${xs.map((x, i) => `${x} ${i % 2 ? "0" : `${TOOTH}px`}
       width: 100%;
       cursor: pointer;
       container-type: inline-size;
-      filter: drop-shadow(0 20px 22px rgb(20 20 32 / 0.32));
+      /* A gold hairline and a warm halo lift indigo foil off the indigo stage. */
+      filter:
+        drop-shadow(0 0 1px rgb(226 183 117 / 0.7))
+        drop-shadow(0 0 36px rgb(196 147 80 / 0.28))
+        drop-shadow(0 22px 24px rgb(0 0 0 / 0.45));
       border-radius: 4px;
     }
     .pack-body,
@@ -402,7 +540,83 @@ const bodyClip = `polygon(${xs.map((x, i) => `${x} ${i % 2 ? "0" : `${TOOTH}px`}
       display: block;
       margin-top: 1.5rem;
       font-size: 1rem;
-      color: var(--color-muted);
+      color: var(--color-lavender-tint);
+    }
+    .pack-more {
+      display: inline-block;
+      margin-top: 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #e2b775;
+    }
+    .pack-more:hover {
+      color: #fff;
+    }
+    .is-armed:not(.is-open) .pack-more {
+      visibility: hidden;
+    }
+
+    /* ---------- promotions list ---------- */
+    .promo-list {
+      display: grid;
+      gap: 1.25rem;
+    }
+    @media (min-width: 768px) {
+      .promo-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .promo-list > li:first-child {
+        grid-column: 1 / -1;
+      }
+    }
+    .promo {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+      border: 1px solid var(--color-line);
+      border-top: 3px solid var(--color-accent);
+      background: #fff;
+    }
+    .promo-image {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 3 / 2;
+      object-fit: cover;
+      background: var(--color-ink);
+    }
+    .promo-body {
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem 1.5rem 1.75rem;
+    }
+    @media (min-width: 768px) {
+      .promo--lead {
+        display: grid;
+        grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+      }
+      .promo--lead .promo-image {
+        height: 100%;
+      }
+      .promo--lead .promo-body {
+        justify-content: center;
+        padding: 2rem 2.25rem;
+      }
+    }
+    .promo-label {
+      align-self: flex-start;
+      padding: 0.3rem 0.6rem;
+      background: var(--color-lavender-tint);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-indigo);
     }
     .is-armed:not(.is-open) .pack-actions {
       visibility: hidden;
@@ -439,7 +653,16 @@ const bodyClip = `polygon(${xs.map((x, i) => `${x} ${i % 2 ? "0" : `${TOOTH}px`}
         scene.classList.replace("is-opening", "is-open");
         cardWrap.inert = false;
         cardWrap.querySelector<HTMLElement>(".card:not([hidden]) .card-title")?.focus({ preventScroll: true });
-        if (!reduced) run(actions, [{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }], { duration: 300 });
+        if (!reduced) {
+          run(actions, [{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }], { duration: 300 });
+          const face = cardWrap.querySelector(".card:not([hidden])");
+          face?.animate([{ transform: "translateX(-130%)" }, { transform: "translateX(130%)" }], {
+            duration: 900,
+            delay: 80,
+            easing: "ease-in-out",
+            pseudoElement: "::after",
+          });
+        }
         opening = false;
       };
 
