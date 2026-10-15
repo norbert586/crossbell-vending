@@ -24,7 +24,7 @@ export const pack = {
     detail: "Any Celsius in the Kirkway cooler, all week.",
     starts: "2026-10-19",
     ends: "2026-10-25",
-    fineprint: "While supplies last. Price shows at checkout — nothing to claim or redeem.",
+    fineprint: "While supplies last. Price shows at checkout. Nothing to claim or redeem.",
   },
 
   // Shown once the offer has ended. Swap in the next promotion here when
