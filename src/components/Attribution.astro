@@ -110,7 +110,7 @@
       // Service links preselect the visible inquiry choice without hiding the
       // decision from the visitor. Unknown values fall back to a recommendation.
       var service = clean(params.get("service"));
-      if (service === "smart-cooler" || service === "smart-market" || service === "recommendation") {
+      if (["smart-cooler", "smart-market", "card-machine", "recommendation"].indexOf(service) !== -1) {
         var serviceInterest = document.getElementById("service-interest");
         if (serviceInterest) serviceInterest.value = service;
       }

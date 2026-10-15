@@ -1,12 +1,21 @@
 # Crossbell Vending — marketing site
 
 Static brochure site (Astro + Tailwind CSS v4 + TypeScript) for Crossbell Vending: a home page,
-a services page, a machine lineup page, and a contact page. No CMS, no database, no client-side framework.
+a services page, a cooler lineup page, and a contact page. No CMS, no database, no client-side framework.
 
-The `/services/` page explains the two managed formats Crossbell offers: a standalone smart cooler
-and a multi-unit smart market. It deliberately distinguishes the secure cooler/freezer format from
-an open-shelf micro market, then routes inquiries into the shared Netlify form with a visible
-`service_interest` selection.
+The `/services/` page explains the three formats Crossbell offers: a standalone smart cooler, a
+multi-unit smart market, and a trading card machine. It deliberately distinguishes the secure
+cooler/freezer format from an open-shelf micro market, then routes inquiries into the shared
+Netlify form with a visible `service_interest` selection (`?service=smart-cooler`,
+`smart-market`, or `card-machine` preselects it).
+
+**Trading card machines** (`/services/#card-machines`, teased on the home page). The machine is
+drawn (`src/components/CardMachineArt.astro`), not photographed: the exact unit is picked per
+venue, and generic foil packs keep the site clear of anyone else's artwork. Capacity copy ("about
+120 to 160 packs across 8 to 10 slots") is the range of the compact wall/counter units in the
+Oct 2 machine research; update it once a specific machine is in service. Keep the
+non-affiliation line under the section: Crossbell is an independent operator and must never
+read as an official Pokémon machine.
 
 ## Local development
 
@@ -70,12 +79,13 @@ from the page; do not pre-resize.
 
 | Shot | Where it's used | What to shoot | Status |
 |---|---|---|---|
-| Hero | Top of home page, right column | `02-machine.jpg` — two-door cooler in an office lobby. Square source; the layout crops it to portrait with `object-fit: cover`. | Placed. |
-| The machine | "The machine" section | `01-machine.jpg` — a 3:4 crop of `01-hero.png` (single-door cooler in a hallway, 16:9). Re-crop with `sharp` if the source changes: `extract({ left: 300, top: 0, width: 1080, height: 1440 })`. | Placed. |
+| Hero | Top of home page, right column | `kirkway-cooler.jpg`, a real Crossbell cooler in service. The layout crops it with `object-fit: cover`, anchored at `50% 62%` to keep the cabinet in frame. The caption does not name the site. | Placed. |
+| The machine | "Pick the size that fits your wall" | No photo: `MachineLineup.astro` draws the whole line to scale from the trimmed lineup photos (see below). | Placed. |
 | Carousel | "What's inside" cards | `04-colddrinks.png` through `09-premiumluxury.png` — product lineups on white, shown uncropped inside a 4:3 white box. The card list (labels, blurbs, alt text) is the `inside` array at the top of `src/pages/index.astro`. To add a card, drop a PNG on white in `src/assets/photos/`, import it, and add a row. | Placed. |
 
-When a real Crossbell placement is photographed, swap it in for the hero: a two-door unit in a
-real break room, three-quarter angle, lights on, no other company's logo in frame.
+Real placements beat renders every time. When a better one is photographed (a two-door unit in a
+real break room, three-quarter angle, lights on, no other company's logo in frame), swap it in for
+the hero. `02-machine.jpg` and `01-machine.jpg` are renders kept only for the email pamphlet.
 
 Shoot in landscape if that's easier and crop afterward — the aspect ratio matters more than the
 original orientation. The layout uses `object-fit: cover`, so exact pixel dimensions don't matter
@@ -96,7 +106,14 @@ the front when it doesn't. Machine on white, straight-on, 800px square minimum �
 for the expanded view. Currently missing angle shots: `mini-360`, `freezer-550`.
 
 **To add a machine:** drop the photo(s) in, import them at the top of `machines.ts`, add a row with
-the same `type` as its section. No page code changes.
+the same `type` as its section, then run `node scripts/cut-machine-photos.mjs`. No page code changes.
+
+**Drawn to scale.** `scripts/cut-machine-photos.mjs` trims the white margin off every front photo
+into `src/assets/machines/cut/`. With the margin gone, each photo's shape is the cabinet's real
+width-to-height ratio, so `MachineLineup.astro` (home page and `/machines/`) and the example
+smart market bay on `/services/` can size every machine by its real width and they line up inch
+for inch. A machine without a cut photo is left out of the lineup rather than drawn at the wrong
+size.
 
 **Where the numbers came from.** The manufacturer publishes three different sets of figures
 (store spec tables, homepage carousel, Amazon listings) that disagree with each other, and two

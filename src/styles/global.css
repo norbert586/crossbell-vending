@@ -29,44 +29,50 @@
   --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+/* Element defaults live in the base layer so Tailwind utilities on the same
+   element (font-body on a footer h2, leading-[0.98] on a hero h1) win. Unlayered
+   rules here would silently beat every utility class. */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
 
-body {
-  background-color: var(--color-paper);
-  color: var(--color-ink);
-  font-family: var(--font-body);
-}
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+  }
 
-::selection {
-  background: var(--color-lavender);
-  color: var(--color-ink);
-}
+  ::selection {
+    background: var(--color-lavender);
+    color: var(--color-ink);
+  }
 
-input,
-textarea,
-select {
-  caret-color: var(--color-accent-dim);
-}
+  input,
+  textarea,
+  select {
+    caret-color: var(--color-accent-dim);
+  }
 
-h1,
-h2,
-h3 {
-  font-family: var(--font-display);
-  line-height: 1.1;
-  text-wrap: balance;
-}
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    line-height: 1.1;
+    text-wrap: balance;
+  }
 
-:focus-visible {
-  outline: 3px solid var(--color-indigo);
-  outline-offset: 2px;
-}
+  :focus-visible {
+    outline: 3px solid var(--color-indigo);
+    outline-offset: 2px;
+  }
 
-.bg-indigo :focus-visible,
-footer :focus-visible,
-.route-board :focus-visible {
-  outline-color: var(--color-accent);
+  .bg-indigo :focus-visible,
+  .bg-ink :focus-visible,
+  footer :focus-visible,
+  .route-board :focus-visible {
+    outline-color: var(--color-accent);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

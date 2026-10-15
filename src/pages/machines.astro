@@ -1,11 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import MachineCard from "../components/MachineCard.astro";
+import MachineLineup from "../components/MachineLineup.astro";
 import { formatFootprint, machineCommon, machines, machineTypes } from "../data/machines";
 
 const title = "Smart Vending Coolers & Freezers | Crossbell Vending";
 const description =
-  "Six sizes of AI-powered smart cooler, from a single-door unit the size of a household fridge to a double-door cooler and a freezer. Every one is free to your business.";
+  "Six smart cooler sizes, from a single-door unit the size of a household fridge to a double-door cooler and a freezer. Every one is free to your business.";
 
 const sections = machineTypes
   .map((t) => ({ ...t, machines: machines.filter((m) => m.type === t.id) }))
@@ -16,7 +17,7 @@ const sections = machineTypes
   <!-- Intro -->
   <section class="bg-indigo text-paper">
     <div class="mx-auto max-w-[1120px] px-5 py-14 sm:px-8 sm:py-20">
-      <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent uppercase">The lineup</p>
+      <p class="text-sm font-semibold text-accent">The cooler lineup</p>
       <h1 class="mt-3 text-[clamp(2.4rem,5vw,4rem)] font-bold leading-[1.02] text-white">
         Six smart vending cooler sizes. <span class="text-accent">All free to the host.</span>
       </h1>
@@ -47,8 +48,7 @@ const sections = machineTypes
   <section class="py-14 sm:py-20" aria-labelledby="compare-heading">
     <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
       <div class="max-w-[62ch]">
-        <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent-dim uppercase">Compare the lineup</p>
-        <h2 id="compare-heading" class="mt-2 text-[clamp(1.9rem,3.4vw,2.6rem)] font-semibold">
+        <h2 id="compare-heading" class="text-[clamp(1.9rem,3.4vw,2.6rem)] font-semibold">
           Which smart cooler fits your location?
         </h2>
         <p class="mt-3 text-muted">
@@ -56,7 +56,10 @@ const sections = machineTypes
           outlet and is installed, stocked, and serviced by Crossbell at no cost to the host.
         </p>
       </div>
-      <div class="mt-8 overflow-x-auto border border-line bg-white">
+      <div class="mt-8 border border-line bg-white px-5 pt-8 pb-5 sm:px-8">
+        <MachineLineup hrefBase="" caption="All six drawn to scale. Lines mark two, four, and six feet off the floor. Tap one for its full specs." />
+      </div>
+      <div class="mt-6 overflow-x-auto border border-line bg-white">
         <table class="w-full min-w-[940px] border-collapse text-left text-sm">
           <caption class="sr-only">Comparison of Crossbell smart vending coolers and freezers</caption>
           <thead class="bg-indigo text-paper">
@@ -96,10 +99,10 @@ const sections = machineTypes
     <section id={s.id} class:list={["scroll-mt-20 py-14 sm:py-20", { "bg-lavender-tint": i % 2 === 0 }]}>
       <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
         <div class="mb-8 max-w-[56ch]">
-          <p class="font-mono text-xs font-semibold tracking-[0.18em] text-accent-dim uppercase">
+          <p class="text-sm font-semibold text-accent-dim">
             {s.machines.length === 1 ? "One machine" : `${s.machines.length} machines`}
           </p>
-          <h2 class="mt-2 text-[clamp(1.9rem,3.4vw,2.6rem)] font-semibold">{s.heading}</h2>
+          <h2 class="mt-1 text-[clamp(1.9rem,3.4vw,2.6rem)] font-semibold">{s.heading}</h2>
           <p class="mt-3 text-muted">{s.description}</p>
         </div>
         <ul class="machine-grid" data-machine-grid aria-label={s.label}>
@@ -118,6 +121,8 @@ const sections = machineTypes
         <h2 class="text-[clamp(1.7rem,3vw,2.3rem)] font-semibold text-white">Not sure which one fits?</h2>
         <p class="mt-2 text-lavender">
           Tell us about the space and how many people use it. We'll match the machine to it.
+          Running a rink, bowling center, or family venue?
+          <a href="/services/#card-machines" class="font-semibold text-white underline decoration-accent decoration-2 underline-offset-4">See our trading card machines.</a>
         </p>
       </div>
       <div class="flex flex-wrap gap-3">
@@ -230,7 +235,16 @@ const sections = machineTypes
       );
     });
 
-    const target = location.hash && document.querySelector<HTMLDetailsElement>(`.machine-details${location.hash}`);
-    if (target) target.open = true;
+    // /machines/#pro-542 opens that card, on arrival and when a link on this
+    // page (the to-scale lineup) changes the hash.
+    const openFromHash = () => {
+      const id = decodeURIComponent(location.hash.slice(1));
+      const target = id ? document.getElementById(id) : null;
+      if (target instanceof HTMLDetailsElement && target.classList.contains("machine-details") && !target.open) {
+        target.open = true;
+      }
+    };
+    openFromHash();
+    window.addEventListener("hashchange", openFromHash);
   </script>
 </Layout>

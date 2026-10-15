@@ -132,7 +132,7 @@ const bodyClip = `polygon(${xs.map((x, i) => `${x} ${i % 2 ? "0" : `${TOOTH}px`}
           })();
         </script>
 
-        <p class="pack-hint" data-pack-hint aria-live="polite">Swipe across the top to tear it open &mdash; or just tap.</p>
+        <p class="pack-hint" data-pack-hint aria-live="polite">Swipe across the top to tear it open, or just tap.</p>
 
         <div class="pack-actions" data-pack-actions>
           <a
@@ -769,7 +769,7 @@ const bodyClip = `polygon(${xs.map((x, i) => `${x} ${i % 2 ? "0" : `${TOOTH}px`}
       // Mouse users drag and click; touch users swipe and tap.
       const mouse = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
       const HINT_CLOSED = mouse
-        ? "Drag across the top to tear it open \u2014 or just click."
+        ? "Drag across the top to tear it open, or just click."
         : hint.textContent ?? "";
       hint.textContent = HINT_CLOSED;
       const HINT_TORN = mouse ? "Now drag the card up and out \u2191" : "Now pull the card up and out \u2191";

@@ -1,0 +1,85 @@
+---
+// Every cooler in the line, side by side at the same scale, on a wall marked
+// in feet. Each box takes the cabinet's real width-to-height ratio, and its
+// share of the row is its real width, so the photos line up inch for inch.
+//
+// Photos are the trimmed fronts in src/assets/machines/cut/, made by
+// scripts/cut-machine-photos.mjs. A machine without a cut photo is left out
+// rather than drawn at the wrong size.
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+import { machines as allMachines, type Machine } from "../data/machines";
+
+interface Props {
+  machines?: Machine[];
+  /** Where each machine links. Defaults to its card on /machines/. */
+  hrefBase?: string;
+  caption?: string;
+}
+const {
+  machines = allMachines,
+  hrefBase = "/machines/",
+  caption = "The lineup drawn to scale. Lines mark two, four, and six feet off the floor.",
+} = Astro.props;
+
+const cuts = import.meta.glob<{ default: ImageMetadata }>("../assets/machines/cut/*.jpg", { eager: true });
+const cutFor = (slug: string) => cuts[`../assets/machines/cut/${slug}.jpg`]?.default;
+
+const shown = machines.flatMap((m) => {
+  const photo = cutFor(m.slug);
+  return photo ? [{ ...m, photo }] : [];
+});
+const tallest = Math.max(...shown.map((m) => m.footprint.h));
+const feet = [2, 4, 6].filter((ft) => ft * 12 < tallest);
+---
+
+<figure class="machine-lineup">
+  <div class="carousel -mx-5 overflow-x-auto px-5 sm:mx-0 sm:px-0">
+    <div class="min-w-[620px]">
+      <div class="relative pl-10 sm:pl-12">
+        <div class="relative flex items-end gap-3 border-b-2 border-ink sm:gap-5">
+          {feet.map((ft) => (
+            <div
+              class="pointer-events-none absolute inset-x-0 border-t border-dashed border-indigo/25"
+              style={`bottom: ${((ft * 12) / tallest) * 100}%`}
+              aria-hidden="true"
+            >
+              <span class="absolute -top-2 -left-10 w-8 text-right font-mono text-[0.68rem] font-semibold text-muted sm:-left-12 sm:w-9">
+                {ft} ft
+              </span>
+            </div>
+          ))}
+          {shown.map((m) => (
+            <a
+              href={`${hrefBase}#${m.slug}`}
+              class="lineup-item group relative block min-w-0"
+              style={`flex: ${m.footprint.w} 1 0`}
+              aria-label={`${m.name}: ${m.footprint.w} inches wide, ${m.footprint.h} inches tall`}
+            >
+              <Image
+                src={m.photo}
+                alt=""
+                widths={[160, 320, 480]}
+                sizes="(min-width: 1024px) 280px, 30vw"
+                class="block h-auto w-full mix-blend-multiply transition-transform duration-300 group-hover:-translate-y-1"
+                style={`aspect-ratio: ${m.footprint.w} / ${m.footprint.h}; object-fit: fill`}
+                loading="lazy"
+              />
+            </a>
+          ))}
+        </div>
+        <div class="flex gap-3 pt-3 sm:gap-5" aria-hidden="true">
+          {shown.map((m) => (
+            <div class="min-w-0" style={`flex: ${m.footprint.w} 1 0`}>
+              <div class="font-display text-[1.05rem] leading-tight font-semibold whitespace-nowrap sm:text-lg">{m.name}</div>
+              <div class="mt-0.5 font-mono text-[0.68rem] font-semibold text-muted">{m.footprint.w}"<span class="hidden sm:inline"> wide</span></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption class="mt-4 text-sm text-muted">
+    {caption}<span class="sm:hidden"> Swipe to see them all.</span>
+  </figcaption>
+</figure>
