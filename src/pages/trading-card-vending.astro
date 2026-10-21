@@ -1,0 +1,120 @@
+---
+import { Image } from "astro:assets";
+import Layout from "../layouts/Layout.astro";
+import CardFeature from "../components/CardFeature.astro";
+import { cardMachines, cardInquiry } from "../data/cardMachines";
+import { site } from "../data/site";
+
+const title = "Trading Card Vending for Your Venue | Crossbell Vending";
+const description = "Pokémon and other TCG packs in VTM touchscreen vending machines. Free placement, weekly restocking, and local service for qualifying Macomb and north Oakland venues.";
+const questions = [
+  { question: "What does the host pay?", answer: "Qualifying venues pay no equipment, delivery, stocking, or service fees. You provide suitable space, power, and service access. Crossbell earns from product sales. We assess the location and explain the agreement before installation." },
+  { question: "Is it just Pokémon?", answer: "Pokémon is a featured part of the selection, alongside other trading-card games. We choose the mix for your venue and adjust it to sales and requests. Games, sets, and pack availability vary by location and supply." },
+  { question: "How often do you restock?", answer: "We restock weekly and check inventory remotely between visits. Crossbell buys and loads the products, rotates the selection, and handles machine service." },
+  { question: "Are the packs unopened?", answer: "We stock factory-sealed packs from sources we can document. We do not weigh, search, or reseal packs, or sell homemade mystery bundles. Packs vend in protective cases suited to the machine." },
+  { question: "What does the venue need?", answer: "A visible indoor spot, standard wall power, service access, and enough regular traffic to support the machine. We check connectivity, clearances, and mounting during the site visit. Wall-mounted units require suitable mounting; pedestal and freestanding options are available." },
+  { question: "What if a pack does not dispense?", answer: "The machine uses a sensor to detect a dispensed product. If a purchase goes wrong, contact Crossbell using the details on the machine. We handle customer support and refunds; your staff do not have to troubleshoot it." },
+];
+const schema = {
+  "@context": "https://schema.org", "@type": "Service",
+  "@id": `${site.url}/trading-card-vending/#service`,
+  name: "Managed trading-card vending", serviceType: "Trading-card vending machine placement, stocking, and service",
+  description, url: `${site.url}/trading-card-vending/`,
+  provider: { "@id": `${site.url}/#organization` },
+  areaServed: ["Macomb County, Michigan", "North Oakland County, Michigan"],
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD", description: "Free equipment placement, delivery, stocking, and service for qualifying host venues. Products are purchased separately by customers." },
+};
+---
+
+<Layout title={title} description={description} contactHref={cardInquiry()} schema={schema}>
+  <div class="tcg-page bg-ink">
+    <CardFeature pageHero />
+
+    <section class="cb-shell cb-section tcg-experience" aria-labelledby="experience-heading">
+      <div><h2 id="experience-heading" class="cb-heading">A little excitement.<br />No extra work for your team.</h2><p>A sealed pack to pick up after a game, between bowling rounds, or on the way home. Give collectors something to discover while we handle the retail work.</p><a class="tcg-link" href={cardInquiry()}>Ask about your venue <span aria-hidden="true">&rarr;</span></a></div>
+      <div class="tcg-experience__details"><h3>Stocked for your crowd.</h3><p>Pokémon takes a featured spot, with other TCGs chosen for the people who visit. Weekly restocking keeps the selection cared for.</p><h3>Cashless, from start to finish.</h3><p>Customers browse the touchscreen, choose their pack, pay by card or mobile wallet, and collect it from the pickup hatch.</p><h3>Sealed packs, handled with care.</h3><p>Protective cases and coils sized for card packs support reliable dispensing. We handle stocking and support.</p></div>
+    </section>
+
+    <section id="lineup" class="tcg-lineup" aria-labelledby="lineup-heading">
+      <div class="cb-shell cb-section">
+        <div class="tcg-section-heading"><div><h2 id="lineup-heading" class="cb-heading">Four formats.<br />Your venue’s perfect fit.</h2><p>From a compact wall mount to a full-height tower. We recommend the setup after seeing your space.</p></div><a href={cardInquiry()} class="tcg-link">Help me choose <span aria-hidden="true">&rarr;</span></a></div>
+        <div class="tcg-models">
+          {cardMachines.map((machine) => (
+            <article id={machine.slug} class="tcg-model">
+              <figure><Image src={machine.image} alt={`VTM ${machine.name} touchscreen trading-card vending machine, shown with an example card-themed wrap`} widths={[360, 540, 760]} sizes="(min-width: 900px) 440px, 90vw" class="tcg-model__image" loading="lazy" /></figure>
+              <div class="tcg-model__body">
+                <h3>{machine.name}</h3><p class="tcg-model__format">{machine.format}</p><p class="tcg-model__fit">{machine.fit}</p>
+                <dl class="tcg-model__facts"><div><dt>Pack capacity</dt><dd>Up to {machine.capacity}</dd></div><div><dt>Touchscreen</dt><dd>{machine.screen}&Prime;</dd></div></dl>
+                <details class="tcg-model__specs"><summary>Dimensions &amp; placement</summary><div><p>{machine.width}&Prime; W &times; {machine.height}&Prime; H &times; {machine.depth}&Prime; D. {machine.aisles} product aisles.</p><p>{machine.slug === "vtm-slim-tower-tcg" ? "Freestanding tower. Allow room for access and service." : "Wall-mounted, with an optional pedestal for freestanding placement. Cabinet dimensions exclude the pedestal."}</p></div></details>
+                <a class="tcg-link" href={cardInquiry(machine.slug)}>Ask about the {machine.name}<span aria-hidden="true">&rarr;</span></a>
+              </div>
+            </article>
+          ))}
+        </div>
+        <p class="tcg-lineup__note">Manufacturer-listed capacities for the standard booster-pack configuration. Product size and setup affect capacity. Example wraps, screen prices, and products are illustrative; the final appearance and selection may vary.</p>
+      </div>
+    </section>
+
+    <section id="venues" class="cb-shell cb-section tcg-venues" aria-labelledby="venues-heading">
+      <div><h2 id="venues-heading" class="cb-heading">Make room<br />for the next pack.</h2><p>The best fit is a visible spot with steady repeat visitors and a little time to browse. We check the practical details before recommending a machine.</p><a href={cardInquiry()} class="cb-button">Check your location <span aria-hidden="true">&rarr;</span></a></div>
+      <ul><li>Bowling centers &amp; roller rinks</li><li>Arcades &amp; family entertainment</li><li>Trampoline &amp; sports facilities</li><li>Hobby shops &amp; retail spaces</li><li>Apartment clubhouses</li></ul>
+    </section>
+
+    <section class="tcg-faq cb-shell cb-section" aria-labelledby="card-faq-heading">
+      <h2 id="card-faq-heading" class="cb-heading">Good questions.<br />Straight answers.</h2>
+      <div>{questions.map((item) => (<details><summary>{item.question}</summary><p>{item.answer}</p></details>))}</div>
+    </section>
+
+    <section class="tcg-close" aria-labelledby="card-contact-heading"><div class="cb-shell"><h2 id="card-contact-heading">We bring the machine.<br />You bring the venue.</h2><p>Free placement. Weekly restocks. Crossbell takes care of it.</p><a href={cardInquiry()} class="cb-button">Request a site visit <span aria-hidden="true">&rarr;</span></a><p class="tcg-close__qualification">For qualifying locations in Macomb and north Oakland County.</p></div></section>
+    <div class="cb-shell tcg-disclaimer"><p>Crossbell Vending is an independent operator, not affiliated with, sponsored by, or endorsed by The Pokémon Company, Nintendo, Creatures, GAME FREAK, or other trading-card brand owners. Product names identify the products offered; trademarks belong to their respective owners. Machine imagery is based on VTM manufacturer photography.</p></div>
+  </div>
+</Layout>
+
+<style>
+  .tcg-page { color: var(--color-paper); color-scheme: dark; }
+  .tcg-page :global(:focus-visible) { outline-color: var(--color-accent); }
+  .tcg-page p { color: var(--color-lavender); line-height: 1.75; }
+  .tcg-experience { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; border-top: 1px solid var(--color-indigo-2); }
+  .tcg-experience > div > p { margin-block: 1.5rem 1rem; max-width: 46ch; }
+  .tcg-experience__details h3 { font-size: 1.7rem; font-weight: 600; margin-top: 1.5rem; }
+  .tcg-experience__details h3:first-child { margin-top: 0; }
+  .tcg-experience__details p { font-size: .94rem; margin-top: .5rem; }
+  .tcg-lineup { background: #1b1b30; scroll-margin-top: 5rem; }
+  .tcg-section-heading { display: flex; align-items: end; justify-content: space-between; gap: 2rem; }
+  .tcg-section-heading p { max-width: 46ch; margin-top: 1.2rem; }
+  .tcg-models { display: grid; grid-template-columns: 1fr 1fr; column-gap: 3rem; margin-top: 3rem; }
+  .tcg-model { padding-bottom: 2.5rem; margin-bottom: 2.5rem; border-bottom: 1px solid var(--color-indigo-2); min-width: 0; scroll-margin-top: 6rem; }
+  .tcg-model figure { height: 330px; display: flex; align-items: center; justify-content: center; background: #1b1b30; }
+  .tcg-model__image { height: 100%; width: 100%; object-fit: contain; }
+  .tcg-model h3 { font-size: 2rem; font-weight: 600; margin-top: 1.5rem; }
+  .tcg-model__format { font-size: .8rem; margin-top: .3rem; }
+  .tcg-model__fit { font-size: .94rem; margin-top: 1rem; min-height: 3.5rem; }
+  .tcg-model__facts { display: flex; gap: 3rem; margin-block: 1.5rem; }
+  .tcg-model__facts dt { color: var(--color-lavender); font-size: .75rem; }
+  .tcg-model__facts dd { font-size: 1.2rem; font-weight: 600; margin-top: .25rem; font-variant-numeric: tabular-nums; }
+  .tcg-model__specs { border-block: 1px solid var(--color-indigo-2); margin-bottom: 1rem; }
+  .tcg-model__specs summary { padding-block: .9rem; cursor: pointer; font-size: .88rem; font-weight: 500; }
+  .tcg-model__specs div { padding-bottom: 1rem; }
+  .tcg-model__specs p { font-size: .85rem; margin-bottom: .5rem; }
+  .tcg-lineup__note { font-size: .75rem; max-width: 85ch; }
+  .tcg-venues { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .tcg-venues p { max-width: 43ch; margin-block: 1.4rem 1.8rem; }
+  .tcg-venues li { padding-block: 1rem; border-bottom: 1px solid var(--color-indigo-2); font-size: 1.05rem; }
+  .tcg-faq { display: grid; grid-template-columns: .85fr 1.15fr; gap: 5rem; border-top: 1px solid var(--color-indigo-2); }
+  .tcg-faq details { border-bottom: 1px solid var(--color-indigo-2); }
+  .tcg-faq summary { cursor: pointer; padding-block: 1.1rem; font-weight: 500; font-size: .98rem; }
+  .tcg-faq details p { font-size: .94rem; padding-bottom: 1.25rem; max-width: 65ch; }
+  .tcg-close { background: var(--color-indigo); padding-block: 3.5rem; text-align: center; }
+  .tcg-close h2 { font-size: clamp(2.7rem, 5vw, 4.5rem); line-height: 1.02; font-weight: 700; }
+  .tcg-close p { margin: 1rem auto 1.5rem; }
+  .tcg-close .tcg-close__qualification { font-size: .75rem; margin: 1rem auto 0; }
+  .tcg-disclaimer { padding-block: 1.5rem; }
+  .tcg-disclaimer p { font-size: .7rem; line-height: 1.7; }
+  @media (max-width: 899px) {
+    .tcg-experience, .tcg-venues, .tcg-faq { grid-template-columns: 1fr; gap: 2rem; }
+    .tcg-section-heading { flex-direction: column; align-items: start; gap: 1rem; }
+    .tcg-models { gap: 2rem; }
+    .tcg-model figure { height: 270px; }
+  }
+  @media (max-width: 599px) { .tcg-models { grid-template-columns: 1fr; gap: 0; } .tcg-model figure { height: 330px; } .tcg-model__fit { min-height: 0; } }
+</style>

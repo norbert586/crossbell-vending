@@ -1,0 +1,409 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-21T05:23:21.506Z",
+  "title": "Design System: Crossbell Vending",
+  "extensions": {
+    "colorMeta": {
+      "accent": {
+        "role": "primary",
+        "displayName": "Crest Gold",
+        "canonical": "#c49350",
+        "tonalRamp": [
+          "oklch(15% 0.10314 73.31)",
+          "oklch(26.43% 0.10314 73.31)",
+          "oklch(37.86% 0.10314 73.31)",
+          "oklch(49.29% 0.10314 73.31)",
+          "oklch(60.71% 0.10314 73.31)",
+          "oklch(72.14% 0.10314 73.31)",
+          "oklch(83.57% 0.10314 73.31)",
+          "oklch(95% 0.10314 73.31)"
+        ]
+      },
+      "accent-dim": {
+        "role": "primary",
+        "displayName": "Deep Gold",
+        "canonical": "#96692f",
+        "tonalRamp": [
+          "oklch(15% 0.09388 70.51)",
+          "oklch(26.43% 0.09388 70.51)",
+          "oklch(37.86% 0.09388 70.51)",
+          "oklch(49.29% 0.09388 70.51)",
+          "oklch(60.71% 0.09388 70.51)",
+          "oklch(72.14% 0.09388 70.51)",
+          "oklch(83.57% 0.09388 70.51)",
+          "oklch(95% 0.09388 70.51)"
+        ]
+      },
+      "accent-hover": {
+        "role": "primary",
+        "displayName": "Action Gold",
+        "canonical": "#ae7f3c",
+        "tonalRamp": [
+          "oklch(15% 0.10205 73.65)",
+          "oklch(26.43% 0.10205 73.65)",
+          "oklch(37.86% 0.10205 73.65)",
+          "oklch(49.29% 0.10205 73.65)",
+          "oklch(60.71% 0.10205 73.65)",
+          "oklch(72.14% 0.10205 73.65)",
+          "oklch(83.57% 0.10205 73.65)",
+          "oklch(95% 0.10205 73.65)"
+        ]
+      },
+      "indigo": {
+        "role": "secondary",
+        "displayName": "Crest Indigo",
+        "canonical": "#2a2a5c",
+        "tonalRamp": [
+          "oklch(15% 0.08714 280.14)",
+          "oklch(26.43% 0.08714 280.14)",
+          "oklch(37.86% 0.08714 280.14)",
+          "oklch(49.29% 0.08714 280.14)",
+          "oklch(60.71% 0.08714 280.14)",
+          "oklch(72.14% 0.08714 280.14)",
+          "oklch(83.57% 0.08714 280.14)",
+          "oklch(95% 0.08714 280.14)"
+        ]
+      },
+      "indigo-2": {
+        "role": "secondary",
+        "displayName": "Layered Indigo",
+        "canonical": "#3b3b75",
+        "tonalRamp": [
+          "oklch(15% 0.09670 280.83)",
+          "oklch(26.43% 0.09670 280.83)",
+          "oklch(37.86% 0.09670 280.83)",
+          "oklch(49.29% 0.09670 280.83)",
+          "oklch(60.71% 0.09670 280.83)",
+          "oklch(72.14% 0.09670 280.83)",
+          "oklch(83.57% 0.09670 280.83)",
+          "oklch(95% 0.09670 280.83)"
+        ]
+      },
+      "lavender": {
+        "role": "secondary",
+        "displayName": "Crest Lavender",
+        "canonical": "#cdd1ff",
+        "tonalRamp": [
+          "oklch(15% 0.06366 281.08)",
+          "oklch(26.43% 0.06366 281.08)",
+          "oklch(37.86% 0.06366 281.08)",
+          "oklch(49.29% 0.06366 281.08)",
+          "oklch(60.71% 0.06366 281.08)",
+          "oklch(72.14% 0.06366 281.08)",
+          "oklch(83.57% 0.06366 281.08)",
+          "oklch(95% 0.06366 281.08)"
+        ]
+      },
+      "lavender-tint": {
+        "role": "secondary",
+        "displayName": "Pale Lavender",
+        "canonical": "#e6e8ff",
+        "tonalRamp": [
+          "oklch(15% 0.03109 281.82)",
+          "oklch(26.43% 0.03109 281.82)",
+          "oklch(37.86% 0.03109 281.82)",
+          "oklch(49.29% 0.03109 281.82)",
+          "oklch(60.71% 0.03109 281.82)",
+          "oklch(72.14% 0.03109 281.82)",
+          "oklch(83.57% 0.03109 281.82)",
+          "oklch(95% 0.03109 281.82)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#141420",
+        "tonalRamp": [
+          "oklch(15% 0.02398 283.99)",
+          "oklch(26.43% 0.02398 283.99)",
+          "oklch(37.86% 0.02398 283.99)",
+          "oklch(49.29% 0.02398 283.99)",
+          "oklch(60.71% 0.02398 283.99)",
+          "oklch(72.14% 0.02398 283.99)",
+          "oklch(83.57% 0.02398 283.99)",
+          "oklch(95% 0.02398 283.99)"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Cool Paper",
+        "canonical": "#f6f7ff",
+        "tonalRamp": [
+          "oklch(15% 0.01068 280.48)",
+          "oklch(26.43% 0.01068 280.48)",
+          "oklch(37.86% 0.01068 280.48)",
+          "oklch(49.29% 0.01068 280.48)",
+          "oklch(60.71% 0.01068 280.48)",
+          "oklch(72.14% 0.01068 280.48)",
+          "oklch(83.57% 0.01068 280.48)",
+          "oklch(95% 0.01068 280.48)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Soft Rule",
+        "canonical": "#cfd0e4",
+        "tonalRamp": [
+          "oklch(15% 0.02752 283.52)",
+          "oklch(26.43% 0.02752 283.52)",
+          "oklch(37.86% 0.02752 283.52)",
+          "oklch(49.29% 0.02752 283.52)",
+          "oklch(60.71% 0.02752 283.52)",
+          "oklch(72.14% 0.02752 283.52)",
+          "oklch(83.57% 0.02752 283.52)",
+          "oklch(95% 0.02752 283.52)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted Ink",
+        "canonical": "#4f5168",
+        "tonalRamp": [
+          "oklch(15% 0.03776 280.84)",
+          "oklch(26.43% 0.03776 280.84)",
+          "oklch(37.86% 0.03776 280.84)",
+          "oklch(49.29% 0.03776 280.84)",
+          "oklch(60.71% 0.03776 280.84)",
+          "oklch(72.14% 0.03776 280.84)",
+          "oklch(83.57% 0.03776 280.84)",
+          "oklch(95% 0.03776 280.84)"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "White",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 0.00000 0.00)",
+          "oklch(26.43% 0.00000 0.00)",
+          "oklch(37.86% 0.00000 0.00)",
+          "oklch(49.29% 0.00000 0.00)",
+          "oklch(60.71% 0.00000 0.00)",
+          "oklch(72.14% 0.00000 0.00)",
+          "oklch(83.57% 0.00000 0.00)",
+          "oklch(95% 0.00000 0.00)"
+        ]
+      },
+      "lineup": {
+        "role": "neutral",
+        "displayName": "Lineup Backing",
+        "canonical": "#1b1b30",
+        "tonalRamp": [
+          "oklch(15% 0.04012 282.84)",
+          "oklch(26.43% 0.04012 282.84)",
+          "oklch(37.86% 0.04012 282.84)",
+          "oklch(49.29% 0.04012 282.84)",
+          "oklch(60.71% 0.04012 282.84)",
+          "oklch(72.14% 0.04012 282.84)",
+          "oklch(83.57% 0.04012 282.84)",
+          "oklch(95% 0.04012 282.84)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Homepage hero; card hero uses the documented related scale."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Shared marketing section headings."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Machine model titles."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Plain service explanations."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Marketing actions and text links."
+      },
+      "utility": {
+        "displayName": "Utility",
+        "purpose": "Phone and operational details."
+      }
+    },
+    "shadows": [
+      {
+        "name": "product-frame",
+        "value": "0 24px 60px rgb(0 0 0 / .25)",
+        "purpose": "Diffuse depth behind the foil surround."
+      },
+      {
+        "name": "mobile-navigation",
+        "value": "0 16px 36px rgba(20,20,32,0.16)",
+        "purpose": "Separate the white dropdown from the page."
+      }
+    ],
+    "motion": [
+      {
+        "name": "action-hover",
+        "value": "background-color 180ms ease-out",
+        "purpose": "Gold marketing actions."
+      },
+      {
+        "name": "service-arrow",
+        "value": "transform 250ms ease-out; translateX(4px)",
+        "purpose": "Service-row hover response."
+      },
+      {
+        "name": "machine-hover",
+        "value": "transform 700ms cubic-bezier(.16,1,.3,1); scale(1.015)",
+        "purpose": "Only hover-capable devices with no reduced-motion preference."
+      },
+      {
+        "name": "foil-sweep",
+        "value": "1100ms cubic-bezier(.16,1,.3,1) both",
+        "purpose": "One sweep per hover; never continuous; disabled for reduced motion."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "0.01ms",
+        "purpose": "Global animation/transition duration override; one iteration, auto scrolling; machine transition explicitly none."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "small-identity",
+        "value": "360px"
+      },
+      {
+        "name": "single-model",
+        "value": "600px"
+      },
+      {
+        "name": "legacy-small",
+        "value": "640px"
+      },
+      {
+        "name": "mobile-action-clearance",
+        "value": "720px"
+      },
+      {
+        "name": "header-action",
+        "value": "768px"
+      },
+      {
+        "name": "marketing-split",
+        "value": "900px"
+      },
+      {
+        "name": "legacy-large",
+        "value": "1024px"
+      },
+      {
+        "name": "desktop-navigation",
+        "value": "1280px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Gold marketing action",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Shared site-visit and product actions.",
+      "html": "<a class=\"ds-primary ds-focus\" href=\"#visit\">Request a site visit <span aria-hidden=\"true\">→</span></a>",
+      "css": ".ds-primary { display:inline-flex; align-items:center; justify-content:center; gap:1.2rem; min-height:48px; padding:.9rem 1.35rem; background:var(--color-accent, #c49350); color:var(--color-ink, #141420); border:1px solid transparent; border-radius:3px; font-family:var(--font-body, \"IBM Plex Sans\", sans-serif); font-size:.9rem; line-height:1.4; font-weight:600; text-decoration:none; transition:background-color 180ms ease-out; } .ds-primary:hover { background:var(--color-accent-hover, #ae7f3c); } .ds-focus:focus-visible { outline: 3px solid var(--color-indigo, #2a2a5c); outline-offset: 2px; } @media(prefers-reduced-motion:reduce) { .ds-primary { transition:none; } }"
+    },
+    {
+      "name": "Outline feedback action",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Existing secondary feedback form action.",
+      "html": "<button class=\"ds-outline ds-focus\" type=\"button\">Send feedback</button>",
+      "css": ".ds-outline { display:inline-flex; justify-content:center; padding:.5rem 1rem; border:2px solid var(--color-ink, #141420); border-radius:0; color:var(--color-ink, #141420); background:transparent; font-family:var(--font-body, \"IBM Plex Sans\", sans-serif); font-size:.875rem; font-weight:600; transition:color 150ms, background-color 150ms; } .ds-outline:hover { background:var(--color-ink, #141420); color:var(--color-paper, #f6f7ff); } .ds-focus:focus-visible { outline: 3px solid var(--color-indigo, #2a2a5c); outline-offset: 2px; } @media(prefers-reduced-motion:reduce) { .ds-outline { transition:none; } }"
+    },
+    {
+      "name": "Light-surface text link",
+      "kind": "button",
+      "refersTo": "text-link",
+      "description": "Secondary navigation beneath a pitch or section heading.",
+      "html": "<a class=\"ds-link ds-focus\" href=\"#services\">See our services</a>",
+      "css": ".ds-link { display:inline-flex; align-items:center; gap:.6rem; min-height:44px; color:var(--color-ink, #141420); font-family:var(--font-body, \"IBM Plex Sans\", sans-serif); font-size:.9rem; font-weight:600; text-decoration:underline; text-decoration-color:var(--color-accent, #c49350); text-decoration-thickness:2px; text-underline-offset:5px; } .ds-link:hover { text-decoration-color:currentColor; } .ds-focus:focus-visible { outline: 3px solid var(--color-indigo, #2a2a5c); outline-offset: 2px; }"
+    },
+    {
+      "name": "Dark-surface text link",
+      "kind": "button",
+      "refersTo": "text-link-dark",
+      "description": "Secondary action within the dark trading-card treatment.",
+      "html": "<div class=\"ds-dark\"><a class=\"ds-dark-link\" href=\"#models\">See all models</a></div>",
+      "css": ".ds-dark { background:var(--color-ink, #141420); padding:1rem; } .ds-dark-link { display:inline-flex; align-items:center; gap:.6rem; min-height:44px; color:var(--color-paper, #f6f7ff); font-family:var(--font-body, \"IBM Plex Sans\", sans-serif); font-size:.9rem; font-weight:600; text-decoration:underline; text-decoration-color:var(--color-accent, #c49350); text-decoration-thickness:2px; text-underline-offset:5px; } .ds-dark-link:hover { text-decoration-color:currentColor; } .ds-dark-link:focus-visible { outline:3px solid var(--color-accent, #c49350); outline-offset:2px; }"
+    },
+    {
+      "name": "Inquiry field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Main host inquiry form field with persistent label.",
+      "html": "<label class=\"ds-field\">Business name<input class=\"ds-input\" type=\"text\" autocomplete=\"organization\" /></label>",
+      "css": ".ds-field { display:flex; flex-direction:column; gap:.375rem; color:var(--color-ink, #141420); font-family:var(--font-body, \"IBM Plex Sans\", sans-serif); font-size:.875rem; font-weight:600; } .ds-input { padding:.625rem .75rem; border:1px solid var(--color-line, #cfd0e4); border-radius:0; background:var(--color-paper, #f6f7ff); color:var(--color-ink, #141420); caret-color:var(--color-accent-dim, #96692f); font-family:var(--font-body, \"IBM Plex Sans\", sans-serif); font-size:1.0625rem; font-weight:400; } .ds-input:focus { border-color:var(--color-indigo, #2a2a5c); outline:2px solid var(--color-indigo, #2a2a5c); outline-offset:1px; }"
+    },
+    {
+      "name": "Section navigation",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Desktop header link states, within the white crest header.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Sections\"><a class=\"ds-nav-link\" href=\"#services\">Services</a><a class=\"ds-nav-link ds-current\" href=\"#cards\" aria-current=\"page\">Trading cards</a></nav>",
+      "css": ".ds-nav { display:flex; gap:1.5rem; padding:1rem; border-bottom:2px solid var(--color-lavender, #cdd1ff); background:#fff; font-family:var(--font-body, \"IBM Plex Sans\", sans-serif); } .ds-nav-link { border-bottom:2px solid transparent; padding:.25rem 0; color:var(--color-ink, #141420); font-size:.875rem; font-weight:500; text-decoration:none; transition:color 150ms, border-color 150ms; } .ds-nav-link:hover { border-color:var(--color-accent, #c49350); color:var(--color-accent-dim, #96692f); } .ds-current { border-color:var(--color-accent, #c49350); color:var(--color-indigo, #2a2a5c); } .ds-nav-link:focus-visible { outline:3px solid var(--color-indigo, #2a2a5c); outline-offset:2px; } @media(prefers-reduced-motion:reduce) { .ds-nav-link { transition:none; } }"
+    },
+    {
+      "name": "Foil product frame",
+      "kind": "card",
+      "refersTo": "card-stage",
+      "description": "Signature frame and hover sweep; production holds the actual supplier photograph inside.",
+      "html": "<div class=\"ds-showcase\"><div class=\"ds-foil\"><div class=\"ds-stage\"><span class=\"ds-seal\">Sealed packs.<br>Fresh possibilities.</span></div></div></div>",
+      "css": ".ds-showcase { background:var(--color-ink, #141420); padding:1.5rem; } .ds-foil { padding:2px; border-radius:16px; background:linear-gradient(135deg,var(--color-accent, #c49350),var(--color-lavender, #cdd1ff) 24%,var(--color-indigo-2, #3b3b75) 50%,var(--color-lavender, #cdd1ff) 75%,var(--color-accent, #c49350)); box-shadow:0 24px 60px rgb(0 0 0 / .25); } .ds-stage { position:relative; min-height:210px; overflow:hidden; border-radius:14px; background:radial-gradient(ellipse at 48% 40%,var(--color-indigo-2, #3b3b75),var(--color-ink, #141420) 72%); } .ds-stage::after { content:\"\"; position:absolute; inset:-60%; background:linear-gradient(115deg,transparent 43%,rgb(205 209 255 / .04) 47%,rgb(255 255 255 / .14) 50%,rgb(196 147 80 / .06) 53%,transparent 57%); transform:translateX(-65%); pointer-events:none; } .ds-seal { position:absolute; bottom:1rem; left:1rem; z-index:3; padding:.65rem .85rem; background:var(--color-ink, #141420); border:1px solid var(--color-accent, #c49350); border-radius:3px; color:var(--color-paper, #f6f7ff); font-family:var(--font-body, \"IBM Plex Sans\", sans-serif); font-size:.72rem; line-height:1.5; } @media(hover:hover) and (prefers-reduced-motion:no-preference) { .ds-showcase:hover .ds-stage::after { animation:ds-foil-sweep 1100ms cubic-bezier(.16,1,.3,1) both; } } @keyframes ds-foil-sweep { to { transform:translateX(65%); } }"
+    },
+    {
+      "name": "Dark model disclosure",
+      "kind": "card",
+      "refersTo": "model-card",
+      "description": "Ruled model information and native placement disclosure.",
+      "html": "<article class=\"ds-model\"><h3>Mega Wall 2.0</h3><details class=\"ds-specs\"><summary>Dimensions &amp; placement</summary><p>Wall-mounted, with an optional pedestal for freestanding placement.</p></details></article>",
+      "css": ".ds-model { padding:1.5rem; background:#1b1b30; color:var(--color-paper, #f6f7ff); font-family:var(--font-body, \"IBM Plex Sans\", sans-serif); } .ds-model h3 { margin:0 0 1.5rem; font-family:var(--font-display, \"Barlow Condensed\", sans-serif); font-size:2rem; line-height:1.1; font-weight:600; } .ds-specs { border-block:1px solid var(--color-indigo-2, #3b3b75); } .ds-specs summary { padding-block:.9rem; cursor:pointer; font-size:.88rem; font-weight:500; } .ds-specs summary:focus-visible { outline:3px solid var(--color-accent, #c49350); outline-offset:2px; } .ds-specs p { margin:0 0 .5rem; padding-bottom:1rem; color:var(--color-lavender, #cdd1ff); font-size:.85rem; line-height:1.75; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Crossbell Crest",
+    "overview": "A direct local-service identity built from Crossbell’s existing crest, gold, lavender, and indigo. Condensed display type gives short statements presence; practical body type and generous separation keep the offer easy to scan for prospective host businesses.\n\nThe trading-card treatment extends that identity through dark surfaces, actual machine photography, and a restrained foil frame. It is a premium product expression within Crossbell, not a new brand. This document records the built system; no approved visual comp was supplied.",
+    "keyCharacteristics": [
+      "Crest-derived color and locally bundled typography.",
+      "Strong condensed headings with plain, readable service copy.",
+      "Ruled lists and tonal sections rather than a page full of raised cards.",
+      "Actual installation and supplier imagery with clear captions.",
+      "Gold actions and visible keyboard focus on both light and dark surfaces."
+    ],
+    "rules": [
+      {
+        "name": "The Crest Continuity Rule",
+        "body": "Extend the existing gold, lavender, indigo, ink, and paper relationships when adding a surface. Supplier-photo mint backgrounds and example wraps belong to the photography, not the brand palette.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two-Voice Rule",
+        "body": "Use condensed type for headings and body type for explanations and controls. Keep mono for utility information.",
+        "section": "typography"
+      },
+      {
+        "name": "The Motion Restraint Rule",
+        "body": "Keep foil as a hover response. Honor reduced motion: the built global override minimizes animation and transitions, disables smooth scrolling, and the machine image explicitly removes its transition.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do reuse the crest palette, existing fonts, shared shell, and gold primary actions.",
+      "Do use real photography and identify supplier examples clearly.",
+      "Do preserve contained hardware images, visible focus, native disclosures, and reduced-motion behavior.",
+      "Do use the dark trading-card treatment as an extension of Crossbell’s identity."
+    ],
+    "donts": [
+      "Don't replace the brand palette with mint or colors embedded in supplier wraps.",
+      "Don't turn the foil treatment into continuous ambient animation.",
+      "Don't spread the showcase’s large rounded frame and shadow across ordinary ruled content.",
+      "Don't imply that supplier example photography documents a Crossbell installation."
+    ]
+  }
+}

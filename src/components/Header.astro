@@ -13,10 +13,8 @@ const currentPath = Astro.url.pathname;
 const nav = [
   { href: "/services/", label: "Services", path: "/services/" },
   { href: "/machines/", label: "Coolers", path: "/machines/" },
-  { href: "/services/#card-machines", label: "Card machines" },
-  { href: "/#how", label: "How it works" },
+  { href: "/trading-card-vending/", label: "Trading cards", path: "/trading-card-vending/" },
   { href: "/#area", label: "Service area" },
-  { href: "/#faq", label: "FAQ" },
 ];
 ---
 
@@ -89,8 +87,8 @@ const nav = [
                   href={item.href}
                   aria-current={item.path === currentPath ? "page" : undefined}
                   class:list={[
-                    "flex min-h-11 items-center border-l-[3px] px-3 text-sm font-semibold text-ink hover:bg-lavender-tint",
-                    item.path === currentPath ? "border-accent bg-lavender-tint" : "border-transparent",
+                    "flex min-h-11 items-center px-3 text-sm font-semibold text-ink hover:bg-lavender-tint",
+                    item.path === currentPath ? "bg-lavender-tint underline decoration-accent decoration-2 underline-offset-4" : "",
                   ]}
                 >
                   {item.label}

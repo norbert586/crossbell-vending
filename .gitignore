@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Local design review captures (selected PR screenshots live in docs/review/).
+.impeccable/review/

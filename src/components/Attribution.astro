@@ -1,4 +1,6 @@
 ---
+import { cardMachines } from "../data/cardMachines";
+const cardModelNames = Object.fromEntries(cardMachines.map((machine) => [machine.slug, `VTM ${machine.name}`]));
 // Carries "where did this lead come from" from the landing URL through to the
 // Netlify Forms submission.
 //
@@ -16,7 +18,7 @@
 // data attached to a form the visitor is deliberately submitting.
 ---
 
-<script is:inline>
+<script is:inline define:vars={{ cardModelNames }}>
   (function () {
     var KEY = "cbv_attr";
 
@@ -100,9 +102,9 @@
         if (message && !message.value) {
           message.value =
             "Interested in the " +
-            machine.replace(/-/g, " ").replace(/\b\w/g, function (c) {
+            (cardModelNames[machine] || machine.replace(/-/g, " ").replace(/\b\w/g, function (c) {
               return c.toUpperCase();
-            }) +
+            })) +
             ".";
         }
       }
