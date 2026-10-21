@@ -1,7 +1,7 @@
 # Crossbell Vending — marketing site
 
 Static brochure site (Astro + Tailwind CSS v4 + TypeScript) for Crossbell Vending: a home page,
-a services page, a cooler lineup page, and a contact page. No CMS, no database, no client-side framework.
+service details, cooler and trading-card lineups, and a contact page. No CMS, no database, no client-side framework.
 
 The `/services/` page explains the three formats Crossbell offers: a standalone smart cooler, a
 multi-unit smart market, and a trading card machine. It deliberately distinguishes the secure
@@ -9,13 +9,11 @@ cooler/freezer format from an open-shelf micro market, then routes inquiries int
 Netlify form with a visible `service_interest` selection (`?service=smart-cooler`,
 `smart-market`, or `card-machine` preselects it).
 
-**Trading card machines** (`/services/#card-machines`, teased on the home page). The machine is
-drawn (`src/components/CardMachineArt.astro`), not photographed: the exact unit is picked per
-venue, and generic foil packs keep the site clear of anyone else's artwork. Capacity copy ("about
-120 to 160 packs across 8 to 10 slots") is the range of the compact wall/counter units in the
-Oct 2 machine research; update it once a specific machine is in service. Keep the
-non-affiliation line under the section: Crossbell is an independent operator and must never
-read as an official Pokémon machine.
+**Trading-card vending** has a dedicated `/trading-card-vending/` page and a shared
+premium dark feature on home and services. All four VTM TCG models use manufacturer
+photography and sourced specifications. The old `/services/#card-machines` anchor
+still resolves. Keep the independent-operator wording and illustrative-image captions.
+See the maintenance notes below and `src/assets/cards/SOURCES.md` for provenance.
 
 ## Local development
 
@@ -69,30 +67,39 @@ the crest. Indigo `#2A2A5C` is lavender's dark end, used for the pricing section
 is a *surface* color only — it fails contrast as text, so it is never used for type. `accent-dim` is
 the darkest gold that passes AA for small text; `accent-hover` is the button hover shade.
 
-## Swapping in real photos
+## Homepage and trading-card vending
 
-Photos live in `src/assets/photos/` and go through Astro's `<Image>` component, which generates
-responsive WebP variants at build time. Drop in a JPEG at 2000px+ on the long side and reference it
-from the page; do not pre-resize.
+The homepage introduces the offer and routes hosts to `/services/`, `/machines/`,
+and `/trading-card-vending/`. Keep detailed specifications and product explanations
+on those pages instead of expanding the homepage. The old home anchors (`#how`,
+`#machine`, `#inside`, `#why`, `#area`, `#faq`, `#contact`) still resolve. The full
+inquiry form is on `/contact/`; the homepage closes with a link to it. Attribution
+continues across that navigation through the existing session storage.
 
-**Shot list:**
+`src/components/CardFeature.astro` is the shared dark feature on home, services,
+and the dedicated card page. The services anchor `/services/#card-machines`
+continues to work. The foil sheen is hover-only, uses CSS, and is disabled for
+reduced motion. All content and native disclosure controls work without JavaScript.
 
-| Shot | Where it's used | What to shoot | Status |
-|---|---|---|---|
-| Hero | Top of home page, right column | `kirkway-cooler.jpg`, a real Crossbell cooler in service. The layout crops it with `object-fit: cover`, anchored at `50% 62%` to keep the cabinet in frame. The caption does not name the site. | Placed. |
-| The machine | "Pick the size that fits your wall" | No photo: `MachineLineup.astro` draws the whole line to scale from the trimmed lineup photos (see below). | Placed. |
-| Carousel | "What's inside" cards | `04-colddrinks.png` through `09-premiumluxury.png` — product lineups on white, shown uncropped inside a 4:3 white box. The card list (labels, blurbs, alt text) is the `inside` array at the top of `src/pages/index.astro`. To add a card, drop a PNG on white in `src/assets/photos/`, import it, and add a row. | Placed. |
+The four VTM TCG formats are generated from `src/data/cardMachines.ts`.
+Change model facts, images, and inquiry slugs there. Model links carry both
+`service=card-machine` and `machine=<slug>` into the existing form. Family-venue
+choices are included in the location dropdown. Manufacturer photos and source URLs
+are documented in `src/assets/cards/SOURCES.md`; sample wraps, screen prices, and
+stock are illustrative. Capacities depend on the standard pack configuration.
+No supplier scripts, embeds, analytics, or runtime image requests were added.
 
-Real placements beat renders every time. When a better one is photographed (a two-door unit in a
-real break room, three-quarter angle, lights on, no other company's logo in frame), swap it in for
-the hero. `02-machine.jpg` and `01-machine.jpg` are renders kept only for the email pamphlet.
+Confirmed operating offer: weekly restocks, free placement and service for
+qualifying hosts, and no host revenue share. Pokémon is featured alongside other
+TCGs; product availability varies. Avoid promising every game at every location.
 
-Shoot in landscape if that's easier and crop afterward — the aspect ratio matters more than the
-original orientation. The layout uses `object-fit: cover`, so exact pixel dimensions don't matter
-as long as the ratio is close. Shoot with the lights on and no other company's logo in frame.
+### Real installation photography
 
-These photos feed the email pamphlet too. After swapping one, run `node email/build-assets.mjs`
-to regenerate `public/email/` and commit it alongside — see [Email pamphlet](#email-pamphlet).
+`src/assets/photos/kirkway-cooler.jpg` is the real local apartment installation
+shown on the homepage. Photos go through Astro's Image component for responsive
+WebP output. Replace it with an equally strong real Crossbell installation when
+needed; preserve an honest caption and subject-specific alt text. Other existing
+photos remain available for the service pages and email assets.
 
 ## The machine lineup (`/machines/`)
 
@@ -207,7 +214,7 @@ Two things to know before the first send, both covered in [`email/README.md`](em
 - **The footer needs a real mailing address.** It ships with a `[Street address]` placeholder;
   a commercial email requires one under CAN-SPAM.
 
-Copy in the pamphlet is duplicated from `src/pages/index.astro`, not imported from
+Service copy in the pamphlet is maintained separately from the website, not imported from
 `src/data/site.ts` — an email has no build step. Change a claim on the site (the free offer, the
 48-hour replacement, the 90-day terms) and change it in the pamphlet too.
 

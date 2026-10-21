@@ -4,7 +4,7 @@ import Layout from "../layouts/Layout.astro";
 import ContactSection from "../components/ContactSection.astro";
 import FaqItem from "../components/FaqItem.astro";
 import ServiceAreaSection from "../components/ServiceAreaSection.astro";
-import CardMachineArt from "../components/CardMachineArt.astro";
+import CardFeature from "../components/CardFeature.astro";
 import { site } from "../data/site";
 import { machines } from "../data/machines";
 import plus440 from "../assets/machines/plus-440-angle.jpg";
@@ -95,11 +95,11 @@ const formats = [
     label: "Format 03",
     name: "Trading card machine",
     isNew: true,
-    body: "A compact machine of sealed Pokémon booster packs with tap-to-pay checkout. It mounts on a wall or a counter and suits places families visit every week.",
-    href: "#card-machines",
-    linkText: "See the card machine",
+    body: "Pokémon and other TCG packs in touchscreen machines, from compact wall mounts to a full-height tower. Stocked weekly and serviced by Crossbell.",
+    href: "/trading-card-vending/",
+    linkText: "Explore trading-card vending",
     facts: [
-      ["Size", "Wall or counter"],
+      ["Size", "Wall mount or freestanding"],
       ["Best for", "Rinks, bowling, family venues"],
     ],
   },
@@ -114,14 +114,7 @@ const bay = [
 const bayWidth = bay.reduce((sum, b) => sum + b.machine.footprint.w, 0);
 const bayFeet = Math.round((bayWidth / 12) * 2) / 2;
 
-const cardVenues = [
-  "Bowling centers",
-  "Roller rinks",
-  "Arcades and family fun centers",
-  "Trampoline parks",
-  "Youth sports facilities",
-  "Apartment clubhouses",
-];
+
 ---
 
 <Layout title={title} description={description} contactHref="#contact" schema={serviceSchema}>
@@ -396,126 +389,9 @@ const cardVenues = [
     </div>
   </section>
 
-  <!-- Format 03. Drawn, not photographed: the exact machine is picked per
-       venue, and the drawing keeps the page clear of anyone else's artwork. -->
-  <section id="card-machines" class="scroll-mt-20 overflow-hidden bg-ink text-paper" aria-labelledby="cards-heading">
-    <div class="mx-auto max-w-[1120px] px-5 py-14 sm:px-8 sm:py-24">
-      <div class="grid gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:gap-16">
-        <div>
-          <p class="flex items-center gap-3 font-mono text-sm font-bold text-lavender uppercase">
-            <span class="bg-accent px-2 py-0.5 text-[0.66rem] tracking-[0.12em] text-ink">New</span>
-            Format 03
-          </p>
-          <h2 id="cards-heading" class="mt-4 text-[clamp(2.6rem,5.4vw,4.4rem)] leading-[0.95] font-bold text-white">
-            Trading card machines
-          </h2>
-          <p class="mt-5 max-w-[48ch] text-lg leading-relaxed text-lavender">
-            Sealed Pokémon booster packs, sold from a compact machine that takes a tap of a card
-            or phone. We supply the machine, buy and load the packs, and keep new sets coming. The
-            venue provides a wall and an outlet.
-          </p>
+  <CardFeature id="card-machines" />
 
-          <dl class="mt-8 grid gap-px border border-indigo-2 bg-indigo-2 sm:grid-cols-2">
-            <div class="bg-ink p-4 sm:p-5">
-              <dt class="text-xs font-semibold text-accent">Stocked with</dt>
-              <dd class="mt-1 text-[0.96rem] text-white">Factory-sealed English booster packs from current and recent sets</dd>
-            </div>
-            <div class="bg-ink p-4 sm:p-5">
-              <dt class="text-xs font-semibold text-accent">Holds</dt>
-              <dd class="mt-1 text-[0.96rem] text-white">About 120 to 160 packs across 8 to 10 slots</dd>
-            </div>
-            <div class="bg-ink p-4 sm:p-5">
-              <dt class="text-xs font-semibold text-accent">Mounts</dt>
-              <dd class="mt-1 text-[0.96rem] text-white">On a wall or a counter, near one standard outlet</dd>
-            </div>
-            <div class="bg-ink p-4 sm:p-5">
-              <dt class="text-xs font-semibold text-accent">Pays with</dt>
-              <dd class="mt-1 text-[0.96rem] text-white">Credit or debit card, Apple Pay, and Google Pay</dd>
-            </div>
-          </dl>
-
-          <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
-            <a
-              href="/contact/?service=card-machine"
-              class="inline-flex min-h-11 items-center rounded-[3px] bg-accent px-6 py-3.5 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover"
-            >
-              Ask about a card machine
-            </a>
-            <a href="#card-venues" class="text-sm font-semibold text-white underline decoration-accent decoration-2 underline-offset-4">
-              Where they work best
-            </a>
-          </div>
-        </div>
-
-        <figure class="card-stage relative border border-indigo-2 bg-indigo px-6 pt-9 pb-5 sm:px-12">
-          <CardMachineArt class="relative mx-auto block h-auto w-full max-w-[360px]" />
-          <figcaption class="relative mt-6 flex items-start justify-between gap-6 border-t border-indigo-2 pt-3 font-mono text-[0.68rem] font-semibold tracking-[0.08em] text-lavender uppercase">
-            <span>Wall-mount unit, illustrated</span>
-            <span class="text-right text-accent">Tap · pick · pull</span>
-          </figcaption>
-        </figure>
-      </div>
-
-      <ol class="mt-16 grid border-t border-indigo-2 md:grid-cols-3 md:divide-x md:divide-indigo-2">
-        <li class="border-b border-indigo-2 py-7 md:border-b-0 md:pr-8">
-          <span class="font-mono text-sm font-bold text-accent">01</span>
-          <h3 class="mt-2 text-2xl font-semibold text-white">Factory-sealed, every pack</h3>
-          <p class="mt-2 text-[0.96rem] leading-relaxed text-lavender">
-            English product from sources we can document, with receipts on file. We never weigh,
-            search, or reseal packs, and we don't sell homemade mystery bundles.
-          </p>
-        </li>
-        <li class="border-b border-indigo-2 py-7 md:border-b-0 md:px-8">
-          <span class="font-mono text-sm font-bold text-accent">02</span>
-          <h3 class="mt-2 text-2xl font-semibold text-white">New sets as they come out</h3>
-          <p class="mt-2 text-[0.96rem] leading-relaxed text-lavender">
-            The machine reports every sale. Slow slots get swapped for what people are asking for,
-            so it never sits on last year's packs.
-          </p>
-        </li>
-        <li class="py-7 md:pl-8">
-          <span class="font-mono text-sm font-bold text-accent">03</span>
-          <h3 class="mt-2 text-2xl font-semibold text-white">Card or phone only</h3>
-          <p class="mt-2 text-[0.96rem] leading-relaxed text-lavender">
-            No cash to collect or count, and kids need a parent's card or phone to buy. Every slot
-            shows its price before anyone pays.
-          </p>
-        </li>
-      </ol>
-
-      <div id="card-venues" class="mt-6 grid scroll-mt-24 gap-8 border border-indigo-2 bg-[#1b1b33] p-6 sm:p-9 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14">
-        <div>
-          <h3 class="text-[clamp(1.8rem,3.2vw,2.5rem)] font-semibold text-white">Where card machines do best</h3>
-          <p class="mt-3 max-w-[46ch] leading-relaxed text-lavender">
-            Places families come back to every week, with a little waiting built in: league nights,
-            birthday parties, practice pickups. The machine should sit where your staff or a camera
-            can see it.
-          </p>
-          <p class="mt-5 max-w-[46ch] border-l-2 border-accent pl-4 text-sm leading-relaxed text-lavender">
-            <strong class="font-semibold text-white">Your venue provides</strong> a visible indoor spot,
-            a standard outlet, and steady repeat traffic. We cover the machine, the packs, and the
-            service, at no cost to qualifying venues.
-          </p>
-        </div>
-        <ul class="grid self-start border-t border-indigo-2 sm:grid-cols-2 sm:gap-x-8">
-          {cardVenues.map((venue) => (
-            <li class="flex min-h-12 items-center gap-3 border-b border-indigo-2 py-3 font-semibold text-white">
-              <span class="h-2 w-2 flex-none rotate-45 bg-accent" aria-hidden="true"></span>
-              {venue}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <p class="mt-6 max-w-[96ch] text-xs leading-relaxed text-[#9ea2d6]">
-        Crossbell Vending is an independent operator. We are not affiliated with, sponsored by, or
-        endorsed by The Pokémon Company, Nintendo, Creatures, or GAME FREAK. Pokémon is a
-        trademark of its owners and is named here only to describe the products we sell.
-      </p>
-    </div>
-  </section>
-
-  <section class="py-14 sm:py-20" aria-labelledby="responsibility-heading">
+  <section id="responsibilities" class="scroll-mt-20 py-14 sm:py-20" aria-labelledby="responsibility-heading">
     <div class="mx-auto max-w-[1120px] px-5 sm:px-8">
       <div class="max-w-[58ch]">
         <h2 id="responsibility-heading" class="text-[clamp(2rem,3.8vw,3rem)] font-semibold">Who does what</h2>
@@ -564,13 +440,14 @@ const cardVenues = [
           cabinet, which works better where open shelves or a separate kiosk are not practical.
         </FaqItem>
         <FaqItem question="Do you place trading card machines?">
-          Yes. They are compact wall or counter machines stocked with sealed Pokémon booster packs,
-          and they take cards and phones only. They do best at bowling centers, rinks, family fun
+          Yes. We offer all four VTM trading-card formats, from compact wall mounts to a freestanding
+          tower. They carry Pokémon and other TCG packs, accept cards and mobile wallets, and are
+          restocked weekly. They do best at bowling centers, rinks, family fun
           centers, sports facilities, and apartment clubhouses: anywhere families come back every
           week. Placement costs a qualifying venue nothing.
         </FaqItem>
         <FaqItem question="Are the card packs real and unopened?">
-          Yes. We stock factory-sealed English packs bought from sources we can document, and we
+          Yes. We stock factory-sealed packs bought from sources we can document, and we
           keep the receipts. We never weigh, search, or reseal packs, and we don't sell homemade
           mystery bundles. Crossbell is an independent operator and is not affiliated with The
           Pokémon Company.
@@ -581,10 +458,24 @@ const cardVenues = [
           and useful.
         </FaqItem>
         <FaqItem question="How much space and power do we need?">
-          A single cooler starts at 22.8 inches wide, and a card machine can hang on a wall or sit on
-          a counter. Larger coolers and multi-unit markets need more wall space. Every machine needs
+          A single cooler starts at 22.8 inches wide, and trading-card machines come in wall-mounted and freestanding
+          formats. Larger coolers and multi-unit markets need more wall space. Every machine needs
           a standard outlet. We measure the spot, door swing, walking clearance, and outlet access
           before recommending anything.
+        </FaqItem>
+        <FaqItem question="What happens if a machine needs service?">
+          Call or message Crossbell and we respond by the end of the business day. We handle
+          refunds and repairs. If a cooler needs more than a quick fix, a replacement can be on
+          site within 48 hours.
+        </FaqItem>
+        <FaqItem question="How long is the agreement?">
+          After the first 90 days, thirty days’ written notice ends the agreement. An early-exit
+          fee applies if you cancel within those first 90 days. The terms are explained before
+          you sign.
+        </FaqItem>
+        <FaqItem question="Are you insured?">
+          Yes. We are fully insured, with your business named as additional insured. A certificate
+          is available on request.
         </FaqItem>
         <FaqItem question="Who decides what gets stocked?">
           We start with the site type, shift pattern, and expected traffic, then adjust from real sales
@@ -601,14 +492,3 @@ const cardVenues = [
     subheading="Tell us about the room, the people who use it, and when they are there. After a ten-minute visit we'll recommend a cooler, a smart market, or a card machine."
   />
 </Layout>
-
-<style>
-  /* A soft spotlight behind the drawn card machine. */
-  .card-stage::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(60% 55% at 50% 40%, rgb(205 209 255 / 0.18), transparent 70%);
-    pointer-events: none;
-  }
-</style>

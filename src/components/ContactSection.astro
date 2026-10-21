@@ -90,6 +90,9 @@ const {
               class="border border-line bg-paper px-3 py-2.5 text-[1.0625rem] focus:border-indigo focus:outline-2 focus:outline-indigo focus:outline-offset-1"
             >
               {site.locationTypes.map((t) => <option>{t.label}</option>)}
+              <option>Bowling center or roller rink</option>
+              <option>Arcade or family entertainment venue</option>
+              <option>Hobby shop or retail space</option>
               <option>Other</option>
             </select>
           </div>
@@ -121,7 +124,7 @@ const {
           type="submit"
           class="inline-flex min-h-11 items-center bg-accent px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-accent-hover"
         >
-          Request a walkthrough
+          Request a site visit
         </button>
         <p class="mt-4 text-sm text-muted">You'll hear back by the end of the business day. Your details stay with us.</p>
       </form>
