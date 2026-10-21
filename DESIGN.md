@@ -213,4 +213,3 @@ The default visible focus is an indigo outline (`3px`) with a small offset (`2px
 - **Don't** turn the foil treatment into continuous ambient animation.
 - **Don't** spread the showcase’s large rounded frame and shadow across ordinary ruled content.
 - **Don't** imply that supplier example photography documents a Crossbell installation.
-
