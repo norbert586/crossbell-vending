@@ -14,9 +14,9 @@ export default defineConfig({
 
   integrations: [
     sitemap({
-      // Form success page — reachable only by submitting a form, not for search.
+      // Form success page ï¿½ reachable only by submitting a form, not for search.
       // The promotions page is reached from the resident welcome email only.
-      filter: (page) => !page.includes('/thanks/') && !page.includes('/promotions/'),
+      filter: (page) => !page.includes('/mystery') && !page.includes('/thanks/') && !page.includes('/promotions/'),
     }),
   ]
 });

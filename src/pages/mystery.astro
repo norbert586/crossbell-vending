@@ -1,0 +1,98 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { mysteryOffer as offer } from '../data/mysteryOffer';
+const ready = offer.enabled && Boolean(offer.code && offer.discountLabel && offer.terms && /^https:\/\//.test(offer.storeUrl)) && Number.isFinite(Date.parse(offer.startsAt)) && Date.parse(offer.endsAt) > Date.parse(offer.startsAt);
+---
+<Layout title="The Mystery Drop | Crossbell Vending" description="A little extra for those who find us. Discover Crossbell's mystery drop." noindex={true} actionBar={false}>
+  <section class="mystery bg-ink" aria-labelledby="mystery-title">
+    <div class="cb-shell mystery-grid">
+      <div>
+        <p class="eyebrow">CROSSBELL / THE MYSTERY DROP</p>
+        <h1 id="mystery-title">You found<br />something <span>extra.</span></h1>
+        <p class="intro">A small discovery. A little reward. This is where our real-world finds meet the online store.</p>
+        <div class="discovery"><span aria-hidden="true">01 — 02 — 03</span><p>Scan the ad. Reveal the offer. Shop online.</p></div>
+      </div>
+      <div class="drop" data-drop data-ready={ready ? 'true' : 'false'} data-start={offer.startsAt} data-end={offer.endsAt}>
+        <div class="drop-heading"><span>THE CROSSBELL DROP</span><span aria-hidden="true">✦</span></div>
+        <img src="/brand/crossbell-crest.png" width="100" height="100" alt="Crossbell Vending crest" />
+        <h2>{offer.headline}</h2>
+        <p data-message>Our next mystery offer is on its way. Check back here for the reveal.</p>
+        <button class="cb-button" data-reveal hidden aria-expanded="false" aria-controls="offer-details">Reveal my offer <span aria-hidden="true">↗</span></button>
+        <div id="offer-details" hidden>
+          <p class="discount">{offer.discountLabel}</p>
+          <p class="instructions">Use this code at online checkout:</p>
+          <div class="code-row"><code data-code>{offer.code}</code><button type="button" data-copy>Copy code</button></div>
+          <p data-copy-status role="status" class="status"></p>
+          <p class="deadline" data-deadline></p>
+          {ready && <a class="cb-button" href={offer.storeUrl}>Shop the online store <span aria-hidden="true">↗</span></a>}
+          <p class="terms">{offer.terms}</p>
+        </div>
+        <noscript><p>Enable JavaScript to check the current offer and its availability.</p></noscript>
+        <a class="back-link" href="/">Back to Crossbell <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>
+  <section class="cb-shell how">
+    <h2>A discovery worth keeping.</h2>
+    <p>When a drop is live, its discount, deadline, and eligible products appear here. Online offers apply at the online checkout only.</p>
+  </section>
+</Layout>
+<style>
+  .mystery { color:var(--color-paper);padding:clamp(3rem,7vw,6rem) 0; }
+  .mystery-grid { display:grid;grid-template-columns:1.1fr 1fr;gap:5rem;align-items:center; }
+  .eyebrow,.drop-heading,.discovery span {font:500 .75rem var(--font-mono);letter-spacing:.12em;color:var(--color-lavender);}
+  h1 {font-size:clamp(3.5rem,6vw,6rem);line-height:.97;font-weight:700;margin:1.5rem 0;}
+  h1 span {color:var(--color-accent);}
+  .intro {max-width:37ch;line-height:1.75;color:var(--color-lavender-tint);font-size:1.1rem;}
+  .discovery {margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--color-indigo-2);}
+  .discovery p {margin-top:.65rem;font-size:.9rem;}
+  .drop {border:1px solid var(--color-accent);background:var(--color-indigo);padding:2rem;text-align:center;min-width:0;}
+  .drop-heading {display:flex;justify-content:space-between;padding-bottom:1.25rem;border-bottom:1px solid var(--color-indigo-2);}
+  .drop img {margin:2rem auto 1.5rem;object-fit:contain;}
+  .drop h2 {font-size:2.5rem;font-weight:600;}
+  [data-message] {color:var(--color-lavender-tint);line-height:1.7;margin:1rem 0 1.5rem;}
+  .back-link {display:block;width:fit-content;margin:1.75rem auto 0;padding:.6rem;color:var(--color-paper);text-decoration:underline;text-underline-offset:5px;font-size:.9rem;}
+  .discount {font:700 3rem var(--font-display);color:var(--color-accent);margin-top:1rem;}
+  .instructions,.deadline,.terms {font-size:.85rem;line-height:1.6;margin:1rem 0;color:var(--color-lavender-tint);}
+  .code-row {display:flex;align-items:center;justify-content:space-between;gap:.5rem;border:1px solid var(--color-lavender);padding:.65rem;}
+  code {font-family:var(--font-mono);overflow-wrap:anywhere;min-width:0;}
+  .code-row button {min-height:44px;padding:.5rem;white-space:nowrap;text-decoration:underline;cursor:pointer;}
+  .status {min-height:1.5rem;font-size:.85rem;margin-top:.5rem;}
+  .how {padding-block:3rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;}
+  .how h2 {font-size:2rem;}.how p {color:var(--color-muted);line-height:1.7;max-width:52ch;}
+  [hidden] {display:none !important;}
+  @media(max-width:899px){.mystery-grid,.how{grid-template-columns:1fr;gap:2.5rem;}.drop{max-width:32rem;width:100%;margin-inline:auto;padding:1.5rem;}h1{font-size:clamp(3.5rem,12vw,5rem);}.discovery{margin-top:2rem;}}
+</style>
+<script>
+  const drop = document.querySelector<HTMLElement>('[data-drop]');
+  const reveal = document.querySelector<HTMLButtonElement>('[data-reveal]');
+  const details = document.querySelector<HTMLElement>('#offer-details');
+  const message = document.querySelector<HTMLElement>('[data-message]');
+  const deadline = document.querySelector<HTMLElement>('[data-deadline]');
+  const copy = document.querySelector<HTMLButtonElement>('[data-copy]');
+  const status = document.querySelector<HTMLElement>('[data-copy-status]');
+  const code = document.querySelector<HTMLElement>('[data-code]');
+  if (drop && reveal && details && message && deadline && copy && status && code) {
+    const start = Date.parse(drop.dataset.start || '');
+    const end = Date.parse(drop.dataset.end || '');
+    let opened = false;
+    const active = () => drop.dataset.ready === 'true' && Date.now() >= start && Date.now() < end;
+    const update = () => {
+      const live = active();
+      reveal.hidden = !live || opened;
+      details.hidden = !live || !opened;
+      if (drop.dataset.ready !== 'true') return;
+      message.textContent = Date.now() >= end ? 'This drop has ended. Keep an eye out for the next one.' : Date.now() < start ? 'The next drop is almost here. Come back soon.' : opened ? 'Your mystery offer is revealed.' : 'Your next discovery is one tap away.';
+      deadline.textContent = 'Ends ' + new Intl.DateTimeFormat('en-US', {dateStyle:'medium',timeStyle:'short',timeZone:'America/Detroit'}).format(new Date(end)) + ' Eastern Time.';
+    };
+    reveal.addEventListener('click', () => { if (!active()) return update(); opened = true; reveal.setAttribute('aria-expanded','true'); update(); copy.focus(); });
+    copy.addEventListener('click', async () => {
+      if (!active()) return update();
+      try { await navigator.clipboard.writeText(code.textContent || ''); status.textContent = 'Copied. Paste the code at checkout.'; }
+      catch { status.textContent = 'Select and copy the code above to use it at checkout.'; }
+    });
+    update();
+    setInterval(update, 1000);
+    document.addEventListener('visibilitychange', update);
+  }
+</script>
