@@ -6,14 +6,14 @@ import { cardMachines, cardInquiry } from "../data/cardMachines";
 import { site } from "../data/site";
 
 const title = "Trading Card Vending for Your Venue | Crossbell Vending";
-const description = "Pokémon and other TCG packs in VTM touchscreen vending machines. Free placement, weekly restocking, and local service for qualifying Macomb and north Oakland venues.";
+const description = "Pokémon and other TCG packs in Youmi touchscreen vending machines. Free placement, weekly restocking, and local service for qualifying Macomb and north Oakland venues.";
 const questions = [
   { question: "What does the host pay?", answer: "Qualifying venues pay no equipment, delivery, stocking, or service fees. You provide suitable space, power, and service access. Crossbell earns from product sales. We assess the location and explain the agreement before installation." },
   { question: "Is it just Pokémon?", answer: "Pokémon is a featured part of the selection, alongside other trading-card games. We choose the mix for your venue and adjust it to sales and requests. Games, sets, and pack availability vary by location and supply." },
   { question: "How often do you restock?", answer: "We restock weekly and check inventory remotely between visits. Crossbell buys and loads the products, rotates the selection, and handles machine service." },
-  { question: "Are the packs unopened?", answer: "We stock factory-sealed packs from sources we can document. We do not weigh, search, or reseal packs, or sell homemade mystery bundles. Packs vend in protective cases suited to the machine." },
+  { question: "Are the packs unopened?", answer: "We stock factory-sealed packs from sources we can document. We do not weigh, search, or reseal packs, or sell homemade mystery bundles. Packaging is selected to suit the machine and product." },
   { question: "What does the venue need?", answer: "A visible indoor spot, standard wall power, service access, and enough regular traffic to support the machine. We check connectivity, clearances, and mounting during the site visit. Wall-mounted units require suitable mounting; pedestal and freestanding options are available." },
-  { question: "What if a pack does not dispense?", answer: "The machine uses a sensor to detect a dispensed product. If a purchase goes wrong, contact Crossbell using the details on the machine. We handle customer support and refunds; your staff do not have to troubleshoot it." },
+  { question: "What if a pack does not dispense?", answer: "If a purchase goes wrong, contact Crossbell using the details on the machine. We handle customer support and refunds; your staff do not have to troubleshoot it." },
 ];
 const schema = {
   "@context": "https://schema.org", "@type": "Service",
@@ -32,26 +32,26 @@ const schema = {
 
     <section class="cb-shell cb-section tcg-experience" aria-labelledby="experience-heading">
       <div><h2 id="experience-heading" class="cb-heading">A little excitement.<br />No extra work for your team.</h2><p>A sealed pack to pick up after a game, between bowling rounds, or on the way home. Give collectors something to discover while we handle the retail work.</p><a class="tcg-link" href={cardInquiry()}>Ask about your venue <span aria-hidden="true">&rarr;</span></a></div>
-      <div class="tcg-experience__details"><h3>Stocked for your crowd.</h3><p>Pokémon takes a featured spot, with other TCGs chosen for the people who visit. Weekly restocking keeps the selection cared for.</p><h3>Cashless, from start to finish.</h3><p>Customers browse the touchscreen, choose their pack, pay by card or mobile wallet, and collect it from the pickup hatch.</p><h3>Sealed packs, handled with care.</h3><p>Protective cases and coils sized for card packs support reliable dispensing. We handle stocking and support.</p></div>
+      <div class="tcg-experience__details"><h3>Stocked for your crowd.</h3><p>Pokémon takes a featured spot, with other TCGs chosen for the people who visit. Weekly restocking keeps the selection cared for.</p><h3>Cashless, from start to finish.</h3><p>Customers browse the touchscreen, choose their pack, pay by card or mobile wallet, and collect it from the pickup hatch.</p><h3>Sealed packs, handled with care.</h3><p>We select packaging and configure dispensing for the products stocked. We handle stocking and support.</p></div>
     </section>
 
     <section id="lineup" class="tcg-lineup" aria-labelledby="lineup-heading">
       <div class="cb-shell cb-section">
-        <div class="tcg-section-heading"><div><h2 id="lineup-heading" class="cb-heading">Four formats.<br />Your venue’s perfect fit.</h2><p>From a compact wall mount to a full-height tower. We recommend the setup after seeing your space.</p></div><a href={cardInquiry()} class="tcg-link">Help me choose <span aria-hidden="true">&rarr;</span></a></div>
+        <div class="tcg-section-heading"><div><h2 id="lineup-heading" class="cb-heading">Two formats.<br />Your venue’s perfect fit.</h2><p>From a compact wall mount to a full-height tower. We recommend the setup after seeing your space.</p></div><a href={cardInquiry()} class="tcg-link">Help me choose <span aria-hidden="true">&rarr;</span></a></div>
         <div class="tcg-models">
           {cardMachines.map((machine) => (
             <article id={machine.slug} class="tcg-model">
-              <figure><Image src={machine.image} alt={`VTM ${machine.name} touchscreen trading-card vending machine, shown with an example card-themed wrap`} widths={[360, 540, 760]} sizes="(min-width: 900px) 440px, 90vw" class="tcg-model__image" loading="lazy" /></figure>
+              <figure><Image src={machine.image} alt={`AI product visualization of the ${machine.name} touchscreen trading-card vending machine`} widths={[360, 540, 760]} sizes="(min-width: 900px) 440px, 90vw" class="tcg-model__image" loading="lazy" /></figure>
               <div class="tcg-model__body">
                 <h3>{machine.name}</h3><p class="tcg-model__format">{machine.format}</p><p class="tcg-model__fit">{machine.fit}</p>
-                <dl class="tcg-model__facts"><div><dt>Pack capacity</dt><dd>Up to {machine.capacity}</dd></div><div><dt>Touchscreen</dt><dd>{machine.screen}&Prime;</dd></div></dl>
-                <details class="tcg-model__specs"><summary>Dimensions &amp; placement</summary><div><p>{machine.width}&Prime; W &times; {machine.height}&Prime; H &times; {machine.depth}&Prime; D. {machine.aisles} product aisles.</p><p>{machine.slug === "vtm-slim-tower-tcg" ? "Freestanding tower. Allow room for access and service." : "Wall-mounted, with an optional pedestal for freestanding placement. Cabinet dimensions exclude the pedestal."}</p></div></details>
+                <dl class="tcg-model__facts"><div><dt>Capacity</dt><dd>{machine.capacity}</dd></div><div><dt>Touchscreen</dt><dd>{machine.screen}&Prime;</dd></div></dl>
+                <details class="tcg-model__specs"><summary>Dimensions &amp; placement</summary><div><p>Supplier-listed: {machine.width}&Prime; W &times; {machine.depth}&Prime; D &times; {machine.height}&Prime; H ({machine.metric}).</p><p>Listed weight: {machine.weight} kg ({Math.round(machine.weight * 2.20462)} lb). Listed power: {machine.power} W. {machine.connectivity}.</p><p>{machine.placement}</p></div></details>
                 <a class="tcg-link" href={cardInquiry(machine.slug)}>Ask about the {machine.name}<span aria-hidden="true">&rarr;</span></a>
               </div>
             </article>
           ))}
         </div>
-        <p class="tcg-lineup__note">Manufacturer-listed capacities for the standard booster-pack configuration. Product size and setup affect capacity. Example wraps, screen prices, and products are illustrative; the final appearance and selection may vary.</p>
+        <p class="tcg-lineup__note">Supplier-listed specifications. Product size and configuration affect capacity. Images are AI-generated product visualizations based on supplier references; wraps, screen content and final appearance may vary.</p>
       </div>
     </section>
 
@@ -66,7 +66,7 @@ const schema = {
     </section>
 
     <section class="tcg-close" aria-labelledby="card-contact-heading"><div class="cb-shell"><h2 id="card-contact-heading">We bring the machine.<br />You bring the venue.</h2><p>Free placement. Weekly restocks. Crossbell takes care of it.</p><a href={cardInquiry()} class="cb-button">Request a site visit <span aria-hidden="true">&rarr;</span></a><p class="tcg-close__qualification">For qualifying locations in Macomb and north Oakland County.</p></div></section>
-    <div class="cb-shell tcg-disclaimer"><p>Crossbell Vending is an independent operator, not affiliated with, sponsored by, or endorsed by The Pokémon Company, Nintendo, Creatures, GAME FREAK, or other trading-card brand owners. Product names identify the products offered; trademarks belong to their respective owners. Machine imagery is based on VTM manufacturer photography.</p></div>
+    <div class="cb-shell tcg-disclaimer"><p>Crossbell Vending is an independent operator, not affiliated with, sponsored by, or endorsed by The Pokémon Company, Nintendo, Creatures, GAME FREAK, or other trading-card brand owners. Product names identify the products offered; trademarks belong to their respective owners. Machine imagery consists of AI-generated product visualizations based on supplier references, not photographs of installed equipment.</p></div>
   </div>
 </Layout>
 

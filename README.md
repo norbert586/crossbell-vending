@@ -10,7 +10,7 @@ Netlify form with a visible `service_interest` selection (`?service=smart-cooler
 `smart-market`, or `card-machine` preselects it).
 
 **Trading-card vending** has a dedicated `/trading-card-vending/` page and a shared
-premium dark feature on home and services. All four VTM TCG models use manufacturer
+premium dark feature on home and services. The two Youmi TCG models use AI-generated product
 photography and sourced specifications. The old `/services/#card-machines` anchor
 still resolves. Keep the independent-operator wording and illustrative-image captions.
 See the maintenance notes below and `src/assets/cards/SOURCES.md` for provenance.
@@ -81,12 +81,12 @@ and the dedicated card page. The services anchor `/services/#card-machines`
 continues to work. The foil sheen is hover-only, uses CSS, and is disabled for
 reduced motion. All content and native disclosure controls work without JavaScript.
 
-The four VTM TCG formats are generated from `src/data/cardMachines.ts`.
+The two Youmi TCG formats are generated from `src/data/cardMachines.ts`.
 Change model facts, images, and inquiry slugs there. Model links carry both
 `service=card-machine` and `machine=<slug>` into the existing form. Family-venue
-choices are included in the location dropdown. Manufacturer photos and source URLs
+choices are included in the location dropdown. Product visualizations and supplier screenshot provenance
 are documented in `src/assets/cards/SOURCES.md`; sample wraps, screen prices, and
-stock are illustrative. Capacities depend on the standard pack configuration.
+stock are illustrative. Capacity depends on the product configuration; only YM101 has a supplied capacity.
 No supplier scripts, embeds, analytics, or runtime image requests were added.
 
 Confirmed operating offer: weekly restocks, free placement and service for

@@ -191,7 +191,7 @@ Visible labels sit above square paper-colored inputs with soft strokes. Main inq
 Service rows are divided by thin rules. Hover adds a heading underline and a small arrow translation (`4px`). Model cards are open compositions on lineup backing: large contained machine photo, title, two facts, then a native dimensions disclosure. FAQs use native disclosures and ruled separation; the shared light FAQ rotates its inline plus icon when open.
 
 ### Trading-card showcase
-The reusable card feature pairs copy with an actual VTM machine in a narrow gradient frame (`2px`). The image remains a square, contained photograph; the caption identifies example wraps and products. The seal is a small dark bordered caption inside the frame.
+The reusable card feature pairs copy with a Youmi product visualization in a narrow gradient frame (`2px`). The image remains a portrait, contained visualization; the caption identifies example wraps and products. The seal is a small dark bordered caption inside the frame.
 
 A foil sweep and gentle image scale (`1.015`) run only on hover-capable devices with no reduced-motion preference. The sweep lasts `1100ms`; image easing lasts `700ms`, both using `cubic-bezier(.16,1,.3,1)`. There is no continuous foil animation.
 

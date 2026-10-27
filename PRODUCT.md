@@ -29,3 +29,6 @@ Preserve the Crossbell crest, gold/lavender/indigo identity, existing fonts, and
 ## Evidence on Hand
 
 Existing site content and the real local apartment installation photo in `src/assets/photos/kirkway-cooler.jpg`. VTM's official product pages supply machine specifications and reference imagery; provenance lives beside the card assets. No card installation photos or customer testimonials have been supplied.
+
+## Machine lineup correction — October 27, 2026
+The operator approved replacing the previous four VTM models with Youmi YM101 (wall-mounted) and YM102 (freestanding), using the approved AI visualizations. The first three supplier screenshots map to YM101; the latest two map to YM102. See src/assets/cards/SOURCES.md for exact specs and dimension qualifications. This supersedes earlier lineup and manufacturer-photography notes.

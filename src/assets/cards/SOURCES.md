@@ -1,18 +1,16 @@
-# VTM trading-card machine photography
+# Youmi trading-card machines — updated 2026-10-27
 
-Retrieved 2026-10-21 from VTM's public product galleries. These are unedited manufacturer images, not photographs of Crossbell installations. Wraps, screen prices, and products are examples. Astro generates responsive WebP variants at build time; no supplier requests run in the visitor's browser.
+Crossbell explicitly confirmed the model mapping and approved replacing all prior VTM machine photos and specs.
 
-| Local file | Original image | Product/specification source |
-| --- | --- | --- |
-| `mini-tcg.jpg` | [VTM image](https://cdn.shopify.com/s/files/1/0855/5869/0100/files/pokemon-tcg-wrap-mini-tcg-vending-machine-front-view.avif?v=1782837462) | [Mini TCG](https://vtmvending.com/products/the-mini-tcg-compact-vending-kiosk-for-cards) |
-| `slim-wall-tcg.jpg` | [VTM image](https://cdn.shopify.com/s/files/1/0855/5869/0100/files/pokemon-tcg-wrap-slim-wall-tcg-vending-machine-front-view-angle.avif?v=1782838720) | [Slim Wall TCG](https://vtmvending.com/products/slim-wall-tcg-vending) |
-| `mega-wall-tcg.jpg` | [VTM image](https://cdn.shopify.com/s/files/1/0855/5869/0100/files/pokemon-tcg-wrap-mega-wall-2-0-tcg-vending-machine-right-angled-view.avif?v=1782908893) | [Mega Wall 2.0 TCG](https://vtmvending.com/products/mega-wall-card-vending-machine) |
-| `slim-tower-tcg.jpg` | [VTM image](https://cdn.shopify.com/s/files/1/0855/5869/0100/files/slim-tower-pokemon-vending-machine.avif?v=1782910655) | [Slim Tower 2.0 TCG](https://vtmvending.com/products/slim-pack-tower-2-0-trading-card-vending-machine) |
+- `youmi-ym101.webp`: AI-generated wall-mounted product visualization from the supplied Youmi dragon-wrap reference; generated image exec-3ad7550b-6613-447f-8fbd-99971eb7f338.png.
+- `youmi-ym102.webp`: latest approved AI-generated red/white freestanding product visualization, regenerated using supplier proportions; exec-8535bd3b-f24e-41a1-8faf-800642746a64.png.
 
-Capacity, screen size, and cabinet dimensions in `src/data/cardMachines.ts` come from these product pages. Capacities refer to the standard booster-pack configuration; different products change capacity. Cabinet dimensions exclude optional pedestals and installation/service clearances.
+These are illustrative renders, not photographs of Crossbell installations or technical drawings. Astro builds responsive optimized images locally.
 
-Mechanism reference: [VTM setup, refund sensor, and jams](https://help.vtmvending.com/en/articles/17326826-pokemon-tcg-vending-setup-refund-sensor-and-jams). Standard TCG units use 22 mm coils and product pushers; VTM recommends protective top-loader cases. The website does not promise jam-free operation or instant refunds.
+## Specs supplied by the operator
 
-Background extraction was attempted with the built-in image tool, which rejected the request. No generated or modified result is used in the site; the source photos above ship unchanged.
+YM101: screenshots 1000002952.png, 1000002951.png, 1000002950.png. Operator confirms these belong to the small wall-mounted model. Supplier listing: 60 W × 34 D × 168 H cm; 95 kg; 50 W; 32-inch screen; 135 items; 4G/Wi-Fi. The listing does not establish wall-only cabinet dimensions or pedestal inclusion. Publish as supplier-listed overall dimensions; confirm mounting geometry before installation. Do not infer smaller dimensions from the rendering.
 
-The CDN served JPEG bytes from its AVIF-named URLs; local files use the detected JPEG format. Provenance metadata is embedded without altering the picture.
+YM102: screenshots 1000002953.png, 1000002954.png. Supplier listing: 168 H × 60 W × 34 D cm; 100 kg (also repeated as gross package weight); 50 W; 32-inch screen; remote monitoring. No model-specific capacity was provided, so do not reuse YM101's capacity.
+
+Inches rounded to one decimal: 23.6 W × 13.4 D × 66.1 H. Weights on the site are explicitly supplier-listed rather than verified net mounting loads. No VTM specifications or mechanism claims carry over.

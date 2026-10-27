@@ -5,7 +5,7 @@ import { cardMachines, cardInquiry } from "../data/cardMachines";
 interface Props { pageHero?: boolean; id?: string; }
 const { pageHero = false, id = "card-machines" } = Astro.props;
 const Heading = pageHero ? "h1" : "h2";
-const featured = cardMachines[2];
+const featured = cardMachines[1];
 ---
 
 <section id={id} class:list={["tcg-feature bg-ink", { "tcg-feature--hero": pageHero }]} aria-labelledby={`${id}-heading`}>
@@ -24,11 +24,11 @@ const featured = cardMachines[2];
     <figure class="tcg-feature__visual">
       <div class="tcg-foil">
         <div class="tcg-feature__stage">
-          <Image src={featured.image} alt="VTM Mega Wall 2.0 trading-card vending machine with a large touchscreen, cashless reader, and example card-themed wrap" widths={[400, 640, 900]} sizes="(min-width: 900px) 430px, 85vw" class="tcg-feature__machine" loading={pageHero ? "eager" : "lazy"} fetchpriority={pageHero ? "high" : "auto"} />
+          <Image src={featured.image} alt="AI product visualization of the Youmi YM102 trading-card vending machine with a red-and-white Poké Ball design" widths={[400, 640, 900]} sizes="(min-width: 900px) 430px, 85vw" class="tcg-feature__machine" loading={pageHero ? "eager" : "lazy"} fetchpriority={pageHero ? "high" : "auto"} />
           <span class="tcg-feature__seal">Sealed packs.<br />Fresh possibilities.</span>
         </div>
       </div>
-      <figcaption>VTM Mega Wall 2.0 &middot; Example wrap and products shown</figcaption>
+      <figcaption>Youmi YM102 &middot; AI product visualization</figcaption>
     </figure>
   </div>
   <div class="tcg-feature__footer" aria-label="Trading-card service benefits">
@@ -47,7 +47,7 @@ const featured = cardMachines[2];
   .tcg-feature__visual { width: 100%; max-width: 430px; justify-self: end; }
   .tcg-foil { padding: 2px; border-radius: 16px; background: linear-gradient(135deg, var(--color-accent), var(--color-lavender) 24%, var(--color-indigo-2) 50%, var(--color-lavender) 75%, var(--color-accent)); box-shadow: 0 24px 60px rgb(0 0 0 / .25); }
   .tcg-feature__stage { background: radial-gradient(ellipse at 48% 40%, var(--color-indigo-2), var(--color-ink) 72%); border-radius: 14px; min-height: 0; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-  .tcg-feature__machine { width: 100%; height: auto; aspect-ratio: 1; object-fit: contain; position: relative; z-index: 1; transition: transform 700ms cubic-bezier(.16,1,.3,1); }
+  .tcg-feature__machine { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: contain; position: relative; z-index: 1; transition: transform 700ms cubic-bezier(.16,1,.3,1); }
   .tcg-feature__stage::after { content: ""; position: absolute; inset: -60%; background: linear-gradient(115deg, transparent 43%, rgb(205 209 255 / .04) 47%, rgb(255 255 255 / .14) 50%, rgb(196 147 80 / .06) 53%, transparent 57%); transform: translateX(-65%); pointer-events: none; z-index: 2; }
   .tcg-feature__seal { position: absolute; bottom: 1rem; left: 1rem; z-index: 3; padding: .65rem .85rem; background: var(--color-ink); border: 1px solid var(--color-accent); border-radius: 3px; color: var(--color-paper); font-size: .72rem; line-height: 1.5; }
   .tcg-feature__visual figcaption { font-size: .68rem; color: var(--color-lavender); text-align: center; line-height: 1.5; margin-top: .85rem; }

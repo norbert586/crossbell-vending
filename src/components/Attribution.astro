@@ -1,6 +1,6 @@
 ---
 import { cardMachines } from "../data/cardMachines";
-const cardModelNames = Object.fromEntries(cardMachines.map((machine) => [machine.slug, `VTM ${machine.name}`]));
+const cardModelNames = Object.fromEntries(cardMachines.map((machine) => [machine.slug, machine.name]));
 // Carries "where did this lead come from" from the landing URL through to the
 // Netlify Forms submission.
 //
