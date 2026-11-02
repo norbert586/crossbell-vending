@@ -1,0 +1,64 @@
+---
+import Layout from '../layouts/Layout.astro';
+const products = [
+ {name:'Pokémon 30th Celebration',type:'Elite Trainer Box',category:'pokemon',image:'celebration-etb.webp',pack:false},
+ {name:'Pokémon Ascended Heroes',type:'Elite Trainer Box',category:'pokemon',image:'ascended-etb.webp',pack:false},
+ {name:'Pokémon 30th Celebration',type:'Individual booster pack',category:'pokemon',image:'celebration-pack.webp',pack:true},
+ {name:'Pokémon Prismatic Evolutions',type:'Individual booster pack',category:'pokemon',image:'prismatic-pack.webp',pack:true},
+ {name:'Riftbound Unleashed',type:'Individual booster pack',category:'riftbound',image:'riftbound-pack.webp',pack:true},
+];
+---
+<Layout title="Product Catalogue | Crossbell Vending" description="Explore Pokémon and Riftbound trading cards from Crossbell Vending. Booster packs are available in select machines. Our online catalogue is coming soon." actionBar={false}>
+ <div class="catalogue">
+  <section class="hero" aria-labelledby="catalogue-title">
+   <img class="hero-art" src="/catalogue/hero.webp" alt="Pokémon 30th Celebration box and Riftbound booster pack displayed on dark stone stands" width="1600" height="900" fetchpriority="high" />
+   <div class="hero-inner">
+    <p class="eyebrow">TRADING CARDS / CROSSBELL VENDING</p>
+    <h1 id="catalogue-title">Your next great pull.<br/><span>Closer than<br class="desktop-break"/> you think.</span></h1>
+    <p class="intro">Booster packs are available in select Crossbell machines. Our online catalogue is coming soon.</p>
+    <a class="explore" href="#collection">Explore the collection <span aria-hidden="true">→</span></a>
+    <p class="availability">Selections vary by machine. Online ordering is not open yet.</p>
+   </div>
+  </section>
+  <section class="collection" id="collection" aria-labelledby="collection-title">
+   <div class="collection-heading">
+    <div><h2 id="collection-title">The collection</h2><p>Boxes &amp; booster packs · Online catalogue coming soon</p></div>
+    <div class="filters" role="group" aria-label="Filter products">
+     <button type="button" data-filter="all" aria-pressed="true">All</button>
+     <button type="button" data-filter="pokemon" aria-pressed="false">Pokémon</button>
+     <button type="button" data-filter="riftbound" aria-pressed="false">Riftbound</button>
+    </div>
+   </div>
+   <p class="sr-only" id="filter-status" role="status" aria-live="polite">Showing all 5 products</p>
+   <div class="products">
+    {products.map(product => <article data-category={product.category}>
+     <div class="product-photo"><img src={`/catalogue/${product.image}`} alt={`${product.name} — ${product.type}`} width="600" height="720" loading="lazy" /></div>
+     <p class="product-type">{product.type}</p><h3>{product.name}</h3>
+     <p class="product-status">{product.pack ? 'Select machines' : 'Online listing coming soon'}</p>
+     <p class="product-detail">{product.pack ? 'Selection varies by location' : 'Online details coming soon'}</p>
+    </article>)}
+   </div>
+   <p class="collection-note">Booster packs are offered in select machines. Products shown preview our upcoming online catalogue; availability varies.</p>
+  </section>
+  <section class="closing"><h2>FIND YOUR NEXT PACK.</h2><p>Look for trading cards in select Crossbell machines.<br/>Check back for our online catalogue.</p></section>
+ </div>
+</Layout>
+<style>
+.catalogue{background:#12121f;color:#f7f6fc}.hero{position:relative;max-width:1600px;margin:auto;min-height:720px;overflow:hidden}.hero-art{position:absolute;width:100%;height:100%;object-fit:cover;inset:0}.hero-inner{position:relative;padding:80px 5% 60px;max-width:1400px;margin:auto}.eyebrow{font-size:13px;letter-spacing:.22em;color:#e2b970;margin-bottom:28px;font-weight:600}h1{font-size:clamp(48px,5.4vw,82px);line-height:.99;max-width:680px;font-weight:700;letter-spacing:-.018em;text-wrap:initial}h1 span{color:#d6a653;font-size:1.24em}.intro{font-size:22px;line-height:1.5;max-width:495px;margin:28px 0 30px}.explore{display:inline-flex;gap:28px;align-items:center;background:#d5a14e;color:#15131d;font-size:18px;font-weight:600;padding:17px 25px}.explore:hover{background:#e8b96b}.availability{font-size:13px;color:#c8c8da;max-width:495px;margin-top:16px}.collection{max-width:1400px;padding:50px 5% 44px;margin:auto;scroll-margin-top:100px}.collection-heading{display:flex;justify-content:space-between;align-items:center;gap:30px;margin-bottom:38px}.collection h2{font-size:56px;font-weight:700;margin-bottom:3px}.collection-heading p{font-size:17px;color:#d7d6e5}.filters{display:flex;gap:10px}.filters button{min-height:44px;padding:12px 24px;border:1px solid #575565;font-size:14px;cursor:pointer}.filters button[aria-pressed=true]{background:#d5a14e;color:#15131d;border-color:#d5a14e}.filters button:hover{border-color:#e8b96b}.products{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}article{display:flex;flex-direction:column}article[hidden]{display:none}.product-photo{background:#fff;aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;padding:12px}.product-photo img{width:100%;height:auto;aspect-ratio:4/5;object-fit:contain}.product-type{font-size:12px;color:#cdccdc;margin:22px 0 10px}h3{font-size:29px;line-height:1.05;font-weight:600;margin-bottom:18px;text-wrap:initial}.product-status{font-family:var(--font-display);font-size:22px;font-weight:600;color:#e3b463;margin-top:auto;line-height:1.15}.product-detail{font-size:12px;color:#cdccdc;margin-top:12px}.collection-note{text-align:center;font-size:14px;line-height:1.7;color:#dddbe8;margin-top:35px;padding-top:22px;border-top:1px solid #454252}.closing{background:#1c1b31;text-align:center;padding:44px 20px 54px;border-bottom:1px solid #464057}.closing h2{color:#e3b463;font-family:var(--font-body);font-size:29px;letter-spacing:.22em;font-weight:600;margin-bottom:28px}.closing p{font-size:17px;line-height:1.8;color:#cdccdc}.catalogue :focus-visible{outline:3px solid #f2c477;outline-offset:5px}
+@media(min-width:1600px){.hero-inner{padding-left:70px}.hero{min-height:800px}}
+@media(max-width:1100px){.hero{min-height:630px}.hero-inner{padding-top:65px}.intro{max-width:420px;font-size:19px}.availability{max-width:400px}.collection-heading{align-items:flex-start}.collection h2{font-size:46px}.filters button{padding:12px 18px}h3{font-size:25px}.product-photo{padding:8px}}
+@media(max-width:760px){.hero{padding-top:0;display:flex;flex-direction:column}.hero-art{position:relative;order:2;height:auto;aspect-ratio:16/9;object-fit:cover;object-position:center}.hero-inner{padding:42px 6% 28px;width:100%;background:#12121f}h1{font-size:56px}.desktop-break{display:none}.intro{font-size:18px;max-width:100%;margin-top:24px}.eyebrow{font-size:11px;letter-spacing:.15em;margin-bottom:24px}.availability{max-width:100%;font-size:12px}.collection{padding:32px 6%}.collection-heading{display:block;margin-bottom:26px}.collection h2{font-size:44px}.collection-heading p{font-size:15px}.filters{margin-top:22px}.filters button{flex:1}.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 14px}h3{font-size:26px}.product-type{margin-top:14px}.product-status{font-size:21px}.closing h2{font-size:22px;letter-spacing:.15em}.closing p{font-size:15px}}
+@media(prefers-reduced-motion:reduce){:global(html){scroll-behavior:auto}}
+</style>
+<script>
+ const filterButtons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+ const productCards = document.querySelectorAll<HTMLElement>('[data-category]');
+ filterButtons.forEach(button => button.addEventListener('click', () => {
+  const selected = button.dataset.filter;
+  filterButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+  let count = 0;
+  productCards.forEach(card => { card.hidden = selected !== 'all' && card.dataset.category !== selected; if (!card.hidden) count++; });
+  const status = document.getElementById('filter-status');
+  if(status) status.textContent = `Showing ${count} ${selected === 'all' ? '' : button.textContent} product${count === 1 ? '' : 's'}`;
+ }));
+</script>

@@ -14,12 +14,13 @@ const nav = [
   { href: "/services/", label: "Services", path: "/services/" },
   { href: "/machines/", label: "Coolers", path: "/machines/" },
   { href: "/trading-card-vending/", label: "Trading cards", path: "/trading-card-vending/" },
+  { href: "/product-catalogue/", label: "Product Catalogue", path: "/product-catalogue/" },
   { href: "/#area", label: "Service area" },
 ];
 ---
 
 <header class="sticky top-0 z-40 border-b-2 border-lavender bg-white">
-  <div class="mx-auto flex max-w-[1120px] items-center justify-between gap-4 px-5 py-2.5 sm:px-8">
+  <div class="mx-auto flex max-w-[1400px] items-center justify-between gap-4 px-5 py-2.5 sm:px-8">
     <a href="/" class="flex items-center gap-2.5 font-display text-2xl font-bold tracking-tight text-ink">
       <Image
         src={crest}
@@ -34,7 +35,7 @@ const nav = [
       <span class="min-[360px]:hidden">Crossbell</span>
     </a>
     <nav aria-label="Sections" class="hidden xl:block">
-      <ul class="flex items-center gap-4 xl:gap-6">
+      <ul class="flex items-center gap-4 xl:gap-5">
         {nav.map((item) => (
           <li>
             <a
