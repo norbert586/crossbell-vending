@@ -40,7 +40,8 @@ import '@fontsource/ibm-plex-mono/400.css';
 <script>
 const form = document.querySelector<HTMLFormElement>('#checkout-form')!;
 const dialog = document.querySelector<HTMLDialogElement>('#review')!;
-let quantity = 2;
+const requestedQuantity = Number(new URLSearchParams(location.search).get('quantity'));
+let quantity = Number.isInteger(requestedQuantity) && requestedQuantity >= 1 && requestedQuantity <= 10 ? requestedQuantity : 2;
 let sandbox = false;
 let quoteVersion = 0;
 let latestQuote: any = null;
