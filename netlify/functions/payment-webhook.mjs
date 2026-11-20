@@ -1,3 +1,4 @@
+import buildContext from '../../server/checkout/build-context.mjs';
 import { getStore } from '@netlify/blobs';
 import { CheckoutError, policyFromEnv, validSignature } from '../../server/checkout/core.mjs';
 import { gateway } from '../../server/checkout/gateway.mjs';
@@ -5,7 +6,7 @@ import { reconcile } from '../../server/checkout/service.mjs';
 export default async request => {
   if (request.method !== 'POST') return new Response(null, { status: 405 });
   try {
-    const env = process.env;
+    const env = { ...process.env, ...buildContext };
     policyFromEnv(env);
     const raw = await request.text();
     if (raw.length > 64000) return new Response(null, { status: 413 });
