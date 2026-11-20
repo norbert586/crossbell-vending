@@ -1,11 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
 const products = [
- {name:'Pokémon 30th Celebration',type:'Elite Trainer Box',category:'pokemon',image:'celebration-etb.webp',pack:false},
- {name:'Pokémon Ascended Heroes',type:'Elite Trainer Box',category:'pokemon',image:'ascended-etb.webp',pack:false},
+ {name:'Pokémon 30th Celebration',type:'Elite Trainer Box',category:'pokemon',image:'celebration-etb.webp',price:'$115.99 / box',pack:false},
+ {name:'Pokémon Ascended Heroes',type:'Elite Trainer Box',category:'pokemon',image:'ascended-etb.webp',price:'$120.00 / box',pack:false},
  {name:'Pokémon 30th Celebration',type:'Individual booster pack',category:'pokemon',image:'celebration-pack.webp',pack:true,checkout:true},
- {name:'Pokémon Prismatic Evolutions',type:'Individual booster pack',category:'pokemon',image:'prismatic-pack.webp',pack:true},
- {name:'Riftbound Unleashed',type:'Individual booster pack',category:'riftbound',image:'riftbound-pack.webp',pack:true},
+ {name:'Pokémon Prismatic Evolutions',type:'Individual booster pack',category:'pokemon',image:'prismatic-pack.webp',price:'$13.99 / pack',pack:true},
+ {name:'Riftbound Unleashed',type:'Individual booster pack',category:'riftbound',image:'riftbound-pack.webp',price:'$8.99 / pack',pack:true},
 ];
 ---
 <Layout title="Product Catalogue | Crossbell Vending" description="Explore Pokémon and Riftbound trading cards from Crossbell Vending. Booster packs are available in select machines. Try our sandbox checkout for 30th Celebration booster packs." actionBar={false}>
@@ -34,12 +34,12 @@ const products = [
     {products.map(product => <article data-category={product.category}>
      <div class="product-photo"><img src={`/catalogue/${product.image}`} alt={`${product.name} — ${product.type}`} width="600" height="720" loading="lazy" /></div>
      <p class="product-type">{product.type}</p><h3>{product.name}</h3>
-     <p class="product-status">{product.checkout ? '$11.99 / pack' : 'Price to be confirmed'}</p>
+     <p class="product-status">{product.checkout ? '$11.99 / pack' : product.price}</p>
      <p class="product-detail">{product.checkout ? 'Sandbox price · Tax and shipping calculated at checkout' : 'Not available for online checkout yet'}</p>
      {product.checkout && <a class="buy-link" href="/checkout/?quantity=1">Try sandbox checkout</a>}
     </article>)}
    </div>
-   <p class="collection-note">Only the 30th Celebration booster pack is enabled for sandbox checkout. Other prices and online availability are awaiting confirmation.</p>
+   <p class="collection-note">Only the 30th Celebration booster pack is enabled for sandbox checkout. Prices are shown for the full collection; checkout for the other products is not enabled yet.</p>
   </section>
   <section class="closing"><h2>FIND YOUR NEXT PACK.</h2><p>Look for trading cards in select Crossbell machines.<br/>Explore the sandbox checkout above.</p></section>
  </div>
