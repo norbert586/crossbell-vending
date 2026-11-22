@@ -39,7 +39,11 @@ test('missing config and production deployments fail closed',()=>{
 });
 test('signature verification covers original bytes and rejects tampering',()=>{
   const key='ab'.repeat(64),body='{"hello":1}';
-  const sig='sha512='+createHmac('sha512',Buffer.from(key,'hex')).update(body).digest('hex');
+  // Independent Python HMAC fixture: webhook keys are literal text.
+  const sig='sha512=4cb6944fc62388af19e29070460b3b28ad952cf6ba55811f56099d6949b4b1678a76f446376d045a069c9e04a1e59c063de5704068c0f8b84fa36e378ada01e6';
+  const wrongEncoding='sha512='+createHmac('sha512',Buffer.from(key,'hex')).update(body).digest('hex');
+  assert.equal(validSignature(body,wrongEncoding,key),false);
+  assert.equal(validSignature(body,sig,'cd'.repeat(64)),false);
   assert.ok(validSignature(body,sig,key)); assert.ok(!validSignature(body+' ',sig,key)); assert.ok(!validSignature(body,'bad',key)); assert.ok(!validSignature(body,sig,''));
 });
 test('duplicate checkout submissions reuse one provider session',async()=>{

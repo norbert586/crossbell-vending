@@ -48,7 +48,7 @@ export function customer(input) {
 }
 export function validSignature(body, header, key) {
   if (!/^[a-f\d]{128}$/i.test(key || '') || !/^sha512=[a-f\d]{128}$/i.test(header || '')) return false;
-  const expected = createHmac('sha512', Buffer.from(key, 'hex')).update(body).digest();
+  const expected = createHmac('sha512', key).update(body).digest();
   return timingSafeEqual(expected, Buffer.from(header.slice(7), 'hex'));
 }
 export function verifyTransaction(order, transaction) {
