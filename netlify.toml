@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build"
+  command = "node scripts/checkout-build-context.mjs && npm run build"
   publish = "dist"
 
 [build.environment]
