@@ -89,13 +89,14 @@
   },
   "returnsPolicy": {
     "acceptReturns": false,
-    "description": "No returns. Report damaged or incorrect orders within 7 days of delivery to contact@crossbellvending.com. Include your order number and photos.",
+    "description": "No returns. Report damaged or incorrect orders within 7 days of delivery to contact@crossbellvending.com. Include your order number and photos. All claims are subject to manual review. Any replacement or refund requires approval.",
     "supportEmail": "contact@crossbellvending.com",
     "damageReportDays": 7,
     "damageReportFrom": "delivery",
     "damageReportRequirements": [
       "order number",
       "photos"
-    ]
+    ],
+    "manualReviewRequired": true
   }
 }
