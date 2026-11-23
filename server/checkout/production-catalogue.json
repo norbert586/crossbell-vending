@@ -24,7 +24,8 @@
       "name": "Ascended Heroes Booster Pack",
       "initialStock": 9,
       "priceCents": 1199,
-      "maxQuantity": 9
+      "maxQuantity": 9,
+      "saleEnabled": false
     },
     "prismatic-evolutions-pack": {
       "name": "Prismatic Evolutions Booster Pack",

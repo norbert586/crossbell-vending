@@ -66,3 +66,6 @@ User confirmed the 30th Celebration six-pack Booster Bundle: $55 each, five seal
 
 ## Delta Reign confirmation — 2026-11-23
 User confirmed three Delta Reign Elite Trainer Boxes at $70.99 each for online sale. Enabled in staging only. One-time allocation migration updates existing zero-stock rows only where no Delta Reign orders exist; new scopes use initialStock=3.
+
+## Ascended Heroes paused — 2026-11-23
+Removed from the staged catalogue and checkout selector at user request. Server quotes reject the disabled SKU, including old cart links. Existing stock and order records retained. Production unchanged.
