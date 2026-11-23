@@ -60,3 +60,6 @@ Real Netlify Database validation passed 4 checks on prior draft d9e1db6c: last-u
 ## Shipping decision superseding flat rates
 
 Owner approved contiguous 48-state street-address delivery, live ground-carrier rate options with cheapest highlighted, and free pickup. Origin is 13023 Azure Dr, Shelby Township, MI 48315. The $5/$8.50 proposal is withdrawn. See shipping-research.md and server/checkout/shipping-profiles.json for researched product measurements and explicitly estimated parcel allowances. Rate-provider connection, actual packaging calibration, destination tax rules, and broader address validation remain pending; shipping is not enabled.
+
+## Bundle confirmation — 2026-11-23
+User confirmed the 30th Celebration six-pack Booster Bundle: $55 each, five sealed bundles allocated for online sale. Catalogue enabled in staging; production remains gated. One-time migration seeds existing zero-stock bundle rows only where no bundle orders exist; new scopes use initialStock=5. No loose-pack inventory is changed.

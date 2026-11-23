@@ -33,12 +33,11 @@
       "maxQuantity": 10
     },
     "booster-bundle": {
-      "name": "Booster Bundle",
+      "name": "30th Celebration Booster Bundle",
       "priceCents": 5500,
-      "initialStock": 0,
-      "maxQuantity": 20,
-      "saleEnabled": false,
-      "availabilityNote": "Product details and stock awaiting confirmation"
+      "initialStock": 5,
+      "maxQuantity": 5,
+      "saleEnabled": true
     },
     "delta-reign": {
       "name": "Delta Reign",

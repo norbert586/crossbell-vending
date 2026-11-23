@@ -78,8 +78,8 @@
       "weightOz": 5.12,
       "planningWeightOz": 6,
       "kind": "box",
-      "identityConfirmed": false,
-      "evidence": "Candidate only: 30th Celebration six-pack bundle. Micro Center dimensions; GameStop indexed weight 0.32lb. User has not confirmed bundle set.",
+      "identityConfirmed": true,
+      "evidence": "30th Celebration six-pack bundle confirmed by user on 2026-11-23. Micro Center dimensions; GameStop indexed weight 0.32lb. Planning estimate, not measured stock.",
       "sources": [
         "https://www.microcenter.com/product/715611/nintendo-pokemon-tcg-30th-celebration-booster-bundle?storeid=075",
         "https://www.gamestop.com/products/pokemon-trading-card-game-30th-celebration-booster-bundle-wave-1/20036319.html"

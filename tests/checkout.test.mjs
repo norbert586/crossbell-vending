@@ -142,7 +142,7 @@ test('updated catalogue prices and unconfirmed new products fail closed',()=>{
  assert.equal(catalogue.products['prismatic-evolutions-pack'].priceCents,1399);
  assert.equal(catalogue.products['booster-bundle'].priceCents,5500);
  assert.equal(catalogue.products['delta-reign'].priceCents,7099);
- for(const sku of ['booster-bundle','delta-reign']) assert.throws(()=>quote({...liveInput,items:[{sku,quantity:1}]},livePolicy));
+ for(const sku of ['delta-reign']) assert.throws(()=>quote({...liveInput,items:[{sku,quantity:1}]},livePolicy));
 });
 
 const {estimateParcel}=await import('../server/checkout/parcel-plan.mjs');
@@ -154,6 +154,6 @@ test('parcel plan includes packaging and quantity, never a flat shipping fee',()
  const two=estimateParcel([{sku:'celebration-etb',quantity:2}]);
  assert.equal(two.weightOz,64);assert.deepEqual(two.dimensionsIn,[10,10,10]);
  assert.equal(two.readyForLiveRates,false);
- assert.throws(()=>estimateParcel([{sku:'booster-bundle',quantity:1}]));
+ assert.equal(estimateParcel([{sku:'booster-bundle',quantity:1}]).readyForLiveRates,false);
  assert.throws(()=>estimateParcel([{sku:'riftbound-pack',quantity:-1}]));
 });
