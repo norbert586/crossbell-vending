@@ -98,5 +98,11 @@
       "photos"
     ],
     "manualReviewRequired": true
+  },
+  "cancellationPolicy": {
+    "beforeShipment": true,
+    "beforePickup": true,
+    "afterShipment": false,
+    "description": "Orders can be cancelled before shipment or pickup. Orders cannot be cancelled after shipment."
   }
 }

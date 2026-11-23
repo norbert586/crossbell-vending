@@ -75,3 +75,6 @@ User confirmed dispatch within 3 business days. Carrier transit time is addition
 
 ## Returns policy — 2026-11-23
 User confirmed no returns. Damaged or incorrect orders handled separately via contact@crossbellvending.com. User confirmed reports within 7 days of delivery, including order number and photos. All damage/incorrect-item claims require manual review and approval before any replacement or refund. This does not change the separately authorized automated reversal for payment succeeding without fulfillable stock.
+
+## Cancellation policy — 2026-11-23
+User allows cancellation before shipment or pickup, not after shipment. Request channel, operational cutoff, refund scope and processing timing pending clarification.
