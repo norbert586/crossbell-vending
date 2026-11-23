@@ -6,5 +6,5 @@ WHERE s.sku = 'booster-delta-reign' AND s.remaining = 0
   AND NOT EXISTS (
     SELECT 1 FROM checkout_orders AS o
     WHERE o.scope = s.scope
-      AND o.data->'quote' @> '{"items":[{"sku":"booster-delta-reign"}]}'::jsonb
+      AND o.data @> '{"items":[{"sku":"booster-delta-reign"}]}'::jsonb
   );
