@@ -40,12 +40,11 @@
       "saleEnabled": true
     },
     "delta-reign": {
-      "name": "Delta Reign",
+      "name": "Delta Reign Elite Trainer Box",
       "priceCents": 7099,
-      "initialStock": 0,
-      "maxQuantity": 20,
-      "saleEnabled": false,
-      "availabilityNote": "Product details and stock awaiting confirmation"
+      "initialStock": 3,
+      "maxQuantity": 3,
+      "saleEnabled": true
     }
   },
   "shippingCents": 0,

@@ -63,3 +63,6 @@ Owner approved contiguous 48-state street-address delivery, live ground-carrier 
 
 ## Bundle confirmation — 2026-11-23
 User confirmed the 30th Celebration six-pack Booster Bundle: $55 each, five sealed bundles allocated for online sale. Catalogue enabled in staging; production remains gated. One-time migration seeds existing zero-stock bundle rows only where no bundle orders exist; new scopes use initialStock=5. No loose-pack inventory is changed.
+
+## Delta Reign confirmation — 2026-11-23
+User confirmed three Delta Reign Elite Trainer Boxes at $70.99 each for online sale. Enabled in staging only. One-time allocation migration updates existing zero-stock rows only where no Delta Reign orders exist; new scopes use initialStock=3.

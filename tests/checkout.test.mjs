@@ -137,12 +137,15 @@ test('declined and voided transactions never become paid orders', async () => {
   }
 });
 
-test('updated catalogue prices and unconfirmed new products fail closed',()=>{
+test('updated catalogue prices and confirmed boxed products respect quantity limits',()=>{
  assert.equal(catalogue.products['celebration-etb'].priceCents,10999);
  assert.equal(catalogue.products['prismatic-evolutions-pack'].priceCents,1399);
  assert.equal(catalogue.products['booster-bundle'].priceCents,5500);
  assert.equal(catalogue.products['delta-reign'].priceCents,7099);
- for(const sku of ['delta-reign']) assert.throws(()=>quote({...liveInput,items:[{sku,quantity:1}]},livePolicy));
+ for(const [sku,quantity] of [['booster-bundle',5],['delta-reign',3]]) {
+  assert.equal(quote({...liveInput,items:[{sku,quantity}]},livePolicy).items[0].quantity,quantity);
+  assert.throws(()=>quote({...liveInput,items:[{sku,quantity:quantity+1}]},livePolicy));
+ }
 });
 
 const {estimateParcel}=await import('../server/checkout/parcel-plan.mjs');

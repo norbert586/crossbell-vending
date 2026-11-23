@@ -94,8 +94,8 @@
       "weightOz": 24.48,
       "planningWeightOz": 26,
       "kind": "box",
-      "identityConfirmed": false,
-      "evidence": "Candidate only: Delta Reign ETB. Micro Center dimensions; Target estimated ship weight 1.53lb (not measured unit weight). User must confirm product type.",
+      "identityConfirmed": true,
+      "evidence": "Delta Reign ETB confirmed by user on 2026-11-23. Micro Center dimensions; Target estimated ship weight 1.53lb (not measured unit weight).",
       "sources": [
         "https://www.microcenter.com/product/718006/nintendo-pokemon-mega-evolution-delta-reign-(elite-trainer-box)",
         "https://www.target.com/p/-/A-1012793604"
