@@ -9,7 +9,7 @@ export async function createOrder(input, key, policy, store, callGateway, origin
   const buyer = customer(input);
   const fingerprint = digest(JSON.stringify({ pricing, buyer }));
   const id = digest(key).slice(0, 20); // Authorize.net invoiceNumber maximum: 20.
-  const order = { id, fingerprint, quote: pricing, customer: buyer, status: 'creating', accessToken: randomBytes(32).toString('hex'), createdAt: Date.now() };
+  const order = { mode: policy.mode || 'sandbox', id, fingerprint, quote: pricing, customer: buyer, status: 'creating', accessToken: randomBytes(32).toString('hex'), createdAt: Date.now() };
   const created = await store.setJSON(`orders/${id}`, order, { onlyIfNew: true });
   if (!created.modified) {
     const previous = await store.get(`orders/${id}`, { type: 'json' });
@@ -31,7 +31,7 @@ export async function createOrder(input, key, policy, store, callGateway, origin
     throw error;
   }
 }
-const publicSession = order => ({ orderId: order.id, accessToken: order.accessToken, token: order.hostedToken, action: 'https://test.authorize.net/payment/payment' });
+const publicSession = order => ({ orderId: order.id, accessToken: order.accessToken, token: order.hostedToken, action: order.mode === 'production' ? 'https://accept.authorize.net/payment/payment' : 'https://test.authorize.net/payment/payment' });
 
 export async function reconcile(transactionId, store, callGateway) {
   if (!/^\d{1,30}$/.test(String(transactionId))) fail('Invalid transaction.');

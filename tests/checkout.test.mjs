@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createHmac, randomUUID } from 'node:crypto';
 import { quote, customer, validSignature, policyFromEnv, verifyTransaction } from '../server/checkout/core.mjs';
 import { createOrder, reconcile } from '../server/checkout/service.mjs';
-import { gateway, hostedRequest } from '../server/checkout/gateway.mjs';
+import { gateway, hostedRequest, paymentEnvironment } from '../server/checkout/gateway.mjs';
 const policy = { products: { 'celebration-pack': { name:'30th Celebration',priceCents:1199,maxQuantity:10 } },shippingCents:500,taxBps:600,shippingTaxable:true };
 const input = { items:[{sku:'celebration-pack',quantity:2}],fulfillment:'pickup',name:'Test Buyer',email:'test@example.com' };
 function memoryStore() {
@@ -35,7 +35,7 @@ test('shipping requires validated Michigan address',()=>{
 test('missing config and production deployments fail closed',()=>{
   assert.throws(()=>policyFromEnv({}));
   assert.throws(()=>policyFromEnv({CONTEXT:'production',CHECKOUT_MODE:'sandbox',CHECKOUT_POLICY_JSON:JSON.stringify(policy)}));
-  assert.deepEqual(policyFromEnv({CONTEXT:'deploy-preview',CHECKOUT_MODE:'sandbox',CHECKOUT_POLICY_JSON:JSON.stringify(policy)}),policy);
+  assert.equal(policyFromEnv({CONTEXT:'deploy-preview',CHECKOUT_MODE:'sandbox',CHECKOUT_POLICY_JSON:JSON.stringify(policy)}).mode,'sandbox');
 });
 test('signature verification covers original bytes and rejects tampering',()=>{
   const key='ab'.repeat(64),body='{"hello":1}';
@@ -83,7 +83,7 @@ test('amount mismatch or authorization-only never confirms payment',()=>{
   assert.ok(!verifyTransaction(order,{...transaction,order:{invoiceNumber:'other'}}));
 });
 test('provider adapter uses sandbox endpoint and redacts provider errors',async()=>{
-  const env={AUTHNET_API_LOGIN_ID:'fixture',AUTHNET_TRANSACTION_KEY:'fixture'};
+  const env={CONTEXT:'deploy-preview',AUTHNET_API_LOGIN_ID:'fixture',AUTHNET_TRANSACTION_KEY:'fixture'};
   const value=await gateway('authenticateTestRequest',{},env,async(url,options)=>{
     assert.equal(url,'https://apitest.authorize.net/xml/v1/request.api');assert.equal(options.method,'POST');
     return new Response('\uFEFF'+JSON.stringify({messages:{resultCode:'Ok'}}));
@@ -96,4 +96,61 @@ test('hosted payment request uses server total, invoice and card-only settings',
  assert.equal(request.transactionRequest.order.invoiceNumber,'123');
  const options=JSON.parse(request.hostedPaymentSettings.setting.find(x=>x.settingName==='hostedPaymentPaymentOptions').settingValue);
  assert.equal(options.showBankAccount,false);
+});
+
+const {inventoryStore}=await import('../server/checkout/inventory.mjs');
+const catalogue=(await import('../server/checkout/production-catalogue.json',{with:{type:'json'}})).default;
+const livePolicy={...catalogue,mode:'production'};
+const liveInput={...input,pickupLocation:'christopher'};
+test('production has approved five prices and pickup only',()=>{
+ const env={CONTEXT:'production',CHECKOUT_MODE:'production',AUTHNET_API_LOGIN_ID:'test',AUTHNET_TRANSACTION_KEY:'test',AUTHNET_SIGNATURE_KEY:'a'.repeat(128)};
+ const p=policyFromEnv(env);assert.equal(p.products['celebration-pack'].priceCents,1099);
+ assert.equal(p.products['prismatic-evolutions-pack'].initialStock,10);
+ assert.throws(()=>quote({...liveInput,fulfillment:'shipping'},p));
+ assert.throws(()=>quote({...liveInput,pickupLocation:'unknown'},p));
+ assert.equal(quote(liveInput,p).totalCents,2330);
+ assert.throws(()=>policyFromEnv({...env,CONTEXT:'deploy-preview'}));
+});
+test('concurrent orders cannot oversell stock, duplicate submissions do not reserve twice',async()=>{
+ const policy={...livePolicy,products:{'celebration-pack':{name:'Test',priceCents:1099,maxQuantity:2,initialStock:2}}};
+ const blobs=memoryStore(),store=inventoryStore(blobs,policy);let calls=0;
+ const call=async()=>{calls++;return {token:'test'}};
+ const keys=[randomUUID(),randomUUID()];
+ const outcomes=await Promise.allSettled(keys.map(key=>createOrder(liveInput,key,policy,store,call,'https://crossbellvending.com')));
+ assert.equal(outcomes.filter(x=>x.status==='fulfilled').length,1);assert.equal(calls,1);
+ assert.equal((await store.availability())['celebration-pack'],0);
+ const winner=outcomes.findIndex(x=>x.status==='fulfilled');
+ await createOrder(liveInput,keys[winner],policy,store,call,'https://crossbellvending.com');
+ assert.equal(calls,1);assert.equal((await inventoryStore(blobs,policy).availability())['celebration-pack'],0);
+});
+test('multi-product stock reservation is all or nothing',async()=>{
+ const store=inventoryStore(memoryStore(),livePolicy);
+ await assert.rejects(()=>createOrder({...liveInput,items:[{sku:'celebration-pack',quantity:1},{sku:'celebration-etb',quantity:5}]},randomUUID(),livePolicy,store,async()=>({token:'test'}),'https://crossbellvending.com'));
+ assert.equal((await store.availability())['celebration-pack'],50);
+});
+test('production sessions use live endpoint and payment form',async()=>{
+ const session=await createOrder(liveInput,randomUUID(),livePolicy,inventoryStore(memoryStore(),livePolicy),async()=>({token:'test'}),'https://crossbellvending.com');
+ assert.equal(session.action,'https://accept.authorize.net/payment/payment');
+ await gateway('authenticateTestRequest',{}, {CONTEXT:'production',CHECKOUT_MODE:'production',AUTHNET_API_LOGIN_ID:'fixture',AUTHNET_TRANSACTION_KEY:'fixture'}, async url=>{assert.equal(url,'https://api.authorize.net/xml/v1/request.api');return new Response(JSON.stringify({messages:{resultCode:'Ok'}}));});
+});
+
+test('endpoint selection follows deploy context only, unknown contexts fail closed', async () => {
+  for (const CONTEXT of ['production', 'deploy-preview', 'branch-deploy', 'dev']) {
+    for (const CHECKOUT_MODE of ['production', 'sandbox', undefined]) {
+      await gateway('authenticateTestRequest', {}, {CONTEXT, CHECKOUT_MODE, AUTHNET_API_LOGIN_ID:'fixture', AUTHNET_TRANSACTION_KEY:'fixture'}, async url => {
+        assert.equal(url, CONTEXT === 'production' ? 'https://api.authorize.net/xml/v1/request.api' : 'https://apitest.authorize.net/xml/v1/request.api');
+        return new Response(JSON.stringify({messages:{resultCode:'Ok'}}));
+      });
+    }
+  }
+  for (const context of [undefined, '', 'unknown']) assert.throws(() => paymentEnvironment(context));
+});
+test('declined and voided transactions never become paid orders', async () => {
+  for (const transactionStatus of ['declined', 'voided', 'refundSettledSuccessfully', 'communicationError']) {
+    const store=memoryStore();
+    const session=await createOrder(input,randomUUID(),policy,store,async()=>({token:'test'}),'https://preview.example');
+    const transaction={order:{invoiceNumber:session.orderId},authAmount:'25.42',transactionType:'authCaptureTransaction',transactionStatus};
+    await assert.rejects(()=>reconcile('123',store,async()=>({transaction})));
+    assert.equal((await store.get(`orders/${session.orderId}`)).status,'awaiting_payment');
+  }
 });

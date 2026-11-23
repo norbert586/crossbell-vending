@@ -32,6 +32,9 @@ jobs:
       - name: Type-check Astro components
         run: npm run check
 
+      - name: Checkout unit tests
+        run: npm run test:checkout
+
       - name: Build
         run: npm run build
 

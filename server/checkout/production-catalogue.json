@@ -1,0 +1,53 @@
+{
+  "status": "configured",
+  "inventoryConfirmedOn": "2026-11-22",
+  "products": {
+    "celebration-pack": {
+      "name": "30th Celebration Booster Pack",
+      "initialStock": 50,
+      "priceCents": 1099,
+      "maxQuantity": 20
+    },
+    "celebration-etb": {
+      "name": "30th Celebration Elite Trainer Box",
+      "initialStock": 4,
+      "priceCents": 11599,
+      "maxQuantity": 4
+    },
+    "riftbound-pack": {
+      "name": "Riftbound Booster Pack",
+      "initialStock": 10,
+      "priceCents": 899,
+      "maxQuantity": 10
+    },
+    "ascended-heroes-pack": {
+      "name": "Ascended Heroes Booster Pack",
+      "initialStock": 9,
+      "priceCents": 1199,
+      "maxQuantity": 9
+    },
+    "prismatic-evolutions-pack": {
+      "name": "Prismatic Evolutions Booster Pack",
+      "initialStock": 10,
+      "priceCents": 1499,
+      "maxQuantity": 10
+    }
+  },
+  "shippingCents": 0,
+  "taxBps": 600,
+  "shippingTaxable": false,
+  "shippingEnabled": false,
+  "pickupLocations": {
+    "christopher": {
+      "name": "Washington pickup",
+      "address": "8891 Christopher St, Washington, MI 48094",
+      "hours": "Outside business hours"
+    },
+    "uwm": {
+      "name": "United Wholesale Mortgage campus parking lot",
+      "address": "United Wholesale Mortgage campus parking lot",
+      "hours": "During business hours"
+    }
+  },
+  "pickupInstructions": "Contact Crossbell at 586-907-1861 to coordinate a pickup time and meeting point. Bring your order number."
+}

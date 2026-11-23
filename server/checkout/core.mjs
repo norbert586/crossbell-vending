@@ -1,3 +1,4 @@
+import productionCatalogue from './production-catalogue.json' with { type: 'json' };
 import { createHash, createHmac, timingSafeEqual } from 'node:crypto';
 
 export class CheckoutError extends Error {
@@ -6,16 +7,21 @@ export class CheckoutError extends Error {
 export const fail = (message, status) => { throw new CheckoutError(message, status); };
 export const digest = value => createHash('sha256').update(value).digest('hex');
 export function policyFromEnv(env) {
-  // No production switch exists in this first release.
+  if (env.CONTEXT === 'production' && env.CHECKOUT_MODE === 'production') {
+    if (!env.AUTHNET_API_LOGIN_ID || !env.AUTHNET_TRANSACTION_KEY || !/^[a-f\d]{128}$/i.test(env.AUTHNET_SIGNATURE_KEY || '')) fail('Payment configuration is incomplete.', 503);
+    return { ...productionCatalogue, mode: 'production' };
+  }
   if (env.CONTEXT !== 'deploy-preview' || env.CHECKOUT_MODE !== 'sandbox') fail('Checkout is awaiting sandbox activation.', 503);
   let p;
   try { p = JSON.parse(env.CHECKOUT_POLICY_JSON); } catch { fail('Checkout pricing is not configured.', 503); }
   if (!p || !p.products || !Number.isInteger(p.shippingCents) || p.shippingCents < 0 || !Number.isInteger(p.taxBps) || p.taxBps < 0 || p.taxBps > 10000 || typeof p.shippingTaxable !== 'boolean') fail('Checkout policy is incomplete.', 503);
-  return p;
+  return { ...p, ...productionCatalogue, mode: 'sandbox' };
 }
 export function quote(input, policy) {
   if (!input || !Array.isArray(input.items) || !input.items.length || input.items.length > 20) fail('Choose at least one item.');
   if (!['pickup', 'shipping'].includes(input.fulfillment)) fail('Choose pickup or shipping.');
+  if (policy.shippingEnabled === false && input.fulfillment !== 'pickup') fail('UPS shipping is coming soon. Choose free pickup.');
+  if (policy.pickupLocations && !Object.hasOwn(policy.pickupLocations, input.pickupLocation || '')) fail('Choose a pickup location.');
   const seen = new Set();
   const items = input.items.map(item => {
     if (!item || typeof item.sku !== 'string' || seen.has(item.sku)) fail('Invalid or duplicate product.');
@@ -30,7 +36,7 @@ export function quote(input, policy) {
   const taxCents = Math.round((subtotalCents + (policy.shippingTaxable ? shippingCents : 0)) * policy.taxBps / 10000);
   const totalCents = subtotalCents + shippingCents + taxCents;
   if (!Number.isSafeInteger(totalCents) || totalCents > 100000) fail('This order exceeds the checkout limit.');
-  return { items, fulfillment: input.fulfillment, subtotalCents, shippingCents, taxCents, totalCents, currency: 'USD' };
+  return { items, ...(policy.pickupLocations ? { pickupLocation: input.pickupLocation, pickupDetails: policy.pickupLocations[input.pickupLocation] } : {}), fulfillment: input.fulfillment, subtotalCents, shippingCents, taxCents, totalCents, currency: 'USD' };
 }
 export function customer(input) {
   const text = (value, max) => typeof value === 'string' && value.trim().length <= max ? value.trim() : '';

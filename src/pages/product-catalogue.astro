@@ -1,28 +1,28 @@
 ---
 import Layout from '../layouts/Layout.astro';
 const products = [
- {name:'Pokémon 30th Celebration',type:'Elite Trainer Box',category:'pokemon',image:'celebration-etb.webp',price:'$115.99 / box',pack:false},
- {name:'Pokémon Ascended Heroes',type:'Elite Trainer Box',category:'pokemon',image:'ascended-etb.webp',price:'$120.00 / box',pack:false},
- {name:'Pokémon 30th Celebration',type:'Individual booster pack',category:'pokemon',image:'celebration-pack.webp',pack:true,checkout:true},
- {name:'Pokémon Prismatic Evolutions',type:'Individual booster pack',category:'pokemon',image:'prismatic-pack.webp',price:'$13.99 / pack',pack:true},
- {name:'Riftbound Unleashed',type:'Individual booster pack',category:'riftbound',image:'riftbound-pack.webp',price:'$8.99 / pack',pack:true},
+ {sku:'celebration-pack',name:'Pokémon 30th Celebration',type:'Individual booster pack',category:'pokemon',image:'celebration-pack.webp',price:'$10.99 / pack'},
+ {sku:'riftbound-pack',name:'Riftbound Unleashed',type:'Individual booster pack',category:'riftbound',image:'riftbound-pack.webp',price:'$8.99 / pack'},
+ {sku:'ascended-heroes-pack',name:'Pokémon Ascended Heroes',type:'Individual booster pack',category:'pokemon',image:null,price:'$11.99 / pack'},
+ {sku:'celebration-etb',name:'Pokémon 30th Celebration',type:'Elite Trainer Box',category:'pokemon',image:'celebration-etb.webp',price:'$115.99 / box'},
+ {sku:'prismatic-evolutions-pack',name:'Pokémon Prismatic Evolutions',type:'Individual booster pack',category:'pokemon',image:'prismatic-pack.webp',price:'$14.99 / pack'},
 ];
 ---
-<Layout title="Product Catalogue | Crossbell Vending" description="Explore Pokémon and Riftbound trading cards from Crossbell Vending. Booster packs are available in select machines. Try our sandbox checkout for 30th Celebration booster packs." actionBar={false}>
+<Layout title="Product Catalogue | Crossbell Vending" description="Explore Pokémon and Riftbound trading cards from Crossbell Vending. Booster packs are available in select machines. Order online for free local pickup. UPS shipping coming soon." actionBar={false}>
  <div class="catalogue">
   <section class="hero" aria-labelledby="catalogue-title">
    <img class="hero-art" src="/catalogue/hero-rengar-v2.webp" alt="Pokémon 30th Celebration box and Riftbound Rengar booster pack displayed on dark stone stands" width="1600" height="900" fetchpriority="high" />
    <div class="hero-inner">
     <p class="eyebrow">TRADING CARDS / CROSSBELL VENDING</p>
     <h1 id="catalogue-title">Your next great pull.<br/><span>Closer than<br class="desktop-break"/> you think.</span></h1>
-    <p class="intro">Booster packs are available in select Crossbell machines. Try our sandbox checkout for 30th Celebration booster packs.</p>
-    <a class="explore" href="#collection">Explore the collection</a> <a class="checkout-link" href="/checkout/?quantity=1">Sandbox checkout</a>
-    <p class="availability">Sandbox preview only. Test payments do not place a real order.</p>
+    <p class="intro">Booster packs are available in select Crossbell machines. Order online for free local pickup. UPS shipping coming soon.</p>
+    <a class="explore" href="#collection">Explore the collection</a> <a class="checkout-link" href="/checkout/?quantity=1">Shop for pickup</a>
+    <p class="availability">Free pickup in Washington or at the United Wholesale Mortgage campus parking lot.</p>
    </div>
   </section>
   <section class="collection" id="collection" aria-labelledby="collection-title">
    <div class="collection-heading">
-    <div><h2 id="collection-title">The collection</h2><p>Boxes &amp; booster packs · Sandbox shopping preview</p></div>
+    <div><h2 id="collection-title">The collection</h2><p>Boxes &amp; booster packs · Free local pickup</p></div>
     <div class="filters" role="group" aria-label="Filter products">
      <button type="button" data-filter="all" aria-pressed="true">All</button>
      <button type="button" data-filter="pokemon" aria-pressed="false">Pokémon</button>
@@ -32,16 +32,16 @@ const products = [
    <p class="sr-only" id="filter-status" role="status" aria-live="polite">Showing all 5 products</p>
    <div class="products">
     {products.map(product => <article data-category={product.category}>
-     <div class="product-photo"><img src={`/catalogue/${product.image}`} alt={`${product.name} — ${product.type}`} width="600" height="720" loading="lazy" /></div>
+     <div class="product-photo">{product.image ? <img src={`/catalogue/${product.image}`} alt={`${product.name} — ${product.type}`} width="600" height="720" loading="lazy" /> : <span style="color:#29253a;text-align:center">Ascended Heroes<br/>Booster pack<br/><small>Photo coming soon</small></span>}</div>
      <p class="product-type">{product.type}</p><h3>{product.name}</h3>
-     <p class="product-status">{product.checkout ? '$11.99 / pack' : product.price}</p>
-     <p class="product-detail">{product.checkout ? 'Sandbox price · Tax and shipping calculated at checkout' : 'Not available for online checkout yet'}</p>
-     {product.checkout && <a class="buy-link" href="/checkout/?quantity=1">Try sandbox checkout</a>}
+     <p class="product-status">{product.price}</p>
+     <p class="product-detail">Free pickup · Sales tax added at checkout</p>
+     <a class="buy-link" href={`/checkout/?sku=${product.sku}`}>Choose quantity</a>
     </article>)}
    </div>
-   <p class="collection-note">Only the 30th Celebration booster pack is enabled for sandbox checkout. Prices are shown for the full collection; checkout for the other products is not enabled yet.</p>
+   <p class="collection-note">Pickup: 8891 Christopher St, Washington, MI 48094 outside business hours, or United Wholesale Mortgage campus parking lot during business hours. Contact 586-907-1861 to coordinate. UPS shipping coming soon.</p>
   </section>
-  <section class="closing"><h2>FIND YOUR NEXT PACK.</h2><p>Look for trading cards in select Crossbell machines.<br/>Explore the sandbox checkout above.</p></section>
+  <section class="closing"><h2>FIND YOUR NEXT PACK.</h2><p>Look for trading cards in select Crossbell machines.<br/>Order above for free local pickup.</p></section>
  </div>
 </Layout>
 <style>

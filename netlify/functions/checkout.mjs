@@ -1,3 +1,4 @@
+import { inventoryStore } from '../../server/checkout/inventory.mjs';
 import buildContext from '../../server/checkout/build-context.mjs';
 import { getStore } from '@netlify/blobs';
 import { CheckoutError, fail, policyFromEnv, quote } from '../../server/checkout/core.mjs';
@@ -8,18 +9,19 @@ export default async request => {
   try {
     const env = { ...process.env, ...buildContext };
     const policy = policyFromEnv(env);
-    const origin = new URL(env.DEPLOY_PRIME_URL).origin;
-    const store = getStore({ name: `checkout-sandbox-${env.REVIEW_ID || env.DEPLOY_ID}`, consistency: 'strong' });
+    const origin = policy.mode === 'production' ? 'https://crossbellvending.com' : new URL(env.DEPLOY_PRIME_URL).origin;
+    const blobs = getStore({ name: policy.mode === 'production' ? 'checkout-production-v1' : `checkout-sandbox-${env.REVIEW_ID || env.DEPLOY_ID}`, consistency: 'strong' });
+    const store = policy.mode === 'production' ? inventoryStore(blobs, policy) : blobs;
     const url = new URL(request.url);
     if (request.method === 'GET' && url.searchParams.get('action') === 'config') {
-      return json({ mode: 'sandbox', policy });
+      return json({ mode: policy.mode || 'sandbox', policy, available: policy.mode === 'production' ? await store.availability() : null });
     }
     if (request.method === 'GET' && url.searchParams.get('action') === 'status') {
       const id = url.searchParams.get('id');
       if (!/^[a-f\d]{20}$/.test(id || '')) fail('Order not found.', 404);
       const order = await store.get(`orders/${id}`, { type: 'json' });
       if (!order || request.headers.get('Authorization') !== `Bearer ${order.accessToken}`) fail('Order not found.', 404);
-      return json({ orderId: id, status: order.status, fulfillment: order.quote.fulfillment });
+      return json({ orderId: id, status: order.status, fulfillment: order.quote.fulfillment, pickupDetails: order.quote.pickupDetails, pickupInstructions: policy.pickupInstructions });
     }
     if (request.method !== 'POST') return json({ error: 'Method not allowed.' }, 405);
     if (request.headers.get('Origin') !== origin) fail('Invalid checkout origin.', 403);
@@ -29,6 +31,8 @@ export default async request => {
     let input; try { input = JSON.parse(raw); } catch { fail('Invalid JSON.'); }
     if (input.action === 'quote') return json(quote(input, policy));
     if (input.action !== 'create') fail('Unknown checkout action.');
+    // Staging gate: replace the prototype with the user's existing database before accepting payments.
+    fail('Checkout payments are paused while the stock database and order emails are connected.', 503);
     const session = await createOrder(input, request.headers.get('Idempotency-Key'), policy, store, (name, payload) => gateway(name, payload, env), origin);
     return json(session);
   } catch (error) {

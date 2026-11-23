@@ -7,151 +7,91 @@ import '@fontsource/ibm-plex-mono/400.css';
 <html lang="en">
 <head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="robots" content="noindex,nofollow"/><title>Checkout · Crossbell Vending</title></head>
 <body>
-  <div class="preview-bar"><span class="dot"></span> DESIGN PREVIEW <span class="divider">/</span> No payments or orders are submitted</div>
+  <div class="preview-bar"><span class="dot"></span> CROSSBELL VENDING <span class="divider">/</span> Free local pickup</div>
   <header><a class="brand" href="/" aria-label="Crossbell home"><img src="/brand/crossbell-crest.svg" alt=""/><span>CROSSBELL<small>THE COLLECTOR'S CORNER</small></span></a><span class="secure"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg> Your next great find.</span></header>
   <main>
     <a href="/product-catalogue/" class="back">← Back to the collection</a>
-    <div class="intro"><div><p class="eyebrow">CROSSBELL VENDING</p><h1>Checkout</h1><p class="subtitle">Review your items and choose pickup or shipping.</p></div><div class="steps"><span class="active">01 <b>Details</b></span><i></i><span>02 <b>Payment</b></span><i></i><span>03 <b>Confirmation</b></span></div></div>
+    <div class="intro"><div><p class="eyebrow">CROSSBELL VENDING</p><h1>Checkout</h1><p class="subtitle">Choose your cards and a free pickup location.</p></div><div class="steps"><span class="active">01 <b>Details</b></span><i></i><span>02 <b>Payment</b></span><i></i><span>03 <b>Confirmation</b></span></div></div>
     <div class="layout">
       <form id="checkout-form">
         <section class="card"><div class="section-title"><span class="number">01</span><h2>Your details</h2><span class="optional">No account needed</span></div><div class="fields"><label>Full name<input name="name" autocomplete="name" placeholder="Your full name" required maxlength="100"/></label><label>Email address<input name="email" type="email" autocomplete="email" placeholder="you@example.com" required maxlength="254"/></label></div><p class="hint">The email you’d like to use for your order.</p></section>
-        <section class="card"><div class="section-title"><span class="number">02</span><h2>How would you like it?</h2></div><div class="delivery-options">
-          <label class="delivery selected"><input type="radio" name="fulfillment" value="pickup" checked/><span class="radio"></span><span><strong>Local pickup</strong><small>Kirkway business center</small></span><span class="tag">LOCAL</span></label>
-          <label class="delivery"><input type="radio" name="fulfillment" value="shipping"/><span class="radio"></span><span><strong>Ship to me</strong><small>Delivered to your door</small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 7h11v11H3zM14 11h4l3 4v3h-7"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg></label>
-        </div><div id="pickup-note" class="location"><span class="location-icon">⌖</span><div><strong>Kirkway Apartments</strong><p>Business center · Crossbell vending machine location</p><small>Pickup hours and collection instructions will be confirmed before launch.</small></div></div>
-        <div id="shipping-fields" hidden><div class="fields address"><label class="full">Street address<input name="line1" autocomplete="shipping address-line1" placeholder="Street and unit number" maxlength="60"/></label><label>City<input name="city" autocomplete="shipping address-level2" placeholder="City" maxlength="40"/></label><label>State<select name="state" autocomplete="shipping address-level1"><option value="MI">Michigan</option></select></label><label>ZIP code<input name="zip" autocomplete="shipping postal-code" inputmode="numeric" pattern="[0-9]{5}(-[0-9]{4})?" placeholder="ZIP code"/></label></div><p class="hint">Michigan shipping is shown for this review. Rates and service area await approval.</p></div>
+        <section class="card"><div class="section-title"><span class="number">02</span><h2>Free local pickup</h2></div>
+        <div class="fields"><label class="full">Pickup location<select name="pickupLocation" required><option value="christopher">8891 Christopher St, Washington, MI 48094 — outside business hours</option><option value="uwm">United Wholesale Mortgage campus parking lot — during business hours</option></select></label></div>
+        <input type="hidden" name="fulfillment" value="pickup"/>
+        <p class="hint">Contact Crossbell at <a href="tel:+15869071861">586-907-1861</a> to coordinate your pickup time and meeting point. Bring your order number.</p>
+        <div class="location"><div><strong>UPS shipping coming soon</strong><p>Orders are currently available for free local pickup only.</p></div></div>
         </section>
         <section class="payment-note"><span class="number">03</span><div><h2>A secure finish</h2><p>Continue to Authorize.net to enter payment details.<br/>Card details stay with the payment provider.</p><div class="cards"><b>VISA</b><b>mastercard</b><b>AMEX</b><b>DISCOVER</b></div></div><span class="lock">↗</span></section>
         <div id="status" role="status" aria-live="polite"></div>
       </form>
-      <aside><div class="summary"><div class="summary-heading"><h2>Your collection</h2><span id="item-count">2 ITEMS</span></div><div class="product"><div class="product-image"><img src="/catalogue/celebration-pack.webp" alt="30th celebration booster pack"/></div><div class="product-info"><span class="eyebrow">POKÉMON TCG</span><h3>30th Celebration</h3><p>Individual booster pack</p><div class="product-bottom"><div class="quantity"><button type="button" id="minus" aria-label="Decrease quantity">−</button><output id="qty">2</output><button type="button" id="plus" aria-label="Increase quantity">+</button></div><span>$11.99 <small>/ pack*</small></span></div></div></div>
-      <div class="totals"><div><span>Items subtotal</span><strong id="subtotal">$23.98</strong></div><div><span id="fulfillment-label">Pickup</span><span class="muted">Pending approval</span></div><div><span>Sales tax</span><span class="muted">Pending configuration</span></div></div><div class="total"><div><span>Items total</span><small>USD · before tax & fulfillment</small></div><strong id="total">$23.98</strong></div>
-      <button form="checkout-form" type="submit" class="pay-button" id="pay">Preview next step <span>→</span></button><p class="button-note">Design review only. No charge will be made.</p><div class="review-note">*Illustrative price based on the proposed $11.99 pack price. Stock, tax and fulfillment charges are not finalized.</div></div>
+      <aside><div class="summary"><div class="summary-heading"><h2>Your collection</h2><span id="item-count">0 ITEMS</span></div>
+      <div id="cart-products"><p class="hint">Loading available products…</p></div>
+      <div class="totals"><div><span>Items subtotal</span><strong id="subtotal">—</strong></div><div><span>Local pickup</span><span>Free</span></div><div><span>Michigan sales tax (6%)</span><strong id="tax">—</strong></div></div><div class="total"><div><span>Total</span><small>USD · including tax</small></div><strong id="total">—</strong></div>
+      <button form="checkout-form" type="submit" class="pay-button" id="pay" disabled>Continue to payment →</button><p class="button-note">Secure payment through Authorize.net.</p><div class="review-note">Contact Crossbell to arrange pickup. Keep your order number for collection.</div></div>
       <div class="local-story"><span>✦</span><div><strong>Small business. Big collector energy.</strong><p>Thank you for supporting Crossbell Vending<br/>and our local Michigan community.</p></div></div></aside>
     </div>
     <footer><span>© Crossbell Vending</span><nav><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/contact/">Need a hand? ↗</a></nav></footer>
   </main>
-  <dialog id="review"><button id="close" aria-label="Close preview">×</button><span class="eyebrow">YOUR CHECKOUT · NEXT STEP</span><h2>Ready for the<br/>good part.</h2><p id="review-copy"></p><div class="review-detail"><span>Payment experience</span><strong>Authorize.net hosted checkout ↗</strong></div><p class="hint">After sandbox approval, this step will open the payment provider’s test form. This preview has not created an order, sent your details, or charged a card.</p><button id="return" class="pay-button">Back to checkout</button></dialog>
 </body>
 </html>
 <style is:global>
 :root{color-scheme:dark;--bg:#101214;--card:#191c20;--line:#303238;--text:#f2efe9;--muted:#a5a5a7;--gold:#c8ae79}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 78% 25%,#26212a55,transparent 50%),var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-serif;font-size:14px}button,input,select{font:inherit}button,a,input,select{ -webkit-tap-highlight-color:transparent}a{color:inherit;text-decoration:none}button{cursor:pointer}button:disabled{opacity:.45;cursor:default}button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:4px}[hidden]{display:none!important}.preview-bar{height:34px;background:#262319;display:flex;align-items:center;justify-content:center;gap:10px;color:#d2bb8a;font-size:10px;letter-spacing:1.3px}.dot{width:5px;height:5px;border-radius:50%;background:var(--gold)}.divider{opacity:.3;margin:0 5px}header{max-width:1256px;margin:auto;padding:29px 48px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}.brand{display:flex;gap:13px;align-items:center;font-size:19px;letter-spacing:3px;font-weight:500}.brand img{height:42px;width:37px;object-fit:contain}.brand small{display:block;font-size:8px;letter-spacing:2px;color:var(--muted);margin-top:5px}.secure{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px}.secure svg{width:16px;height:18px}main{max-width:1256px;margin:auto;padding:31px 48px 0}.back{font-size:12px;color:var(--muted)}.intro{display:flex;justify-content:space-between;align-items:flex-end;margin:37px 0 34px}.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1.7px;color:var(--gold);margin:0 0 14px}h1{font-family:Georgia,serif;font-weight:400;font-size:55px;letter-spacing:-2px;line-height:1.04;margin:0 0 15px}h1 span{color:var(--gold)}.subtitle{color:var(--muted);margin:0;font-size:14px}.steps{display:flex;align-items:center;gap:12px;color:#727277;font-family:'IBM Plex Mono',monospace;font-size:10px;margin-bottom:7px}.steps b{font-family:'IBM Plex Sans',sans-serif;font-weight:400;margin-left:6px}.steps .active{color:var(--gold)}.steps i{width:26px;height:1px;background:var(--line)}.layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(340px,1fr);gap:34px}.card{background:linear-gradient(130deg,#1b1e22,#191b1f);border:1px solid var(--line);border-radius:12px;padding:26px;margin-bottom:18px}.section-title{display:flex;align-items:center;gap:13px;margin-bottom:22px}h2{font-size:17px;letter-spacing:-.3px;font-weight:500;margin:0}.number{font-family:'IBM Plex Mono',monospace;color:var(--gold);font-size:10px;border:1px solid #665a4233;border-radius:50%;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}.optional{margin-left:auto;font-size:10px;color:var(--muted)}.fields{display:grid;grid-template-columns:1fr 1fr;gap:17px}.fields label{display:block;font-size:11px;color:#d2d0cf}.fields input,.fields select{display:block;background:#131518;border:1px solid #383a40;border-radius:5px;padding:13px 12px;margin-top:9px;width:100%;color:var(--text);outline:none;font-size:12px}.fields input:focus,.fields select:focus{border-color:var(--gold);box-shadow:0 0 0 2px #c8ae7915}.fields input::placeholder{color:#717279}.hint{font-size:11px;color:#919197;line-height:1.7;margin:12px 0 0}.delivery-options{display:grid;grid-template-columns:1fr 1fr;gap:12px}.delivery{position:relative;cursor:pointer;display:flex;align-items:center;gap:10px;border:1px solid #3b3c42;border-radius:7px;padding:18px 13px;min-height:82px}.delivery.selected{border-color:var(--gold);background:#c8ae7909}.delivery input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}.delivery:focus-within{outline:2px solid var(--gold);outline-offset:3px}.radio{height:15px;width:15px;border:1px solid #77777c;border-radius:50%;flex-shrink:0}.selected .radio{border:4px solid var(--gold);background:#191c20}.delivery strong{display:block;font-size:12px;font-weight:500}.delivery small{display:block;font-size:10px;color:var(--muted);margin-top:6px}.tag{font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--gold);margin-left:auto}.delivery svg{width:23px;margin-left:auto;color:#949499}.location{display:flex;gap:12px;margin-top:18px;padding:17px;background:#11131688;border-radius:6px}.location-icon{font-size:24px;color:var(--gold);line-height:1}.location strong{font-size:12px;font-weight:500}.location p{font-size:11px;color:var(--muted);margin:6px 0 8px}.location small{font-size:10px;color:#85858d;line-height:1.6;display:block}.address{margin-top:22px}.full{grid-column:1/-1}.payment-note{display:flex;gap:13px;padding:18px 26px}.payment-note h2{margin:5px 0 12px}.payment-note p{font-size:12px;color:var(--muted);line-height:1.8;margin:0}.lock{margin-left:auto;color:var(--gold);font-size:25px}.cards{display:flex;gap:7px;margin-top:15px}.cards b{font-size:9px;font-weight:500;color:#b6b6b9;border:1px solid #38383d;border-radius:3px;padding:4px 7px;letter-spacing:.2px}.summary{border-radius:12px;border:1px solid #494336;background:linear-gradient(145deg,#242329,#1c1d21);padding:27px}.summary-heading{display:flex;justify-content:space-between;align-items:center;padding-bottom:22px;border-bottom:1px solid #ffffff12}.summary-heading span{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--muted)}.product{display:flex;gap:19px;padding:26px 0}.product-image{height:116px;width:85px;flex-shrink:0;border-radius:7px;background:radial-gradient(ellipse,#594c3450,#141518);display:flex;align-items:center;justify-content:center;border:1px solid #ffffff0b}.product-image img{max-height:98px;max-width:70px;object-fit:contain;filter:drop-shadow(0 6px 8px #0009);transform:rotate(-5deg)}.product-info{flex:1;padding-top:7px}.product-info .eyebrow{font-size:8px;letter-spacing:1.3px}h3{font-size:16px;font-weight:500;margin:10px 0 5px}.product-info p{font-size:11px;color:var(--muted);margin:0}.product-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:16px}.product-bottom>span{font-size:12px;white-space:nowrap}.product-bottom small{color:#94949a;font-size:9px}.quantity{display:flex;align-items:center;border:1px solid #45444a;border-radius:4px;height:28px}.quantity button{border:0;background:transparent;color:#bab7b0;width:25px;height:26px;font-size:15px}.quantity output{font-size:11px;min-width:20px;text-align:center}.totals{border-top:1px solid #ffffff12;border-bottom:1px solid #ffffff12;padding:20px 0;display:grid;gap:14px;font-size:12px}.totals>div{display:flex;justify-content:space-between;gap:12px;color:#b8b6bb}.totals strong{font-weight:400;color:#eeebe5}.muted{font-size:10px;color:#9f9890}.total{display:flex;justify-content:space-between;align-items:center;margin:24px 0}.total span{font-size:14px}.total small{display:block;font-size:9px;color:var(--muted);margin-top:7px}.total>strong{font-size:31px;letter-spacing:-1px;font-weight:400}.pay-button{width:100%;background:var(--gold);color:#181612;border:1px solid #dbc28d;border-radius:5px;padding:16px 19px;font-weight:500;font-size:13px;display:flex;justify-content:space-between;align-items:center;transition:background .15s}.pay-button:hover{background:#dec493}.pay-button span{font-size:18px}.button-note{text-align:center;font-size:10px;color:var(--muted);margin:13px 0 0}.review-note{font-size:10px;color:#a6a0a0;line-height:1.7;margin-top:23px;padding-top:17px;border-top:1px solid #ffffff10}.local-story{display:flex;gap:14px;justify-content:center;margin-top:23px}.local-story>span{color:var(--gold);font-size:22px}.local-story strong{font-size:11px;font-weight:500}.local-story p{font-size:10px;color:#939197;line-height:1.7;margin:6px 0}footer{border-top:1px solid var(--line);margin-top:40px;padding:23px 0;display:flex;justify-content:space-between;font-size:10px;color:#86858c}footer nav{display:flex;gap:25px}#status{line-height:1.6;color:var(--gold);font-size:12px;padding:0 26px}dialog{width:min(480px,calc(100% - 32px));border:1px solid #6a5d44;background:#1b1c21;color:var(--text);border-radius:14px;padding:40px;box-shadow:0 30px 100px #000a}dialog::backdrop{background:#08090bd9;backdrop-filter:blur(6px)}dialog h2{font:40px/1.1 Georgia,serif;margin:22px 0}dialog p{color:var(--muted);font-size:13px;line-height:1.8}dialog #close{position:absolute;right:15px;top:10px;font-size:25px;border:0;background:none;color:var(--muted)}.review-detail{padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:22px 0}.review-detail span{display:block;color:var(--muted);font-size:11px;margin-bottom:9px}.review-detail strong{font-weight:400;color:var(--gold);font-size:13px}dialog .pay-button{margin-top:25px;justify-content:center}@media(min-width:1200px){aside{position:sticky;top:24px;align-self:start}}@media(max-width:900px){header,main{padding-left:25px;padding-right:25px}.layout{gap:20px;grid-template-columns:1.1fr 1fr}.card,.summary{padding:20px}.delivery-options,.fields{grid-template-columns:1fr}.intro{align-items:flex-start;gap:20px}.steps{display:none}.delivery{min-height:70px}.optional{font-size:9px}.product{gap:12px}.product-bottom{align-items:flex-start;flex-direction:column}.product-image{width:70px}.preview-bar{font-size:8px;letter-spacing:.5px}}@media(max-width:680px){header{padding:22px}.brand{font-size:16px}.secure{font-size:10px}.secure svg{display:none}main{padding:24px 20px 0}.intro{margin:30px 0}h1{font-size:46px}.subtitle{font-size:12px}.layout{grid-template-columns:1fr;gap:14px}.fields{grid-template-columns:1fr}.delivery-options{grid-template-columns:1fr 1fr}.delivery{padding:14px 10px}.tag{display:none}.payment-note{padding:12px 12px}.summary{padding:24px}.product-bottom{flex-direction:row;align-items:center}.product-image{width:85px}.local-story{margin:22px 0}footer{margin-top:25px;font-size:9px}footer nav{gap:14px}.preview-bar{gap:6px}.optional{margin-left:auto}.section-title{gap:10px}dialog{padding:30px}}
 </style>
 <script>
-const form = document.querySelector<HTMLFormElement>('#checkout-form')!;
-const dialog = document.querySelector<HTMLDialogElement>('#review')!;
-const requestedQuantity = Number(new URLSearchParams(location.search).get('quantity'));
-let quantity = Number.isInteger(requestedQuantity) && requestedQuantity >= 1 && requestedQuantity <= 10 ? requestedQuantity : 2;
-let sandbox = false;
-let quoteVersion = 0;
-let latestQuote: any = null;
-let requestKey = crypto.randomUUID();
-let creating = false;
-const money = (cents: number) => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(cents/100);
-function render() {
-  document.querySelector('#qty')!.textContent = String(quantity);
-  document.querySelector('#subtotal')!.textContent = money(quantity*1199);
-  document.querySelector('#total')!.textContent = money(quantity*1199);
-  document.querySelector('#item-count')!.textContent = `${quantity} ${quantity === 1 ? 'ITEM' : 'ITEMS'}`;
-  (document.querySelector('#minus') as HTMLButtonElement).disabled = quantity === 1;
-  (document.querySelector('#plus') as HTMLButtonElement).disabled = quantity === 10;
-  if (sandbox) { requestKey = crypto.randomUUID(); updateQuote(); }
+const form=document.querySelector<HTMLFormElement>('#checkout-form')!;
+const pay=document.querySelector<HTMLButtonElement>('#pay')!;
+const status=(message:string)=>{document.querySelector('#status')!.textContent=message;};
+const money=(cents:number)=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(cents/100);
+let mode='',policy:any=null,requestKey=crypto.randomUUID(),creating=false,quoteVersion=0,quoted=false;
+const selected=new Map<string,number>();
+function payload(){const data=new FormData(form);return {items:[...selected].filter(([,quantity])=>quantity>0).map(([sku,quantity])=>({sku,quantity})),fulfillment:'pickup',pickupLocation:data.get('pickupLocation'),name:data.get('name'),email:data.get('email')};}
+async function api(body:any){const response=await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':requestKey},body:JSON.stringify(body)});const result=await response.json();if(!response.ok)throw new Error(result.error||'Checkout is unavailable.');return result;}
+async function updateQuote(){
+ const version=++quoteVersion;quoted=false;pay.disabled=true;
+ const items=payload().items;document.querySelector('#item-count')!.textContent=items.reduce((n,i)=>n+i.quantity,0)+' ITEMS';
+ if(!items.length){for(const id of ['subtotal','tax','total'])document.querySelector('#'+id)!.textContent=money(0);return;}
+ try{const q=await api({...payload(),action:'quote'});if(version!==quoteVersion)return;
+ document.querySelector('#subtotal')!.textContent=money(q.subtotalCents);document.querySelector('#tax')!.textContent=money(q.taxCents);document.querySelector('#total')!.textContent=money(q.totalCents);quoted=true;pay.disabled=creating;status('');
+ }catch(error){if(version===quoteVersion)status((error as Error).message);}
 }
-document.querySelector('#minus')!.addEventListener('click',()=>{quantity=Math.max(1,quantity-1);render()});
-document.querySelector('#plus')!.addEventListener('click',()=>{quantity=Math.min(10,quantity+1);render()});
-form.addEventListener('change',()=>{
-  const shipping = new FormData(form).get('fulfillment') === 'shipping';
-  document.querySelectorAll('.delivery').forEach(label=>label.classList.toggle('selected',!!label.querySelector<HTMLInputElement>('input')?.checked));
-  (document.querySelector('#shipping-fields') as HTMLElement).hidden = !shipping;
-  (document.querySelector('#pickup-note') as HTMLElement).hidden = shipping;
-  ['line1','city','zip'].forEach(name=>(form.elements.namedItem(name) as HTMLInputElement).required=shipping);
-  document.querySelector('#fulfillment-label')!.textContent=shipping?'Shipping':'Pickup';
-  requestKey = crypto.randomUUID();
-  if (sandbox) updateQuote();
-});
+form.addEventListener('input',()=>{if(!creating)requestKey=crypto.randomUUID();});
+form.addEventListener('change',()=>{if(!creating)updateQuote();});
 form.addEventListener('submit',async event=>{
-  event.preventDefault();
-  if (sandbox) { await submitSandbox(); return; }
-  const pickup = new FormData(form).get('fulfillment') === 'pickup';
-  document.querySelector('#review-copy')!.textContent=`${quantity} ${quantity===1?'pack':'packs'} · ${money(quantity*1199)} before tax and fulfillment. ${pickup?'Pickup at the Kirkway business center.':'Shipping to your Michigan address.'}`;
-  dialog.showModal();
+ event.preventDefault();if(creating||!quoted)return;creating=true;pay.disabled=true;
+ try{status('Preparing your secure payment…');const session=await api({...payload(),action:'create'});
+ const expected=mode==='production'?'https://accept.authorize.net/payment/payment':'https://test.authorize.net/payment/payment';
+ if(session.action!==expected)throw new Error('Unexpected payment destination.');
+ sessionStorage.setItem('crossbell-order',JSON.stringify({id:session.orderId,accessToken:session.accessToken}));
+ const redirect=document.createElement('form');redirect.method='POST';redirect.action=expected;
+ const token=document.createElement('input');token.type='hidden';token.name='token';token.value=session.token;redirect.append(token);document.body.append(redirect);redirect.submit();
+ }catch(error){status((error as Error).message+' If payment may have started, contact Crossbell before trying again.');creating=false;pay.disabled=!quoted;}
 });
-document.querySelector('#close')!.addEventListener('click',()=>dialog.close());
-document.querySelector('#return')!.addEventListener('click',()=>dialog.close());
-function payload() {
-  const data = new FormData(form);
-  return { items: [{sku:'celebration-pack', quantity}], fulfillment:data.get('fulfillment'), name:data.get('name'), email:data.get('email'), address:{line1:data.get('line1'),city:data.get('city'),state:data.get('state'),zip:data.get('zip')} };
+async function checkReturnedOrder(){
+ if(!new URLSearchParams(location.search).has('returned')&&!new URLSearchParams(location.search).has('cancelled'))return;
+ const saved=JSON.parse(sessionStorage.getItem('crossbell-order')||'null');if(!saved)return;
+ pay.disabled=true;creating=true;
+ for(let i=0;i<10;i++){
+ try{const response=await fetch('/api/checkout?action=status&id='+encodeURIComponent(saved.id),{headers:{Authorization:'Bearer '+saved.accessToken}});if(!response.ok)throw new Error();const order=await response.json();
+ if(order.status==='paid'){status('Payment confirmed. Order '+saved.id+'. '+(order.pickupDetails?.address||'')+' — '+(order.pickupDetails?.hours||'')+'. Contact 586-907-1861 to arrange pickup.');return;}
+ status('Order '+saved.id+' is awaiting payment verification. Please do not pay again.');
+ }catch{status('Order '+saved.id+': confirmation is temporarily unavailable. Contact Crossbell before paying again.');}
+ await new Promise(resolve=>setTimeout(resolve,3000));
+ }
+ status('Order '+saved.id+' is awaiting verification. Contact 586-907-1861 before starting another payment.');
 }
-function status(message: string) { document.querySelector('#status')!.textContent=message; }
-async function api(action: string) {
-  const response=await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':requestKey},body:JSON.stringify({action,...payload()}),signal:AbortSignal.timeout(20000)});
-  const result=await response.json();
-  if(!response.ok) throw new Error(result.error || 'Checkout is unavailable.');
-  return result;
-}
-async function updateQuote() {
-  const version=++quoteVersion;
-  const button=document.querySelector<HTMLButtonElement>('#pay')!;
-  button.disabled=true;latestQuote=null;
-  try {
-    const q=await api('quote'); if(version!==quoteVersion)return;
-    latestQuote=q;
-    document.querySelector('#subtotal')!.textContent=money(q.subtotalCents);
-    document.querySelector('#total')!.textContent=money(q.totalCents);
-    const rows=document.querySelectorAll('.totals>div');
-    rows[1].lastElementChild!.textContent=money(q.shippingCents);
-    rows[2].lastElementChild!.textContent=money(q.taxCents);
-    document.querySelector('.product-bottom>span')!.textContent=money(q.items[0].unitCents)+' / pack';
-    document.querySelector('.total small')!.textContent='USD · sandbox test total';
-    document.querySelector('.total span')!.textContent='Order total';
-    status('');button.disabled=false;
-  } catch(error) { if(version===quoteVersion)status(error instanceof Error?error.message:'Could not calculate total.'); }
-}
-async function submitSandbox() {
-  if(creating || !latestQuote)return;
-  creating=true;
-  const button=document.querySelector<HTMLButtonElement>('#pay')!;button.disabled=true;
-  // Freeze the cart while creating a payment session.
-  const controls=[...document.querySelectorAll<HTMLInputElement|HTMLButtonElement|HTMLSelectElement>('#checkout-form input,#checkout-form select,.quantity button')];
-  // Serialize FormData before disabling inputs; disabled fields are omitted by the browser.
-  try {
-    const pending=api('create');controls.forEach(control=>control.disabled=true);
-    const session=await pending;
-    if(session.action!=='https://test.authorize.net/payment/payment')throw new Error('Unexpected payment destination.');
-    sessionStorage.setItem('crossbell-checkout',JSON.stringify({id:session.orderId,accessToken:session.accessToken}));
-    const redirect=document.createElement('form');redirect.method='POST';redirect.action=session.action;
-    const token=document.createElement('input');token.type='hidden';token.name='token';token.value=session.token;redirect.append(token);document.body.append(redirect);redirect.submit();
-  } catch(error) { status(error instanceof Error?error.message:'Payment session could not be prepared.');creating=false;button.disabled=false;controls.forEach(control=>control.disabled=false); }
-}
-async function checkReturnedOrder() {
-  if(!new URLSearchParams(location.search).has('returned'))return;
-  let saved;try{saved=JSON.parse(sessionStorage.getItem('crossbell-checkout')||'null')}catch{}
-  if(!saved){status('Unable to identify this order in this browser. Contact Crossbell before trying another payment.');return;}
-  document.querySelector<HTMLButtonElement>('#pay')!.disabled=true;
-  document.querySelectorAll<HTMLInputElement|HTMLButtonElement|HTMLSelectElement>('#checkout-form input,#checkout-form select,.quantity button').forEach(control=>control.disabled=true);
-  for(let attempt=0;attempt<12;attempt++) {
-    try {
-      const response=await fetch('/api/checkout?action=status&id='+encodeURIComponent(saved.id),{headers:{Authorization:'Bearer '+saved.accessToken},signal:AbortSignal.timeout(10000)});
-      if(!response.ok)throw new Error();
-      const order=await response.json();
-      if(order.status==='paid'){status('Sandbox payment verified. Order '+order.orderId+' is recorded. No real money was charged.');return;}
-      status('Waiting for verified payment confirmation. Please do not submit another payment.');
-    } catch {status('Payment confirmation is temporarily unavailable. Please do not pay again.');}
-    await new Promise(resolve=>setTimeout(resolve,3000));
-  }
-  status('Payment is still awaiting verification. Contact Crossbell with order '+saved.id+' before retrying.');
-}
-// Mode is controlled by server configuration, never by a URL parameter.
-// A missing endpoint leaves this page in its non-submitting design-preview mode.
-fetch('/api/checkout?action=config').then(async response=>{
-  if(!response.ok)return;
-  const config=await response.json();if(config.mode!=='sandbox')return;
-  sandbox=true;
-  document.querySelector('.preview-bar')!.textContent='SANDBOX CHECKOUT / Test payments only';
-  document.querySelector('#pay')!.textContent='Continue to sandbox payment →';
-  document.querySelector('.button-note')!.textContent='Test cards only. No real money is charged.';
-  document.querySelector('.review-note')!.textContent='Sandbox prices and quantities are test configuration. Real inventory is not reserved.';
-  await updateQuote();await checkReturnedOrder();
-}).catch(()=>{});
-
+(async()=>{try{
+ const response=await fetch('/api/checkout?action=config');if(!response.ok)throw new Error('Checkout is not available yet. Please contact Crossbell.');
+ const config=await response.json();mode=config.mode;policy=config.policy;if(!['production','sandbox'].includes(mode))throw new Error('Checkout is not available.');
+ if(mode==='sandbox'){document.querySelector('.preview-bar')!.textContent='SANDBOX — test payments only';pay.textContent='Continue to test payment →';}
+ const products=document.querySelector('#cart-products')!;products.replaceChildren();
+ const requested=new URLSearchParams(location.search).get('sku')||'celebration-pack';
+ for(const [sku,p] of Object.entries(policy.products) as [string,any][]){
+ const max=Math.min(p.maxQuantity,config.available?.[sku]??p.maxQuantity,20);
+ const row=document.createElement('div');row.className='product';
+ const label=document.createElement('label');label.className='fields full';label.textContent=p.name+' · '+money(p.priceCents)+' · '+(max===0?'Sold out':config.available?.[sku]!==undefined?config.available[sku]+' available':'Stock verification pending');
+ const count=document.createElement('input');count.type='number';count.min='0';count.max=String(max);count.step='1';count.value=sku===requested&&max>0?'1':'0';count.setAttribute('aria-label',p.name+' quantity');count.disabled=max===0;
+ selected.set(sku,Number(count.value));count.addEventListener('input',()=>{selected.set(sku,Number(count.value));requestKey=crypto.randomUUID();updateQuote();});label.append(count);row.append(label);products.append(row);
+ }
+ await updateQuote();await checkReturnedOrder();
+ }catch(error){status((error as Error).message);document.querySelector('#cart-products')!.textContent='Online checkout is temporarily unavailable.';}})();
 </script>
