@@ -86,5 +86,10 @@
     "status": "parcel estimates prepared; rate service not connected",
     "handlingBusinessDays": 3,
     "handlingDescription": "Ships within 3 business days. Carrier transit time is additional."
+  },
+  "returnsPolicy": {
+    "acceptReturns": false,
+    "description": "No returns. Damaged or incorrect orders are handled separately. Contact contact@crossbellvending.com for assistance.",
+    "supportEmail": "contact@crossbellvending.com"
   }
 }
