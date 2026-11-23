@@ -56,3 +56,7 @@ Contact address confirmed as sender, reply-to and internal alert recipient: cont
 Ground shipping is requested: $5 for individual bundles; $8.50 for orders larger than one ETB. Single-ETB orders, loose packs, mixed/multiple-bundle orders, per-order versus per-item charges, and destination coverage still need confirmation. Rates are recorded but shipping remains disabled until these rules are resolved.
 
 Real Netlify Database validation passed 4 checks on prior draft d9e1db6c: last-unit race (12 requests, one reservation), duplicate reservation, atomic multi-product rollback, and exactly two email outbox jobs. This does not validate payment reversals, abandoned reservation release, or actual email delivery.
+
+## Shipping decision superseding flat rates
+
+Owner approved contiguous 48-state street-address delivery, live ground-carrier rate options with cheapest highlighted, and free pickup. Origin is 13023 Azure Dr, Shelby Township, MI 48315. The $5/$8.50 proposal is withdrawn. See shipping-research.md and server/checkout/shipping-profiles.json for researched product measurements and explicitly estimated parcel allowances. Rate-provider connection, actual packaging calibration, destination tax rules, and broader address validation remain pending; shipping is not enabled.

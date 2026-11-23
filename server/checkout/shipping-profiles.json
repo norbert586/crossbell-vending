@@ -1,0 +1,105 @@
+{
+  "researchedOn": "2026-11-23",
+  "status": "planning-estimates-not-measured-parcels",
+  "profiles": {
+    "celebration-etb": {
+      "dimensionsIn": [
+        7.25,
+        6.4,
+        3.35
+      ],
+      "weightOz": 25.28,
+      "planningWeightOz": 26,
+      "kind": "box",
+      "evidence": "Dimensions: Micro Center; weight: GameStop indexed specification (detail URL returned 404). Retailer data, not measured stock.",
+      "sources": [
+        "https://www.microcenter.com/product/715606/pokemon-tcg-30th-celebration-elite-trainer-box",
+        "https://www.gamestop.com/toys-games/trading-cards/products/pokemon-trading-card-game-30th-celebration-elite-trainer-box/448552.html"
+      ]
+    },
+    "celebration-pack": {
+      "dimensionsIn": null,
+      "weightOz": 0.88185,
+      "planningWeightOz": 1,
+      "kind": "pack",
+      "evidence": "Invicta lists 25g. Dimensions unresolved; use a conservative sleeved-pack envelope for packing.",
+      "sources": [
+        "https://invictatcg.co.uk/product/pokemon-tcg-30th-celebration-booster-pack-pre-order-18th-21st/"
+      ]
+    },
+    "riftbound-pack": {
+      "dimensionsIn": [
+        6.8,
+        3.8,
+        0.3
+      ],
+      "weightOz": 0.8,
+      "planningWeightOz": 1,
+      "kind": "pack",
+      "evidence": "UVS official SLEEVED booster specification; conservative envelope if stock is loose packs.",
+      "sources": [
+        "https://uvsgames.com/wp-content/uploads/2026/03/Riftbound-Unleashed-Sell-Sheets.pdf"
+      ]
+    },
+    "ascended-heroes-pack": {
+      "dimensionsIn": [
+        4.7,
+        2.6,
+        0.2
+      ],
+      "weightOz": 0.8,
+      "planningWeightOz": 1,
+      "kind": "pack",
+      "evidence": "Rocket City Toys approximate loose-pack dimensions and weight.",
+      "sources": [
+        "https://www.rocketcitytoys.com/products/pokemon-tcg-ascended-heroes-booster-pack"
+      ]
+    },
+    "prismatic-evolutions-pack": {
+      "dimensionsIn": [
+        6.811,
+        2.992,
+        0.118
+      ],
+      "weightOz": 0.77603,
+      "planningWeightOz": 1,
+      "kind": "pack",
+      "evidence": "Invicta lists 17.3 x 7.6 x 0.3cm and 22g; long dimension may include retail packaging. Use conservative envelope.",
+      "sources": [
+        "https://invictatcg.co.uk/product/pokemon-tcg-scarlet-violet-prismatic-evolutions-booster-pack/"
+      ]
+    },
+    "booster-bundle": {
+      "dimensionsIn": [
+        4.68,
+        2.93,
+        2
+      ],
+      "weightOz": 5.12,
+      "planningWeightOz": 6,
+      "kind": "box",
+      "identityConfirmed": false,
+      "evidence": "Candidate only: 30th Celebration six-pack bundle. Micro Center dimensions; GameStop indexed weight 0.32lb. User has not confirmed bundle set.",
+      "sources": [
+        "https://www.microcenter.com/product/715611/nintendo-pokemon-tcg-30th-celebration-booster-bundle?storeid=075",
+        "https://www.gamestop.com/products/pokemon-trading-card-game-30th-celebration-booster-bundle-wave-1/20036319.html"
+      ]
+    },
+    "delta-reign": {
+      "dimensionsIn": [
+        7.25,
+        6.4,
+        3.35
+      ],
+      "weightOz": 24.48,
+      "planningWeightOz": 26,
+      "kind": "box",
+      "identityConfirmed": false,
+      "evidence": "Candidate only: Delta Reign ETB. Micro Center dimensions; Target estimated ship weight 1.53lb (not measured unit weight). User must confirm product type.",
+      "sources": [
+        "https://www.microcenter.com/product/718006/nintendo-pokemon-mega-evolution-delta-reign-(elite-trainer-box)",
+        "https://www.target.com/p/-/A-1012793604"
+      ]
+    }
+  }
+}
