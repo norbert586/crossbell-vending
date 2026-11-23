@@ -89,7 +89,7 @@
   },
   "returnsPolicy": {
     "acceptReturns": false,
-    "description": "No returns. Report damaged or incorrect orders within 7 days of delivery to contact@crossbellvending.com. Include your order number and photos. All claims are subject to manual review. Any replacement or refund requires approval.",
+    "description": "No returns. Report damaged or incorrect orders within 7 days of delivery with your order number and photos. Claims and remedies are reviewed individually. No item return is required.",
     "supportEmail": "contact@crossbellvending.com",
     "damageReportDays": 7,
     "damageReportFrom": "delivery",
@@ -97,12 +97,29 @@
       "order number",
       "photos"
     ],
-    "manualReviewRequired": true
+    "manualReviewRequired": true,
+    "returnRequired": false,
+    "remedy": "case-by-case-manual-review",
+    "reviewBusinessDays": 3,
+    "refundInitiationBusinessDays": 3
   },
   "cancellationPolicy": {
     "beforeShipment": true,
     "beforePickup": true,
     "afterShipment": false,
-    "description": "Orders can be cancelled before shipment or pickup. Orders cannot be cancelled after shipment."
+    "description": "Email to cancel before carrier handoff or pickup. Eligible cancellations receive a full refund including tax and shipping, with no cancellation fee.",
+    "requestEmail": "contact@crossbellvending.com",
+    "processing": "manual",
+    "shippedDefinition": "handed-to-carrier",
+    "refund": "full-including-tax-and-shipping",
+    "cancellationFeeCents": 0
+  },
+  "missingPackagePolicy": {
+    "requestEmail": "contact@crossbellvending.com",
+    "process": "Investigate with carrier; remedy decided by manual review."
+  },
+  "pickupHoldPolicy": {
+    "holdDays": 14,
+    "afterHold": "Contact customer, then manually cancel and refund if uncollected."
   }
 }

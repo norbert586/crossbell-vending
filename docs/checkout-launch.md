@@ -78,3 +78,6 @@ User confirmed no returns. Damaged or incorrect orders handled separately via co
 
 ## Cancellation policy — 2026-11-23
 User allows cancellation before shipment or pickup, not after shipment. Request channel, operational cutoff, refund scope and processing timing pending clarification.
+
+## Final order-support decisions — 2026-11-23
+Email cancellation requests to contact@crossbellvending.com for manual processing. Cancellation permitted until carrier handoff or pickup; label creation is not shipment. Eligible cancellations refund the full paid amount including tax/shipping, with no fee. No item returns required for any claim. Damage/incorrect-item remedies decided case by case after manual review; report within 7 days with order number/photos. Review requests and initiate approved refunds within 3 business days (bank posting additional). Missing parcels investigated with carrier, remedy reviewed manually. Hold pickup orders 14 days, contact customer, then manually cancel/refund if still uncollected. These policies do not implement automated financial actions or alter the separate oversell reversal authorization.
