@@ -83,6 +83,8 @@
     "sortBy": "total-price",
     "highlightLowest": true,
     "pickupCents": 0,
-    "status": "parcel estimates prepared; rate service not connected"
+    "status": "parcel estimates prepared; rate service not connected",
+    "handlingBusinessDays": 3,
+    "handlingDescription": "Ships within 3 business days. Carrier transit time is additional."
   }
 }

@@ -69,3 +69,6 @@ User confirmed three Delta Reign Elite Trainer Boxes at $70.99 each for online s
 
 ## Ascended Heroes paused — 2026-11-23
 Removed from the staged catalogue and checkout selector at user request. Server quotes reject the disabled SKU, including old cart links. Existing stock and order records retained. Production unchanged.
+
+## Dispatch timing — 2026-11-23
+User confirmed dispatch within 3 business days. Carrier transit time is additional; do not present this as delivery within 3 days. Shipping integration remains pending and production is unchanged.
