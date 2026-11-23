@@ -74,4 +74,4 @@ Removed from the staged catalogue and checkout selector at user request. Server 
 User confirmed dispatch within 3 business days. Carrier transit time is additional; do not present this as delivery within 3 days. Shipping integration remains pending and production is unchanged.
 
 ## Returns policy — 2026-11-23
-User confirmed no returns. Damaged or incorrect orders handled separately via contact@crossbellvending.com. Claim reporting window and resolution process remain unspecified; no deadline or automatic remedy assumed.
+User confirmed no returns. Damaged or incorrect orders handled separately via contact@crossbellvending.com. User confirmed reports within 7 days of delivery, including order number and photos. Resolution process remains unspecified; no automatic remedy assumed.
