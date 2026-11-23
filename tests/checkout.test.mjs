@@ -136,3 +136,11 @@ test('declined and voided transactions never become paid orders', async () => {
     assert.equal((await store.get(`orders/${session.orderId}`)).status,'awaiting_payment');
   }
 });
+
+test('updated catalogue prices and unconfirmed new products fail closed',()=>{
+ assert.equal(catalogue.products['celebration-etb'].priceCents,10999);
+ assert.equal(catalogue.products['prismatic-evolutions-pack'].priceCents,1399);
+ assert.equal(catalogue.products['booster-bundle'].priceCents,5500);
+ assert.equal(catalogue.products['delta-reign'].priceCents,7099);
+ for(const sku of ['booster-bundle','delta-reign']) assert.throws(()=>quote({...liveInput,items:[{sku,quantity:1}]},livePolicy));
+});

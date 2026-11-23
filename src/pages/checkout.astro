@@ -19,7 +19,7 @@ import '@fontsource/ibm-plex-mono/400.css';
         <div class="fields"><label class="full">Pickup location<select name="pickupLocation" required><option value="christopher">8891 Christopher St, Washington, MI 48094 — outside business hours</option><option value="uwm">United Wholesale Mortgage campus parking lot — during business hours</option></select></label></div>
         <input type="hidden" name="fulfillment" value="pickup"/>
         <p class="hint">Contact Crossbell at <a href="tel:+15869071861">586-907-1861</a> to coordinate your pickup time and meeting point. Bring your order number.</p>
-        <div class="location"><div><strong>UPS shipping coming soon</strong><p>Orders are currently available for free local pickup only.</p></div></div>
+        <div class="location"><div><strong>Ground shipping — rates being finalized</strong><p>Orders are currently available for free local pickup only.</p></div></div>
         </section>
         <section class="payment-note"><span class="number">03</span><div><h2>A secure finish</h2><p>Continue to Authorize.net to enter payment details.<br/>Card details stay with the payment provider.</p><div class="cards"><b>VISA</b><b>mastercard</b><b>AMEX</b><b>DISCOVER</b></div></div><span class="lock">↗</span></section>
         <div id="status" role="status" aria-live="polite"></div>
@@ -86,7 +86,7 @@ async function checkReturnedOrder(){
  const products=document.querySelector('#cart-products')!;products.replaceChildren();
  const requested=new URLSearchParams(location.search).get('sku')||'celebration-pack';
  for(const [sku,p] of Object.entries(policy.products) as [string,any][]){
- const max=Math.min(p.maxQuantity,config.available?.[sku]??p.maxQuantity,20);
+ const max=Math.min(p.maxQuantity,config.available ? (config.available[sku] ?? 0) : p.maxQuantity,20);
  const row=document.createElement('div');row.className='product';
  const label=document.createElement('label');label.className='fields full';label.textContent=p.name+' · '+money(p.priceCents)+' · '+(max===0?'Sold out':config.available?.[sku]!==undefined?config.available[sku]+' available':'Stock verification pending');
  const count=document.createElement('input');count.type='number';count.min='0';count.max=String(max);count.step='1';count.value=sku===requested&&max>0?'1':'0';count.setAttribute('aria-label',p.name+' quantity');count.disabled=max===0;

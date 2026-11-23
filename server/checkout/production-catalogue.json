@@ -11,7 +11,7 @@
     "celebration-etb": {
       "name": "30th Celebration Elite Trainer Box",
       "initialStock": 4,
-      "priceCents": 11599,
+      "priceCents": 10999,
       "maxQuantity": 4
     },
     "riftbound-pack": {
@@ -29,8 +29,24 @@
     "prismatic-evolutions-pack": {
       "name": "Prismatic Evolutions Booster Pack",
       "initialStock": 10,
-      "priceCents": 1499,
+      "priceCents": 1399,
       "maxQuantity": 10
+    },
+    "booster-bundle": {
+      "name": "Booster Bundle",
+      "priceCents": 5500,
+      "initialStock": 0,
+      "maxQuantity": 20,
+      "saleEnabled": false,
+      "availabilityNote": "Product details and stock awaiting confirmation"
+    },
+    "delta-reign": {
+      "name": "Delta Reign",
+      "priceCents": 7099,
+      "initialStock": 0,
+      "maxQuantity": 20,
+      "saleEnabled": false,
+      "availabilityNote": "Product details and stock awaiting confirmation"
     }
   },
   "shippingCents": 0,
@@ -49,5 +65,10 @@
       "hours": "During business hours"
     }
   },
-  "pickupInstructions": "Contact Crossbell at 586-907-1861 to coordinate a pickup time and meeting point. Bring your order number."
+  "pickupInstructions": "Contact Crossbell at 586-907-1861 to coordinate a pickup time and meeting point. Bring your order number.",
+  "groundShippingDraft": {
+    "singleBundleCents": 500,
+    "largerThanOneEtbOrderCents": 850,
+    "status": "awaiting order-size rules and shipping area"
+  }
 }

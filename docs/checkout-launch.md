@@ -46,3 +46,13 @@ Production deployment is NOT authorized until the owner says **go**. This branch
 ## Open risks
 
 Database integration, real concurrency verification, automatic reversals and durable retries, notification delivery, abandoned reservations, production webhook configuration, secret/log audit, and exact rollback deploy remain unresolved. Do not enable payment creation or merge this draft until these are resolved.
+
+## November 23 owner updates
+
+Contact address confirmed as sender, reply-to and internal alert recipient: contact@crossbellvending.com. Owner will connect email later.
+
+30th ETB now $109.99; 30th pack $10.99; booster bundle $55; Riftbound pack $8.99; Delta Reign $70.99; Prismatic Evolutions pack $13.99. New bundle and Delta Reign entries are visible but blocked until exact product and stock are confirmed. Ascended Heroes is retained pending clarification, not silently removed. Existing stock is not reset.
+
+Ground shipping is requested: $5 for individual bundles; $8.50 for orders larger than one ETB. Single-ETB orders, loose packs, mixed/multiple-bundle orders, per-order versus per-item charges, and destination coverage still need confirmation. Rates are recorded but shipping remains disabled until these rules are resolved.
+
+Real Netlify Database validation passed 4 checks on prior draft d9e1db6c: last-unit race (12 requests, one reservation), duplicate reservation, atomic multi-product rollback, and exactly two email outbox jobs. This does not validate payment reversals, abandoned reservation release, or actual email delivery.

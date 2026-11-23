@@ -27,7 +27,7 @@ export function quote(input, policy) {
     if (!item || typeof item.sku !== 'string' || seen.has(item.sku)) fail('Invalid or duplicate product.');
     seen.add(item.sku);
     const product = Object.hasOwn(policy.products, item.sku) && policy.products[item.sku];
-    if (!product || !Number.isSafeInteger(product.priceCents) || product.priceCents < 1 || !Number.isInteger(product.maxQuantity) || product.maxQuantity < 1) fail('This product is unavailable.');
+    if (!product || product.saleEnabled === false || !Number.isSafeInteger(product.priceCents) || product.priceCents < 1 || !Number.isInteger(product.maxQuantity) || product.maxQuantity < 1) fail('This product is unavailable.');
     if (!Number.isInteger(item.quantity) || item.quantity < 1 || item.quantity > Math.min(product.maxQuantity, 20)) fail('Please check the item quantity.');
     return { sku: item.sku, name: product.name, quantity: item.quantity, unitCents: product.priceCents, totalCents: product.priceCents * item.quantity };
   });
