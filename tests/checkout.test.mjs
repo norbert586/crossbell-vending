@@ -98,7 +98,6 @@ test('hosted payment request uses server total, invoice and card-only settings',
  assert.equal(options.showBankAccount,false);
 });
 
-const {inventoryStore}=await import('../server/checkout/inventory.mjs');
 const catalogue=(await import('../server/checkout/production-catalogue.json',{with:{type:'json'}})).default;
 const livePolicy={...catalogue,mode:'production'};
 const liveInput={...input,pickupLocation:'christopher'};
@@ -111,25 +110,8 @@ test('production has approved five prices and pickup only',()=>{
  assert.equal(quote(liveInput,p).totalCents,2330);
  assert.throws(()=>policyFromEnv({...env,CONTEXT:'deploy-preview'}));
 });
-test('concurrent orders cannot oversell stock, duplicate submissions do not reserve twice',async()=>{
- const policy={...livePolicy,products:{'celebration-pack':{name:'Test',priceCents:1099,maxQuantity:2,initialStock:2}}};
- const blobs=memoryStore(),store=inventoryStore(blobs,policy);let calls=0;
- const call=async()=>{calls++;return {token:'test'}};
- const keys=[randomUUID(),randomUUID()];
- const outcomes=await Promise.allSettled(keys.map(key=>createOrder(liveInput,key,policy,store,call,'https://crossbellvending.com')));
- assert.equal(outcomes.filter(x=>x.status==='fulfilled').length,1);assert.equal(calls,1);
- assert.equal((await store.availability())['celebration-pack'],0);
- const winner=outcomes.findIndex(x=>x.status==='fulfilled');
- await createOrder(liveInput,keys[winner],policy,store,call,'https://crossbellvending.com');
- assert.equal(calls,1);assert.equal((await inventoryStore(blobs,policy).availability())['celebration-pack'],0);
-});
-test('multi-product stock reservation is all or nothing',async()=>{
- const store=inventoryStore(memoryStore(),livePolicy);
- await assert.rejects(()=>createOrder({...liveInput,items:[{sku:'celebration-pack',quantity:1},{sku:'celebration-etb',quantity:5}]},randomUUID(),livePolicy,store,async()=>({token:'test'}),'https://crossbellvending.com'));
- assert.equal((await store.availability())['celebration-pack'],50);
-});
 test('production sessions use live endpoint and payment form',async()=>{
- const session=await createOrder(liveInput,randomUUID(),livePolicy,inventoryStore(memoryStore(),livePolicy),async()=>({token:'test'}),'https://crossbellvending.com');
+ const session=await createOrder(liveInput,randomUUID(),livePolicy,memoryStore(),async()=>({token:'test'}),'https://crossbellvending.com');
  assert.equal(session.action,'https://accept.authorize.net/payment/payment');
  await gateway('authenticateTestRequest',{}, {CONTEXT:'production',CHECKOUT_MODE:'production',AUTHNET_API_LOGIN_ID:'fixture',AUTHNET_TRANSACTION_KEY:'fixture'}, async url=>{assert.equal(url,'https://api.authorize.net/xml/v1/request.api');return new Response(JSON.stringify({messages:{resultCode:'Ok'}}));});
 });

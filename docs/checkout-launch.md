@@ -7,21 +7,22 @@ Production deployment is NOT authorized until the owner says **go**. This branch
 - Five approved catalogue products, prices, and initial quantities are in `server/checkout/production-catalogue.json`. These quantities are seed instructions, not verified live database balances.
 - Free pickup: 8891 Christopher St, Washington, MI 48094 outside business hours; United Wholesale Mortgage campus parking lot during business hours.
 - UPS shipping coming soon; shipping checkout disabled. Michigan sales tax: 6%.
-- Use the owner's existing database, not the draft Netlify Blobs inventory prototype. Database provider and project are pending.
-- Customer and internal order emails required; provider and recipient pending.
+- Approved: Netlify Database for stock/orders; Blobs only for files. The Blobs stock prototype has been removed.
+- Customer confirmations: From/Reply-To contact@crossbellvending.com. Internal alerts: contact@crossbellvending.com. Mailbox provider and transport authorization pending.
 - Reject sold-out items and excessive quantities before payment. If payment succeeds without fulfillable inventory, automatically void an unsettled transaction or refund a settled transaction. Durable retries, transaction verification, and idempotency must be implemented before enabling this.
 
 ## Validation status
 
-- Current unit suite: 19 passing. Includes signatures, approved and rejected payment reconciliation, duplicate submissions, ambiguous provider timeout, context routing, pricing, and prototype stock concurrency.
-- The stock concurrency tests are in-memory unit tests, NOT evidence of real database safety.
+- Current unit suite: 17 tests (the 2 obsolete Blobs stock tests were removed). Includes signatures, approved and rejected payment reconciliation, duplicate submissions, ambiguous provider timeout, context routing, pricing, and pricing.
+- A preview-only, once-per-deploy `/api/checkout-validation` test runs 12 concurrent last-unit reservations using the actual Netlify Database adapter, checks rollback, duplicates and transactional email-outbox insertion. Its deployed result is still pending; do not report a real-store pass until it runs.
 - Actual sandbox approved/declined/timeout/refund/void journeys, real database last-unit race, email delivery, and requested confirmation/sold-out screenshots remain pending.
 - Context determines the API endpoint; CHECKOUT_MODE is only an activation guard. Unknown contexts fail closed.
 - Intended production webhook: https://crossbellvending.com/api/payment-webhook . Raw request bytes are HMAC-SHA512 verified before reconciliation; provider transaction details are independently fetched and matched against order/invoice, amount, type and status. Actual production webhook registration and delivery must still be checked.
 
 ## Go-live checklist
 
-- [ ] Identify existing database and isolate sandbox data from production.
+- [x] Storage choice approved: Netlify Database.
+- [ ] Verify the deployed preview database and its isolation from production.
 - [ ] Implement transactional stock reservation, unique order/payment identities, reservation lifecycle, reversal workflow and notification outbox.
 - [ ] Confirm email sender/provider and internal recipient; verify both deliveries.
 - [ ] Run the full suite and real-store last-unit race test; document actual outcomes.
