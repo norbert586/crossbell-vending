@@ -84,3 +84,6 @@ Email cancellation requests to contact@crossbellvending.com for manual processin
 
 ## Tax decisions — 2026-11-23
 User confirms active Michigan sales-tax registration and MTO access; all operations/inventory in Michigan; no interstate sales to date. Other-state registrations UNKNOWN and must be verified before final interstate tax configuration. Alex owns quarterly filing (user-reported schedule). Separately itemize merchandise, shipping and tax on receipts and matching books. Standard retail checkout only; exemption requests reviewed separately before purchase. Use confirmed-obligation configuration and sales/tax reporting with periodic interstate threshold review; no paid tax service selected. Do not infer zero obligations outside Michigan from unknown registration status. No production tax changes or filing/payment actions authorized by these answers.
+
+## Order management implementation — 2026-11-23
+Approved answers recorded in docs/order-management.md. Private dashboard, Google allowlist, manual provider reconciliation, dedicated stock adjustments, notification queue/reminders and one-way Inventory 2.0 projection implemented in staging. Google OAuth, sender delivery and Sheets service-account connection remain pending. Do not treat staged code as verified live integrations.

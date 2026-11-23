@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
+import { updateOrder, stockAdjustment, reminders } from '../admin/orders.mjs';
 import { databaseStore } from './database.mjs';
 // Executes against the real deployed database driver. No in-memory storage.
 export async function validateDatabase(db) {
@@ -29,13 +30,30 @@ export async function validateDatabase(db) {
     assert.ok(rows.every(row=>row.sender==='contact@crossbellvending.com'));
     assert.equal(rows.find(row=>row.audience==='internal').recipient,'contact@crossbellvending.com');
     results.push('Concurrent payment update creates exactly 2 email jobs with approved addresses');
+    const id='a'.repeat(20),key=`orders/${id}`;
+    const adminOrder={id,status:'paid',transactionId:'123',paidAt:Date.now()-15*86400000,customer:{email:'checkout-test@example.invalid'},quote:{fulfillment:'pickup',items:[{sku:'other',quantity:1}],totalCents:100}};
+    await stores[0].setJSON(key,adminOrder,{onlyIfNew:true});
+    const ready=await Promise.allSettled([1,2].map(()=>updateOrder(db,scope,'test@example.invalid',{id,version:'0',action:'ready'},()=>{throw Error('Unexpected gateway call');})));
+    assert.equal(ready.filter(r=>r.status==='fulfilled').length,1);
+    await reminders(db,scope);await reminders(db,scope);
+    const events=await db.pool.query('SELECT kind FROM checkout_admin_events WHERE scope=$1 AND order_key=$2',[scope,key]);
+    assert.equal(events.rows.filter(r=>r.kind==='ready_for_pickup').length,1);
+    assert.equal(events.rows.filter(r=>r.kind==='pickup_overdue').length,1);
+    results.push('Concurrent admin ready actions and repeated reminders queue each event once');
+    const adjust=await Promise.allSettled([1,2].map(()=>stockAdjustment(db,scope,'test@example.invalid',{sku:'other',delta:-1,expected:1,reason:'validation transfer'})));
+    assert.equal(adjust.filter(r=>r.status==='fulfilled').length,1);
+    results.push('Concurrent online-stock transfers cannot overdraw or use stale availability');
+    const refunds=await Promise.allSettled([1,2].map(()=>updateOrder(db,scope,'test@example.invalid',{id,version:'2',action:'reconcile_reversal',transactionId:'123'},async()=>({transaction:{transId:'123',transactionStatus:'voided'}}))));
+    assert.equal(refunds.filter(r=>r.status==='fulfilled').length,1);
+    assert.equal((await stores[0].availability()).other,1);
+    results.push('Duplicate verified void reconciliation restores stock exactly once');
     return {passed:results.length,failed:0,checks:results};
   } finally {
     // Only this random validation namespace is touched, never sandbox inventory or production.
     const client=await db.pool.connect();
     try {
       await client.query('BEGIN');
-      for(const table of ['checkout_email_outbox','checkout_orders','checkout_stock','checkout_scopes']) await client.query(`DELETE FROM ${table} WHERE scope=$1`,[scope]);
+      for(const table of ['checkout_admin_events','checkout_admin_audit','checkout_operations','checkout_email_outbox','checkout_orders','checkout_stock','checkout_scopes']) await client.query(`DELETE FROM ${table} WHERE scope=$1`,[scope]);
       await client.query('COMMIT');
     } catch(error) {await client.query('ROLLBACK').catch(()=>{});throw error;}
     finally {client.release();}

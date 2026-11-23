@@ -11,7 +11,7 @@
     "check": "astro check",
     "preview": "astro preview",
     "astro": "astro",
-    "test:checkout": "node --test tests/checkout.test.mjs"
+    "test:checkout": "node --test tests/checkout.test.mjs tests/admin.test.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
@@ -22,6 +22,7 @@
     "@netlify/database": "^2.0.3",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.3",
+    "google-auth-library": "^11.3.4",
     "motion": "^13.4.0",
     "tailwindcss": "^4.3.3"
   },

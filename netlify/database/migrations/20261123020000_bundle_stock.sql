@@ -6,5 +6,5 @@ WHERE s.sku = 'booster-bundle' AND s.remaining = 0
   AND NOT EXISTS (
     SELECT 1 FROM checkout_orders AS o
     WHERE o.scope = s.scope
-      AND o.data @> '{"items":[{"sku":"booster-bundle"}]}'::jsonb
+      AND o.data->'quote' @> '{"items":[{"sku":"booster-bundle"}]}'::jsonb
   );
