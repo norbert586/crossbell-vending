@@ -13,12 +13,16 @@ export default async request => {
     if (raw.length > 64000) return new Response(null, { status: 413 });
     const store = databaseStore(getDatabase(), policy, policy.mode === 'production' ? 'production' : `sandbox-${env.REVIEW_ID || env.DEPLOY_ID}`);
     const signature = request.headers.get('X-ANET-Signature') || '';
-    if (!validSignature(raw, signature, env.AUTHNET_SIGNATURE_KEY)) return new Response(null, { status: 401 });
+    if (!validSignature(raw, signature, env.AUTHNET_SIGNATURE_KEY)) {
+      console.info('Payment webhook rejected: signature verification failed.');
+      return new Response(null, { status: 401 });
+    }
     let event; try { event = JSON.parse(raw); } catch { return new Response(null, { status: 400 }); }
     if (event.eventType !== 'net.authorize.payment.authcapture.created') return new Response(null, { status: 200 });
     await reconcile(event.payload?.id, store, (name, payload) => gateway(name, payload, env), true);
     return new Response(null, { status: 200 });
   } catch (error) {
+    console.info('Payment webhook reconciliation failed.',error instanceof CheckoutError?error.status:503);
     return new Response('Notification could not be reconciled.', { status: error instanceof CheckoutError ? error.status : 503 });
   }
 };

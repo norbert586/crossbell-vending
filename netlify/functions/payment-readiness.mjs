@@ -32,7 +32,8 @@ export default async request => {
           for(const notification of (data.notifications||[]).filter(n=>n.webhookId===hook.webhookId).slice(0,3)){
             const detail=await fetch(`https://apitest.authorize.net/rest/v1/notifications/${encodeURIComponent(notification.notificationId)}`,{headers:{Authorization:`Basic ${Buffer.from(`${env.AUTHNET_API_LOGIN_ID}:${env.AUTHNET_TRANSACTION_KEY}`).toString('base64')}`},signal:AbortSignal.timeout(12000)});
             const log=detail.ok?await detail.json():{};
-            checks.recentDeliveries.push({status:notification.deliveryStatus,event:notification.eventType,httpStatuses:(log.retryLog?.logs||[]).map(l=>l.statusCode)});
+            const entry=Array.isArray(log)?log[0]:log;
+            checks.recentDeliveries.push({status:notification.deliveryStatus,event:notification.eventType,httpStatuses:(entry?.retryLog?.logs||[]).map(l=>l.statusCode)});
           }
         }
       }
