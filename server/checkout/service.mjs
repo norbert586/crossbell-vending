@@ -43,6 +43,7 @@ export async function reconcile(transactionId, store, callGateway, verifiedWebho
   if (!/^\d{1,30}$/.test(String(transactionId))) fail('Invalid transaction.');
   const result = await callGateway('getTransactionDetailsRequest', { transId: String(transactionId) });
   const transaction = result.transaction;
+  if(String(transaction?.transId)!==String(transactionId))fail('Payment transaction ID mismatch.',409);
   const id = transaction?.order?.invoiceNumber;
   if (!/^[a-f\d]{20}$/.test(id || '')) return;
   for (let attempt = 0; attempt < 4; attempt++) {

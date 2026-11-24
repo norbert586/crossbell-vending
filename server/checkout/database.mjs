@@ -31,6 +31,18 @@ export function databaseStore(db, catalogue, scope) {
     await ready;
   }
   return {
+    async expireReservations(now=Date.now()) {
+      await initialize();
+      return transaction(async client=>{
+        const {rows}=await client.query("SELECT order_key,data FROM checkout_orders WHERE scope=$1 AND data->>'status' IN ('creating','awaiting_payment','payment_review') AND NOT COALESCE((data->>'stockReleased')::boolean,false) AND (data->>'createdAt')::bigint<$2 ORDER BY order_key FOR UPDATE SKIP LOCKED LIMIT 50",[scope,now-30*60*1000]);
+        for(const row of rows){
+          for(const item of [...row.data.quote.items].sort((a,b)=>a.sku.localeCompare(b.sku)))await client.query('UPDATE checkout_stock SET remaining=remaining+$3 WHERE scope=$1 AND sku=$2',[scope,item.sku,item.quantity]);
+          const {hostedToken,...safe}=row.data;
+          await client.query('UPDATE checkout_orders SET data=$3::jsonb,version=version+1,updated_at=now() WHERE scope=$1 AND order_key=$2',[scope,row.order_key,JSON.stringify({...safe,status:'expired',stockReleased:true,expiredAt:now})]);
+        }
+        return rows.length;
+      });
+    },
     async recordPayment(orderKey, transactionId) {
       await initialize();
       return transaction(async client => {

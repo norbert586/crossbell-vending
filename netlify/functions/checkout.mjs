@@ -11,6 +11,7 @@ export default async request => {
     const policy = policyFromEnv(env);
     const origin = policy.mode === 'production' ? 'https://crossbellvending.com' : new URL(env.DEPLOY_PRIME_URL).origin;
     const store = databaseStore(getDatabase(), policy, policy.mode === 'production' ? 'production' : `sandbox-${env.REVIEW_ID || env.DEPLOY_ID}`);
+    await store.expireReservations();
     const sandboxReady=async()=>{
       if(env.CONTEXT!=='deploy-preview'||policy.mode!=='sandbox')return false;
       const {rows}=await getDatabase().pool.query('SELECT result FROM checkout_validation_runs WHERE deploy_id=$1',[`payment-${env.DEPLOY_ID}`]);
@@ -25,7 +26,8 @@ export default async request => {
       if (!/^[a-f\d]{20}$/.test(id || '')) fail('Order not found.', 404);
       const order = await store.get(`orders/${id}`, { type: 'json' });
       if (!order || request.headers.get('Authorization') !== `Bearer ${order.accessToken}`) fail('Order not found.', 404);
-      return json({ orderId: id, status: order.status, fulfillment: order.quote.fulfillment, pickupDetails: order.quote.pickupDetails, pickupInstructions: policy.pickupInstructions });
+      const {rows}=await getDatabase().pool.query('SELECT fulfillment_status,reversal_id FROM checkout_operations WHERE scope=$1 AND order_key=$2',[policy.mode==='production'?'production':`sandbox-${env.REVIEW_ID||env.DEPLOY_ID}`,`orders/${id}`]);
+      return json({ orderId: id, status: rows[0]?.reversal_id?'reversed':order.status, fulfillment: order.quote.fulfillment, pickupDetails: order.quote.pickupDetails, pickupInstructions: policy.pickupInstructions });
     }
     if (request.method !== 'POST') return json({ error: 'Method not allowed.' }, 405);
     if (request.headers.get('Origin') !== origin) fail('Invalid checkout origin.', 403);

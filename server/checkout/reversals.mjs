@@ -1,4 +1,4 @@
-import {fail} from './core.mjs';
+import {fail,verifyTransaction} from './core.mjs';
 import {reversalMatches} from '../admin/orders.mjs';
 
 // Only called for a verified extra payment or a payment without reserved stock.
@@ -11,6 +11,7 @@ export async function reverseUnfulfillable(order, transactionId, store, callGate
   if(t.transactionStatus==='voided') {
     await store.finishReversal(transactionId,'confirmed',transactionId);return;
   }
+  if(!verifyTransaction(order,t))fail('Reversal amount or currency mismatch.',409);
   if(existing.reversal_id) {
     const {transaction:r}=await callGateway('getTransactionDetailsRequest',{transId:existing.reversal_id});
     if(reversalMatches({...order,transactionId},r,existing.reversal_id)) {

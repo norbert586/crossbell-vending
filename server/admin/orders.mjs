@@ -1,5 +1,5 @@
 import {notification} from './messages.mjs';
-import {fail} from '../checkout/core.mjs';
+import {fail,amountCents} from '../checkout/core.mjs';
 export function transition(order,op,action,input){
  if(order.status!=='paid')fail('Only verified paid orders can be fulfilled.',409);
  const state=op.fulfillment_status||'new';
@@ -26,8 +26,8 @@ export function reversalMatches(order,t,id){
  if(!t||String(t.transId)!==String(id))return false;
  const original=String(order.transactionId);
  if(String(id)===original)return t.transactionStatus==='voided';
- const amount=Number(t.settleAmount??t.authAmount);
- return t.transactionType==='refundTransaction'&&['refundPendingSettlement','refundSettledSuccessfully'].includes(t.transactionStatus)&&String(t.refTransId)===original&&Number.isFinite(amount)&&Math.round(amount*100)===order.quote.totalCents;
+ const amount=amountCents(t.settleAmount??t.authAmount);
+ return (t.currencyCode===undefined||t.currencyCode==='USD')&&t.transactionType==='refundTransaction'&&['refundPendingSettlement','refundSettledSuccessfully'].includes(t.transactionStatus)&&String(t.refTransId)===original&&amount===order.quote.totalCents;
 }
 export function reminder(order,op,now=Date.now()){
  if(order.status!=='paid'||order.quote.fulfillment!=='pickup'||!['new','ready'].includes(op.fulfillment_status||'new'))return null;

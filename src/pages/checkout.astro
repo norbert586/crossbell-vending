@@ -24,6 +24,7 @@ import '@fontsource/ibm-plex-mono/400.css';
         </section>
         <section class="payment-note"><span class="number">03</span><div><h2>A secure finish</h2><p>Continue to Authorize.net to enter payment details.<br/>Card details stay with the payment provider.</p><div class="cards"><b>VISA</b><b>mastercard</b><b>AMEX</b><b>DISCOVER</b></div></div><span class="lock">↗</span></section>
   <OrderPolicy />
+        <p class="hint">Stock is held for 30 minutes after starting checkout. A payment received after the hold expires may be automatically voided or refunded. Save your order number; email confirmations are not enabled in this preview.</p>
         <div id="status" role="status" aria-live="polite"></div>
       </form>
       <aside><div class="summary"><div class="summary-heading"><h2>Your collection</h2><span id="item-count">0 ITEMS</span></div>
@@ -75,6 +76,8 @@ async function checkReturnedOrder(){
  for(let i=0;i<10;i++){
  try{const response=await fetch('/api/checkout?action=status&id='+encodeURIComponent(saved.id),{headers:{Authorization:'Bearer '+saved.accessToken}});if(!response.ok)throw new Error();const order=await response.json();
  if(order.status==='paid'){status('Payment confirmed. Order '+saved.id+'. '+(order.pickupDetails?.address||'')+' — '+(order.pickupDetails?.hours||'')+'. Contact 586-907-1861 to arrange pickup.');return;}
+ if(order.status==='reversed'){status('Order '+saved.id+' has been voided or refunded. Do not collect this order. Contact Crossbell with any questions.');return;}
+ if(['expired','session_rejected'].includes(order.status)){status('Order '+saved.id+' is no longer active. If you submitted a payment, contact Crossbell before paying again.');return;}
  status('Order '+saved.id+' is awaiting payment verification. Please do not pay again.');
  }catch{status('Order '+saved.id+': confirmation is temporarily unavailable. Contact Crossbell before paying again.');}
  await new Promise(resolve=>setTimeout(resolve,3000));

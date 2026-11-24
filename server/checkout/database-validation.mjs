@@ -65,6 +65,16 @@ export async function validateDatabase(db) {
     const captures=await Promise.all(stores.slice(0,2).map((s,i)=>s.recordPayment(paidKey,String(888+i))));
     assert.equal(captures.filter(r=>r.paid).length,1);assert.equal(captures.filter(r=>r.reverse).length,1);
     results.push('Concurrent distinct captures accept one payment and queue the extra payment for reversal');
+    // Expiry and provider capture contend for the same order row. Either outcome is safe.
+    await stockAdjustment(db,scope,'test@example.invalid',{sku:'other',delta:1,expected:0,reason:'expiry race fixture'});
+    const expiryKey=`orders/${'d'.repeat(20)}`;
+    await stores[0].setJSON(expiryKey,{...order([{sku:'other',quantity:1}]),createdAt:Date.now()-31*60000},{onlyIfNew:true});
+    await Promise.all([stores[0].expireReservations(),stores[1].recordPayment(expiryKey,'777')]);
+    const final=await stores[0].get(expiryKey),balance=(await stores[0].availability()).other;
+    if(final.status==='paid'){assert.equal(balance,0);assert.equal(await stores[0].reversal('777'),undefined);}
+    else{assert.equal(final.status,'expired');assert.equal(balance,1);assert.ok(await stores[0].reversal('777'));}
+    await stores[0].expireReservations();assert.equal((await stores[0].availability()).other,balance);
+    results.push('Reservation expiry racing payment either preserves paid stock or queues reversal, without double restock');
     return {passed:results.length,failed:0,checks:results};
   } finally {
     // Only this random validation namespace is touched, never sandbox inventory or production.

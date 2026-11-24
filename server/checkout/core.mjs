@@ -57,9 +57,19 @@ export function validSignature(body, header, key) {
   const expected = createHmac('sha512', key).update(body).digest();
   return timingSafeEqual(expected, Buffer.from(header.slice(7), 'hex'));
 }
+export function amountCents(amount){
+  const match=/^(\d{1,10})(?:\.(\d{1,2}))?$/.exec(String(amount));
+  if(!match)return null;
+  const cents=Number(match[1])*100+Number((match[2]||'').padEnd(2,'0'));
+  return Number.isSafeInteger(cents)?cents:null;
+}
 export function verifyTransaction(order, transaction) {
   return transaction?.order?.invoiceNumber === order.id
+    && (order.quote.currency||'USD')==='USD'
+    && (transaction.currencyCode??transaction.verifiedCurrency)==='USD'
+    && (transaction.responseCode===undefined||String(transaction.responseCode)==='1')
     && transaction.transactionType === 'authCaptureTransaction'
     && ['capturedPendingSettlement', 'settledSuccessfully'].includes(transaction.transactionStatus)
-    && Math.round(Number(transaction.authAmount) * 100) === order.quote.totalCents;
+    && amountCents(transaction.authAmount) === order.quote.totalCents
+    && (transaction.transactionStatus!=='settledSuccessfully'||transaction.settleAmount===undefined||amountCents(transaction.settleAmount)===order.quote.totalCents);
 }

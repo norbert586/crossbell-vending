@@ -1,5 +1,6 @@
 import buildContext from '../../server/checkout/build-context.mjs';
 import { gateway } from '../../server/checkout/gateway.mjs';
+import {getDatabase} from '@netlify/database';
 // Preview only, read-only provider calls. Never return credentials or raw responses.
 export default async request => {
   const env = { ...process.env, ...buildContext };
@@ -32,13 +33,19 @@ export default async request => {
           for(const notification of (data.notifications||[]).filter(n=>n.webhookId===hook.webhookId).slice(0,3)){
             const detail=await fetch(`https://apitest.authorize.net/rest/v1/notifications/${encodeURIComponent(notification.notificationId)}`,{headers:{Authorization:`Basic ${Buffer.from(`${env.AUTHNET_API_LOGIN_ID}:${env.AUTHNET_TRANSACTION_KEY}`).toString('base64')}`},signal:AbortSignal.timeout(12000)});
             const log=detail.ok?await detail.json():{};
-            const entry=Array.isArray(log)?log[0]:log;
-            checks.recentDeliveries.push({status:notification.deliveryStatus,event:notification.eventType,httpStatuses:(entry?.retryLog?.logs||[]).map(l=>l.statusCode)});
+            const codes=[];
+            const inspect=value=>{if(value&&typeof value==='object')for(const [k,v] of Object.entries(value)){if(k.toLowerCase()==='statuscode'&&/^\d{3}$/.test(String(v)))codes.push(Number(v));else if(typeof v==='object')inspect(v);}};
+            inspect(log);
+            checks.recentDeliveries.push({status:notification.deliveryStatus,event:notification.eventType,detailHttpStatus:detail.status,httpStatuses:codes});
           }
         }
       }
     }
   } catch { /* Only fixed readiness booleans leave this endpoint. */ }
+  try {
+    const {rows}=await getDatabase().pool.query("SELECT count(*)::int AS verified FROM checkout_orders WHERE scope=$1 AND data ? 'verifiedWebhookAt'",[`sandbox-${env.REVIEW_ID||env.DEPLOY_ID}`]);
+    checks.signedDeliveriesVerified=rows[0]?.verified||0;
+  }catch{checks.signedDeliveriesVerified=0;}
   return Response.json(checks, { headers: { 'Cache-Control': 'no-store' } });
 };
 export const config = { path: '/api/payment-readiness' };

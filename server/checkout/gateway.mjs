@@ -1,4 +1,12 @@
-import { CheckoutError, fail } from './core.mjs';
+import { CheckoutError, digest, fail } from './core.mjs';
+const merchantChecks=new Map();
+export async function verifyMerchant(env,fetcher=fetch){
+  const key=digest(`${env.CONTEXT}:${env.AUTHNET_API_LOGIN_ID}:${env.AUTHNET_TRANSACTION_KEY}`);
+  if((merchantChecks.get(key)||0)>Date.now())return 'USD';
+  const result=await gateway('getMerchantDetailsRequest',{},env,fetcher);
+  if(result.isTestMode!==false||!Array.isArray(result.currencies)||result.currencies.length!==1||result.currencies[0]!=='USD')fail('Payment account must process USD and return stored transactions.',503);
+  merchantChecks.set(key,Date.now()+60000);return 'USD';
+}
 export class GatewayRejection extends CheckoutError {
   constructor(data={}) {
     super('Payment provider could not complete this request.', 502);
@@ -14,6 +22,7 @@ export function paymentEnvironment(context) {
 export async function gateway(name, payload, env, fetcher = fetch) {
   if (!env.AUTHNET_API_LOGIN_ID || !env.AUTHNET_TRANSACTION_KEY) fail('Payment credentials are missing.', 503);
   const production = paymentEnvironment(env.CONTEXT) === 'production';
+  if(name==='getHostedPaymentPageRequest')await verifyMerchant(env,fetcher);
   let response;
   try { response = await fetcher(production ? 'https://api.authorize.net/xml/v1/request.api' : 'https://apitest.authorize.net/xml/v1/request.api', {
     method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: AbortSignal.timeout(12000),
@@ -25,6 +34,7 @@ export async function gateway(name, payload, env, fetcher = fetch) {
   catch { fail('Payment provider response is uncertain. Do not submit another payment.', 503); }
   if (data.messages?.resultCode === 'Error') throw new GatewayRejection(data);
   if (data.messages?.resultCode !== 'Ok') fail('Payment provider response is uncertain. Do not submit another payment.', 503);
+  if(name==='getTransactionDetailsRequest'&&data.transaction)data.transaction.verifiedCurrency=await verifyMerchant(env,fetcher);
   return data;
 }
 export function hostedRequest(order, origin) {

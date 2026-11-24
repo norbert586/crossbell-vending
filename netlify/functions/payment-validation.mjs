@@ -16,7 +16,15 @@ export default async request=>{
  if(request.method!=='POST'||request.headers.get('Origin')!==origin)return new Response(null,{status:403});
  const db=getDatabase(),run=`payment-${env.DEPLOY_ID}`;
  const claimed=await db.pool.query('INSERT INTO checkout_validation_runs(deploy_id) VALUES($1) ON CONFLICT DO NOTHING RETURNING deploy_id',[run]);
- if(!claimed.rowCount){const {rows}=await db.pool.query('SELECT result FROM checkout_validation_runs WHERE deploy_id=$1',[run]);return Response.json(rows[0]?.result??{status:'running-or-interrupted'});}
+ if(!claimed.rowCount){
+  const {rows}=await db.pool.query('SELECT result FROM checkout_validation_runs WHERE deploy_id=$1',[run]);
+  const prior=rows[0]?.result??{status:'running-or-interrupted'};
+  if(prior.orderId){
+   const {rows:orders}=await db.pool.query('SELECT data FROM checkout_orders WHERE scope=$1 AND order_key=$2',[`sandbox-${env.REVIEW_ID||env.DEPLOY_ID}`,`orders/${prior.orderId}`]);
+   if(orders[0]?.data?.verifiedWebhookAt){prior.webhookDeliveryVerified=true;await db.pool.query('UPDATE checkout_validation_runs SET result=$2::jsonb WHERE deploy_id=$1',[run,JSON.stringify(prior)]);}
+  }
+  return Response.json(prior,{headers:{'Cache-Control':'no-store'}});
+ }
  const result={checks:[],status:'running',failedStep:null};let step='authentication';
  const call=(name,payload)=>gateway(name,payload,env);
  try {

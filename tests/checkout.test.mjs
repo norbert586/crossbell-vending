@@ -69,14 +69,14 @@ test('provider failures never produce a paid order or automatically retry',async
 });
 test('verified callbacks mark paid and repeated notifications are idempotent',async()=>{
   const store=memoryStore(); const session=await createOrder(input,randomUUID(),policy,store,async()=>({token:'test'}),'https://preview.example');
-  const transaction={order:{invoiceNumber:session.orderId},authAmount:'25.42',transactionType:'authCaptureTransaction',transactionStatus:'capturedPendingSettlement'};
+  const transaction={transId:'123',verifiedCurrency:'USD',order:{invoiceNumber:session.orderId},authAmount:'25.42',transactionType:'authCaptureTransaction',transactionStatus:'capturedPendingSettlement'};
   await reconcile('123',store,async()=>({transaction})); await reconcile('123',store,async()=>({transaction}));
   const order=await store.get(`orders/${session.orderId}`);assert.equal(order.status,'paid');assert.equal(order.transactionId,'123');assert.equal(order.hostedToken,undefined);
   await assert.rejects(()=>reconcile('456',store,async()=>({transaction})));
 });
 test('amount mismatch or authorization-only never confirms payment',()=>{
   const order={id:'order',quote:{totalCents:100}};
-  const transaction={order:{invoiceNumber:'order'},authAmount:'1.00',transactionType:'authCaptureTransaction',transactionStatus:'capturedPendingSettlement'};
+  const transaction={transId:'123',verifiedCurrency:'USD',order:{invoiceNumber:'order'},authAmount:'1.00',transactionType:'authCaptureTransaction',transactionStatus:'capturedPendingSettlement'};
   assert.ok(verifyTransaction(order,transaction));
   assert.ok(!verifyTransaction(order,{...transaction,authAmount:'0.01'}));
   assert.ok(!verifyTransaction(order,{...transaction,transactionStatus:'authorizedPendingCapture'}));
@@ -131,7 +131,7 @@ test('declined and voided transactions never become paid orders', async () => {
   for (const transactionStatus of ['declined', 'voided', 'refundSettledSuccessfully', 'communicationError']) {
     const store=memoryStore();
     const session=await createOrder(input,randomUUID(),policy,store,async()=>({token:'test'}),'https://preview.example');
-    const transaction={order:{invoiceNumber:session.orderId},authAmount:'25.42',transactionType:'authCaptureTransaction',transactionStatus};
+    const transaction={transId:'123',verifiedCurrency:'USD',order:{invoiceNumber:session.orderId},authAmount:'25.42',transactionType:'authCaptureTransaction',transactionStatus};
     await assert.rejects(()=>reconcile('123',store,async()=>({transaction})));
     assert.equal((await store.get(`orders/${session.orderId}`)).status,'awaiting_payment');
   }
