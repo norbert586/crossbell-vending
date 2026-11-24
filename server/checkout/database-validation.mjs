@@ -47,13 +47,31 @@ export async function validateDatabase(db) {
     assert.equal(refunds.filter(r=>r.status==='fulfilled').length,1);
     assert.equal((await stores[0].availability()).other,1);
     results.push('Duplicate verified void reconciliation restores stock exactly once');
+    const releasedId='b'.repeat(20),releasedKey=`orders/${releasedId}`;
+    const pending={id:releasedId,...order([{sku:'other',quantity:1}])};
+    const inserted=await stores[0].setJSON(releasedKey,pending,{onlyIfNew:true});
+    const releases=await Promise.all(stores.map(s=>s.releaseReservation(releasedKey,inserted.etag)));
+    assert.equal(releases.filter(r=>r.modified).length,1);
+    assert.equal((await stores[0].availability()).other,1);
+    results.push('Concurrent definitive session rejection releases reserved stock exactly once');
+    const late=await stores[0].recordPayment(releasedKey,'987');
+    assert.equal(late.reverse,true);
+    assert.notEqual((await stores[0].get(releasedKey)).status,'paid');
+    const claims=await Promise.all(stores.map(s=>s.claimReversal('987')));
+    assert.equal(claims.filter(Boolean).length,1);
+    results.push('Late payment after stock release queues one reversal; concurrent workers claim it once');
+    const paidKey=`orders/${'c'.repeat(20)}`;
+    await stores[0].setJSON(paidKey,order([{sku:'other',quantity:1}]),{onlyIfNew:true});
+    const captures=await Promise.all(stores.slice(0,2).map((s,i)=>s.recordPayment(paidKey,String(888+i))));
+    assert.equal(captures.filter(r=>r.paid).length,1);assert.equal(captures.filter(r=>r.reverse).length,1);
+    results.push('Concurrent distinct captures accept one payment and queue the extra payment for reversal');
     return {passed:results.length,failed:0,checks:results};
   } finally {
     // Only this random validation namespace is touched, never sandbox inventory or production.
     const client=await db.pool.connect();
     try {
       await client.query('BEGIN');
-      for(const table of ['checkout_admin_events','checkout_admin_audit','checkout_operations','checkout_email_outbox','checkout_orders','checkout_stock','checkout_scopes']) await client.query(`DELETE FROM ${table} WHERE scope=$1`,[scope]);
+      for(const table of ['checkout_payment_reversals','checkout_admin_events','checkout_admin_audit','checkout_operations','checkout_email_outbox','checkout_orders','checkout_stock','checkout_scopes']) await client.query(`DELETE FROM ${table} WHERE scope=$1`,[scope]);
       await client.query('COMMIT');
     } catch(error) {await client.query('ROLLBACK').catch(()=>{});throw error;}
     finally {client.release();}

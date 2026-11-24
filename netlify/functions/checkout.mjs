@@ -11,9 +11,14 @@ export default async request => {
     const policy = policyFromEnv(env);
     const origin = policy.mode === 'production' ? 'https://crossbellvending.com' : new URL(env.DEPLOY_PRIME_URL).origin;
     const store = databaseStore(getDatabase(), policy, policy.mode === 'production' ? 'production' : `sandbox-${env.REVIEW_ID || env.DEPLOY_ID}`);
+    const sandboxReady=async()=>{
+      if(env.CONTEXT!=='deploy-preview'||policy.mode!=='sandbox')return false;
+      const {rows}=await getDatabase().pool.query('SELECT result FROM checkout_validation_runs WHERE deploy_id=$1',[`payment-${env.DEPLOY_ID}`]);
+      return rows[0]?.result?.status==='passed'&&rows[0]?.result?.webhookDeliveryVerified===true;
+    };
     const url = new URL(request.url);
     if (request.method === 'GET' && url.searchParams.get('action') === 'config') {
-      return json({ mode: policy.mode || 'sandbox', policy, available: await store.availability() });
+      return json({ mode: policy.mode || 'sandbox', policy, available: await store.availability(),paymentsEnabled:await sandboxReady() });
     }
     if (request.method === 'GET' && url.searchParams.get('action') === 'status') {
       const id = url.searchParams.get('id');
@@ -30,8 +35,8 @@ export default async request => {
     let input; try { input = JSON.parse(raw); } catch { fail('Invalid JSON.'); }
     if (input.action === 'quote') return json(quote(input, policy));
     if (input.action !== 'create') fail('Unknown checkout action.');
-    // Staging gate: complete real-database validation, reversal handling and email delivery before enabling payments.
-    fail('Checkout payments are paused while the stock database and order emails are connected.', 503);
+    // Production remains hard-blocked. Preview opens only after this deploy passes sandbox validation.
+    if(!await sandboxReady())fail('Checkout payments are paused pending verification.',503);
     const session = await createOrder(input, request.headers.get('Idempotency-Key'), policy, store, (name, payload) => gateway(name, payload, env), origin);
     return json(session);
   } catch (error) {

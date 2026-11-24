@@ -31,12 +31,60 @@ export function databaseStore(db, catalogue, scope) {
     await ready;
   }
   return {
+    async recordPayment(orderKey, transactionId) {
+      await initialize();
+      return transaction(async client => {
+        const {rows}=await client.query('SELECT data FROM checkout_orders WHERE scope=$1 AND order_key=$2 FOR UPDATE',[scope,orderKey]);
+        const order=rows[0]?.data;
+        if(!order) return {ignored:true};
+        if(order.transactionId===transactionId) return {duplicate:true};
+        if(order.stockReleased || order.transactionId) {
+          const reason=order.stockReleased?'reservation_released':'additional_payment';
+          await client.query('INSERT INTO checkout_payment_reversals(scope,transaction_id,order_key,reason) VALUES($1,$2,$3,$4) ON CONFLICT DO NOTHING',[scope,transactionId,orderKey,reason]);
+          return {reverse:true};
+        }
+        const {hostedToken,...safe}=order;
+        await client.query('UPDATE checkout_orders SET data=$3::jsonb,version=version+1,updated_at=now() WHERE scope=$1 AND order_key=$2',[scope,orderKey,JSON.stringify({...safe,status:'paid',transactionId,paidAt:Date.now()})]);
+        for(const [audience,recipient] of [['customer',order.customer.email],['internal',orderEmail.internalTo]]) {
+          await client.query('INSERT INTO checkout_email_outbox(scope,order_key,audience,sender,recipient) VALUES($1,$2,$3,$4,$5) ON CONFLICT DO NOTHING',[scope,orderKey,audience,orderEmail.from,recipient]);
+        }
+        return {paid:true};
+      });
+    },
+    async reversal(transactionId) {
+      const {rows}=await db.pool.query('SELECT status,reversal_id FROM checkout_payment_reversals WHERE scope=$1 AND transaction_id=$2',[scope,transactionId]);
+      return rows[0];
+    },
+    async claimReversal(transactionId) {
+      const result=await db.pool.query("UPDATE checkout_payment_reversals SET status='submitting',updated_at=now() WHERE scope=$1 AND transaction_id=$2 AND status='pending' RETURNING transaction_id",[scope,transactionId]);
+      return result.rowCount===1;
+    },
+    async finishReversal(transactionId,status,reversalId=null) {
+      await db.pool.query('UPDATE checkout_payment_reversals SET status=$3,reversal_id=COALESCE($4,reversal_id),updated_at=now() WHERE scope=$1 AND transaction_id=$2',[scope,transactionId,status,reversalId]);
+    },
     async availability() {
       await initialize();
       const {rows}=await db.pool.query('SELECT sku,remaining FROM checkout_stock WHERE scope=$1',[scope]);
       return Object.fromEntries(rows.map(row=>[row.sku,row.remaining]));
     },
+    async markVerifiedWebhook(orderKey) {
+      await db.pool.query("UPDATE checkout_orders SET data=jsonb_set(data,'{verifiedWebhookAt}',to_jsonb(now()::text)),version=version+1 WHERE scope=$1 AND order_key=$2",[scope,orderKey]);
+    },
     async get(orderKey) { return (await this.getWithMetadata(orderKey))?.data ?? null; },
+    async releaseReservation(orderKey, version) {
+      await initialize();
+      return transaction(async client => {
+        const { rows } = await client.query('SELECT data,version::text AS etag FROM checkout_orders WHERE scope=$1 AND order_key=$2 FOR UPDATE', [scope,orderKey]);
+        const entry=rows[0];
+        if (!entry || entry.etag!==version || entry.data.status!=='creating' || entry.data.stockReleased) return {modified:false};
+        for(const item of [...entry.data.quote.items].sort((a,b)=>a.sku.localeCompare(b.sku))) {
+          await client.query('UPDATE checkout_stock SET remaining=remaining+$3 WHERE scope=$1 AND sku=$2',[scope,item.sku,item.quantity]);
+        }
+        const {hostedToken,...safe}=entry.data;
+        await client.query('UPDATE checkout_orders SET data=$3::jsonb,version=version+1,updated_at=now() WHERE scope=$1 AND order_key=$2',[scope,orderKey,JSON.stringify({...safe,status:'session_rejected',stockReleased:true})]);
+        return {modified:true};
+      });
+    },
     async getWithMetadata(orderKey) {
       await initialize();
       const {rows}=await db.pool.query('SELECT data,version::text AS etag FROM checkout_orders WHERE scope=$1 AND order_key=$2',[scope,orderKey]);

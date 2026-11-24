@@ -44,7 +44,7 @@ const form=document.querySelector<HTMLFormElement>('#checkout-form')!;
 const pay=document.querySelector<HTMLButtonElement>('#pay')!;
 const status=(message:string)=>{document.querySelector('#status')!.textContent=message;};
 const money=(cents:number)=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(cents/100);
-let mode='',policy:any=null,requestKey=crypto.randomUUID(),creating=false,quoteVersion=0,quoted=false;
+let mode='',policy:any=null,requestKey=crypto.randomUUID(),creating=false,quoteVersion=0,quoted=false,paymentsEnabled=false;
 const selected=new Map<string,number>();
 function payload(){const data=new FormData(form);return {items:[...selected].filter(([,quantity])=>quantity>0).map(([sku,quantity])=>({sku,quantity})),fulfillment:'pickup',pickupLocation:data.get('pickupLocation'),name:data.get('name'),email:data.get('email')};}
 async function api(body:any){const response=await fetch('/api/checkout',{method:'POST',headers:{'Content-Type':'application/json','Idempotency-Key':requestKey},body:JSON.stringify(body)});const result=await response.json();if(!response.ok)throw new Error(result.error||'Checkout is unavailable.');return result;}
@@ -53,13 +53,13 @@ async function updateQuote(){
  const items=payload().items;document.querySelector('#item-count')!.textContent=items.reduce((n,i)=>n+i.quantity,0)+' ITEMS';
  if(!items.length){for(const id of ['subtotal','tax','total'])document.querySelector('#'+id)!.textContent=money(0);return;}
  try{const q=await api({...payload(),action:'quote'});if(version!==quoteVersion)return;
- document.querySelector('#subtotal')!.textContent=money(q.subtotalCents);document.querySelector('#tax')!.textContent=money(q.taxCents);document.querySelector('#total')!.textContent=money(q.totalCents);quoted=true;pay.disabled=creating;status('');
+ document.querySelector('#subtotal')!.textContent=money(q.subtotalCents);document.querySelector('#tax')!.textContent=money(q.taxCents);document.querySelector('#total')!.textContent=money(q.totalCents);quoted=true;pay.disabled=creating||!paymentsEnabled;status(paymentsEnabled?'':'Payments are paused pending verification.');
  }catch(error){if(version===quoteVersion)status((error as Error).message);}
 }
 form.addEventListener('input',()=>{if(!creating)requestKey=crypto.randomUUID();});
 form.addEventListener('change',()=>{if(!creating)updateQuote();});
 form.addEventListener('submit',async event=>{
- event.preventDefault();if(creating||!quoted)return;creating=true;pay.disabled=true;
+ event.preventDefault();if(creating||!quoted||!paymentsEnabled)return;creating=true;pay.disabled=true;
  try{status('Preparing your secure payment…');const session=await api({...payload(),action:'create'});
  const expected=mode==='production'?'https://accept.authorize.net/payment/payment':'https://test.authorize.net/payment/payment';
  if(session.action!==expected)throw new Error('Unexpected payment destination.');
@@ -83,7 +83,7 @@ async function checkReturnedOrder(){
 }
 (async()=>{try{
  const response=await fetch('/api/checkout?action=config');if(!response.ok)throw new Error('Checkout is not available yet. Please contact Crossbell.');
- const config=await response.json();mode=config.mode;policy=config.policy;if(!['production','sandbox'].includes(mode))throw new Error('Checkout is not available.');
+ const config=await response.json();mode=config.mode;policy=config.policy;paymentsEnabled=config.paymentsEnabled===true;if(!['production','sandbox'].includes(mode))throw new Error('Checkout is not available.');
  if(mode==='sandbox'){document.querySelector('.preview-bar')!.textContent='SANDBOX — test payments only';pay.textContent='Continue to test payment →';}
  const products=document.querySelector('#cart-products')!;products.replaceChildren();
  const requested=new URLSearchParams(location.search).get('sku')||'celebration-pack';

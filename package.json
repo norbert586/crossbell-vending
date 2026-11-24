@@ -11,7 +11,7 @@
     "check": "astro check",
     "preview": "astro preview",
     "astro": "astro",
-    "test:checkout": "node --test tests/checkout.test.mjs tests/admin.test.mjs"
+    "test:checkout": "node --test tests/*.test.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

@@ -1,6 +1,7 @@
 import { randomBytes } from 'node:crypto';
 import { customer, digest, fail, quote, verifyTransaction } from './core.mjs';
-import { hostedRequest } from './gateway.mjs';
+import { GatewayRejection, hostedRequest } from './gateway.mjs';
+import { reverseUnfulfillable } from './reversals.mjs';
 
 // Storage adapter uses strong reads and atomic conditional writes.
 export async function createOrder(input, key, policy, store, callGateway, origin) {
@@ -26,14 +27,19 @@ export async function createOrder(input, key, policy, store, callGateway, origin
     if (!saved.modified) fail('Payment session could not be saved safely.', 503);
     return publicSession(order);
   } catch (error) {
-    // No automatic new session on ambiguous provider failures.
-    await store.setJSON(`orders/${id}`, { ...order, status: 'session_failed' }, { onlyIfMatch: created.etag });
+    // A definite token-creation rejection has never exposed a usable payment form.
+    // Network timeouts and malformed responses are ambiguous: retain the reservation.
+    if (error instanceof GatewayRejection && store.releaseReservation) {
+      await store.releaseReservation(`orders/${id}`, created.etag);
+    } else {
+      await store.setJSON(`orders/${id}`, { ...order, status: 'payment_review', reviewReason: 'session_response_uncertain' }, { onlyIfMatch: created.etag });
+    }
     throw error;
   }
 }
 const publicSession = order => ({ orderId: order.id, accessToken: order.accessToken, token: order.hostedToken, action: order.mode === 'production' ? 'https://accept.authorize.net/payment/payment' : 'https://test.authorize.net/payment/payment' });
 
-export async function reconcile(transactionId, store, callGateway) {
+export async function reconcile(transactionId, store, callGateway, verifiedWebhook=false) {
   if (!/^\d{1,30}$/.test(String(transactionId))) fail('Invalid transaction.');
   const result = await callGateway('getTransactionDetailsRequest', { transId: String(transactionId) });
   const transaction = result.transaction;
@@ -43,7 +49,18 @@ export async function reconcile(transactionId, store, callGateway) {
     const entry = await store.getWithMetadata(`orders/${id}`, { type: 'json' });
     if (!entry) return;
     const order = entry.data;
+    const pendingReversal=store.reversal && await store.reversal(String(transactionId));
+    if(pendingReversal) {
+      await reverseUnfulfillable(order,String(transactionId),store,callGateway);return;
+    }
     if (!verifyTransaction(order, transaction)) fail('Payment does not match the order.', 409);
+    if(store.recordPayment) {
+      if(String(transaction.transId)!==String(transactionId))fail('Payment transaction ID mismatch.',409);
+      const result=await store.recordPayment(`orders/${id}`,String(transactionId));
+      if(result.reverse)await reverseUnfulfillable(order,String(transactionId),store,callGateway);
+      if(verifiedWebhook && store.markVerifiedWebhook)await store.markVerifiedWebhook(`orders/${id}`);
+      return;
+    }
     if (order.status === 'paid') {
       if (order.transactionId !== String(transactionId)) fail('Additional payment requires manual review.', 409);
       return;
