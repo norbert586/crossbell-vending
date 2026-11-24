@@ -1,0 +1,125 @@
+{
+  "status": "configured",
+  "inventoryConfirmedOn": "2026-11-22",
+  "products": {
+    "celebration-pack": {
+      "name": "30th Celebration Booster Pack",
+      "initialStock": 50,
+      "priceCents": 1099,
+      "maxQuantity": 20
+    },
+    "celebration-etb": {
+      "name": "30th Celebration Elite Trainer Box",
+      "initialStock": 4,
+      "priceCents": 10999,
+      "maxQuantity": 4
+    },
+    "riftbound-pack": {
+      "name": "Riftbound Booster Pack",
+      "initialStock": 10,
+      "priceCents": 899,
+      "maxQuantity": 10
+    },
+    "ascended-heroes-pack": {
+      "name": "Ascended Heroes Booster Pack",
+      "initialStock": 9,
+      "priceCents": 1199,
+      "maxQuantity": 9,
+      "saleEnabled": false
+    },
+    "prismatic-evolutions-pack": {
+      "name": "Prismatic Evolutions Booster Pack",
+      "initialStock": 10,
+      "priceCents": 1399,
+      "maxQuantity": 10
+    },
+    "booster-bundle": {
+      "name": "30th Celebration Booster Bundle",
+      "priceCents": 5500,
+      "initialStock": 5,
+      "maxQuantity": 5,
+      "saleEnabled": true
+    },
+    "delta-reign": {
+      "name": "Delta Reign Elite Trainer Box",
+      "priceCents": 7099,
+      "initialStock": 3,
+      "maxQuantity": 3,
+      "saleEnabled": true
+    }
+  },
+  "shippingCents": 0,
+  "taxBps": 600,
+  "shippingTaxable": false,
+  "shippingEnabled": false,
+  "pickupLocations": {
+    "christopher": {
+      "name": "Washington pickup",
+      "address": "8891 Christopher St, Washington, MI 48094",
+      "hours": "Outside business hours"
+    },
+    "uwm": {
+      "name": "United Wholesale Mortgage campus parking lot",
+      "address": "United Wholesale Mortgage campus parking lot",
+      "hours": "During business hours"
+    }
+  },
+  "pickupInstructions": "Contact Crossbell at 586-907-1861 to coordinate a pickup time and meeting point. Bring your order number.",
+  "shippingPlan": {
+    "mode": "live-carrier-rates",
+    "origin": {
+      "street1": "13023 Azure Dr",
+      "city": "Shelby Township",
+      "state": "MI",
+      "zip": "48315",
+      "country": "US"
+    },
+    "coverage": "contiguous-48-states",
+    "addressTypes": [
+      "residential-street",
+      "business-street"
+    ],
+    "serviceClass": "ground",
+    "sortBy": "total-price",
+    "highlightLowest": true,
+    "pickupCents": 0,
+    "status": "parcel estimates prepared; rate service not connected",
+    "handlingBusinessDays": 3,
+    "handlingDescription": "Ships within 3 business days. Carrier transit time is additional."
+  },
+  "returnsPolicy": {
+    "acceptReturns": false,
+    "description": "No returns. Report damaged or incorrect orders within 7 days of delivery with your order number and photos. Claims and remedies are reviewed individually. No item return is required.",
+    "supportEmail": "contact@crossbellvending.com",
+    "damageReportDays": 7,
+    "damageReportFrom": "delivery",
+    "damageReportRequirements": [
+      "order number",
+      "photos"
+    ],
+    "manualReviewRequired": true,
+    "returnRequired": false,
+    "remedy": "case-by-case-manual-review",
+    "reviewBusinessDays": 3,
+    "refundInitiationBusinessDays": 3
+  },
+  "cancellationPolicy": {
+    "beforeShipment": true,
+    "beforePickup": true,
+    "afterShipment": false,
+    "description": "Email to cancel before carrier handoff or pickup. Eligible cancellations receive a full refund including tax and shipping, with no cancellation fee.",
+    "requestEmail": "contact@crossbellvending.com",
+    "processing": "manual",
+    "shippedDefinition": "handed-to-carrier",
+    "refund": "full-including-tax-and-shipping",
+    "cancellationFeeCents": 0
+  },
+  "missingPackagePolicy": {
+    "requestEmail": "contact@crossbellvending.com",
+    "process": "Investigate with carrier; remedy decided by manual review."
+  },
+  "pickupHoldPolicy": {
+    "holdDays": 14,
+    "afterHold": "Contact customer, then manually cancel and refund if uncollected."
+  }
+}

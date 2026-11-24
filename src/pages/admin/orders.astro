@@ -1,0 +1,56 @@
+---
+---
+<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width"/><meta name="robots" content="noindex,nofollow"/><title>Orders · Crossbell Vending</title></head>
+<body><main><header><div><p class="eyebrow">CROSSBELL VENDING · STAFF ONLY</p><h1>Order desk</h1><p id="account">Sign in to view orders and dedicated online stock.</p></div><a id="login" class="button" href="/api/admin-auth/start">Sign in with Google</a><button id="logout" hidden>Sign out</button></header>
+<p id="message" role="status" aria-live="polite"></p>
+<div id="workspace" hidden>
+<div class="notice"><strong id="scope"></strong><p id="connections"></p><p>Refunds and voids are processed manually in Authorize.net. Labels are purchased in UPS or FedEx. Creating a label does not mark an order shipped.</p></div>
+<nav><button id="refresh">Refresh</button><a class="button" href="/api/admin/orders?export=csv">Export recent orders</a><button id="reminders">Check pickup reminders</button><button id="sync">Sync Inventory 2.0</button></nav>
+<section><div class="section-heading"><h2>Orders</h2><label>Filter <select id="filter"><option value="all">All recent orders</option><option value="new">To prepare</option><option value="ready">Ready for pickup</option><option value="shipped">Shipped</option><option value="collected">Collected</option><option value="cancelled">Cancelled</option></select></label></div><p>Latest 200 orders. Confirm carrier handoff before marking shipped. Pickup completion is recorded by staff; customer confirmation is not required.</p><div id="orders"></div></section>
+<section><h2>Dedicated online stock</h2><p>Before moving stock to a vending machine, subtract it here. Reserved stock is unavailable for transfer. These adjustments never edit machine inventory.</p><div class="scroll"><table><thead><tr><th>Product</th><th>Available</th><th>Adjustment</th></tr></thead><tbody id="stock"></tbody></table></div></section>
+<section><h2>Notification queue</h2><p>Queued is not delivered. Sender connection must be completed before launch.</p><div id="events"></div></section>
+<section><h2>Recent staff actions</h2><div id="audit"></div></section>
+</div></main>
+<script>
+let data:any=null;
+const el=(id:string)=>document.getElementById(id)!;
+const node=(tag:string,text='')=>{const n=document.createElement(tag);n.textContent=text;return n;};
+const message=(s:string)=>{el('message').textContent=s;};
+const money=(c:number)=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(c/100);
+async function mutate(input:any){
+ const r=await fetch('/api/admin/orders',{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-Token':data.csrf},body:JSON.stringify(input)});const j=await r.json();if(!r.ok)throw new Error(j.error);await load();message('Saved.');
+}
+function button(label:string,action:()=>Promise<void>){const b=node('button',label) as HTMLButtonElement;b.onclick=async()=>{b.disabled=true;try{await action();}catch(e){message((e as Error).message);}finally{b.disabled=false;}};return b;}
+function renderOrders(){const host=el('orders');host.replaceChildren();const filter=(el('filter') as HTMLSelectElement).value;
+ for(const o of data.orders.filter((o:any)=>filter==='all'||o.fulfillmentStatus===filter)){
+ const card=node('article');card.append(node('h3',o.id+' · '+money(o.quote.totalCents)),node('p',o.customer.name+' · '+o.customer.email),node('p','Payment: '+o.paymentStatus+' · Fulfillment: '+o.fulfillmentStatus),node('p',o.quote.items.map((i:any)=>i.quantity+' × '+(i.name||i.sku)).join(', ')));
+ card.append(node('p',o.quote.fulfillment==='pickup'?'Pickup: '+(o.quote.pickupDetails?.name||'Coordinate with customer'):'Ship to: '+JSON.stringify(o.customer.address||{})));
+ if(o.transactionId)card.append(node('p','Payment transaction: '+o.transactionId));
+ if(o.tracking)card.append(node('p',o.carrier+' tracking: '+o.tracking));
+ const act=(action:string,extra={})=>mutate({id:o.id,version:o.version,action,...extra});
+ if(o.paymentStatus==='paid'&&!['cancelled','collected','shipped'].includes(o.fulfillmentStatus)){
+  if(o.quote.fulfillment==='pickup'){
+   if(o.fulfillmentStatus==='new')card.append(button('Mark ready for pickup',()=>act('ready')));
+   if(o.fulfillmentStatus==='ready')card.append(button('Mark collected',async()=>{if(confirm('Record this order as collected?'))await act('collected');}));
+  }else{
+   const carrier=document.createElement('select');carrier.setAttribute('aria-label','Carrier');for(const name of ['UPS','FedEx']){const option=document.createElement('option');option.value=name;option.textContent=name;carrier.append(option);}carrier.value=o.carrier||'UPS';
+   const tracking=document.createElement('input');tracking.placeholder='Tracking number';tracking.setAttribute('aria-label','Tracking number');tracking.value=o.tracking||'';card.append(carrier,tracking,button('Save tracking',()=>act('tracking',{carrier:carrier.value,tracking:tracking.value})),button('Confirm carrier handoff',async()=>{if(confirm('Has this parcel been handed to the carrier?'))await act('shipped');}));
+  }
+ }
+ if(o.paymentStatus==='paid'&&!o.reversalId)card.append(button('Verify manual void / full refund',async()=>{const id=prompt('After processing in Authorize.net, enter the voided original transaction ID or linked full-refund transaction ID. This button does not issue a refund.');if(id)await act('reconcile_reversal',{transactionId:id.trim()});}));
+ host.append(card);
+ }if(!host.childElementCount)host.append(node('p','No matching orders.'));
+}
+function render(){el('workspace').hidden=false;el('login').hidden=true;el('logout').hidden=false;el('account').textContent=data.email;el('scope').textContent=data.scope==='production'?'PRODUCTION ORDERS':'SANDBOX ORDERS — no live order actions';el('connections').textContent=data.emailDelivery;(el('sync') as HTMLButtonElement).disabled=!data.inventorySync;renderOrders();
+ const stock=el('stock');stock.replaceChildren();for(const [sku,count] of Object.entries(data.available)){
+ const tr=node('tr');tr.append(node('td',(data.products[sku]?.name||sku)+(data.products[sku]?.saleEnabled===false?' (sales paused)':'')),node('td',String(count)));const td=node('td');td.append(button('Adjust allocation',async()=>{const amount=prompt('Units to add or remove (use a negative number for transfer to a machine):');if(amount===null)return;const reason=prompt('Reason for this change:');if(!reason)return;await mutate({action:'stock',sku,delta:Number(amount),expected:count,reason});}));tr.append(td);stock.append(tr);}
+ el('events').replaceChildren(...data.events.map((e:any)=>node('p',`${e.kind} · ${e.audience} · ${e.status}: ${e.count}`)));if(!data.events.length)el('events').textContent='No queued events.';
+ el('audit').replaceChildren(...data.audit.map((a:any)=>node('p',`${new Date(a.created_at).toLocaleString()} · ${a.actor} · ${a.action} · ${a.subject}`)));
+}
+async function load(){const r=await fetch('/api/admin/orders');const j=await r.json();if(!r.ok){if(r.status===401){el('workspace').hidden=true;el('login').hidden=false;el('logout').hidden=true;}throw new Error(j.error);}data=j;render();}
+el('filter').addEventListener('change',renderOrders);el('refresh').onclick=()=>load().catch(e=>message(e.message));el('reminders').onclick=()=>mutate({action:'reminders'}).catch(e=>message(e.message));el('sync').onclick=()=>mutate({action:'sync'}).catch(e=>message(e.message));el('logout').onclick=async()=>{await fetch('/api/admin-auth/logout',{method:'POST',headers:{'X-CSRF-Token':data.csrf}});location.reload();};
+load().catch(e=>message(e.message));
+</script>
+<style>
+:global(body){margin:0;background:#10111c;color:#efedf5;font-family:system-ui,sans-serif}main{max-width:1160px;margin:auto;padding:40px 24px}header,.section-heading,nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}.eyebrow{color:#d6b06a;font-size:12px;letter-spacing:.15em}h1{font-size:42px;margin:12px 0}h2{font-size:24px}p{line-height:1.6;color:#cbc9d5}section,.notice{margin-top:28px;border:1px solid #414151;border-radius:12px;padding:22px}.notice{background:#1e1b2c}nav{justify-content:flex-start;margin-top:22px}:global(button),.button{font:inherit;background:#d7b574;border:0;color:#17131c;padding:10px 14px;border-radius:6px;cursor:pointer;text-decoration:none;display:inline-block}:global(button:disabled){opacity:.45;cursor:not-allowed}:global(input),:global(select){font:inherit;padding:10px;border:1px solid #666;background:#242432;color:white;border-radius:5px}:global(article){border-top:1px solid #454252;padding:18px 0}:global(article button),:global(article input),:global(article select){margin:6px 8px 6px 0}:global(td),th{text-align:left;padding:12px;border-bottom:1px solid #414151}table{border-collapse:collapse;width:100%}.scroll{overflow:auto}#message{color:#f3d091}:global([hidden]){display:none!important}:global(:focus-visible){outline:3px solid #b39ae3;outline-offset:3px}
+</style></body></html>
