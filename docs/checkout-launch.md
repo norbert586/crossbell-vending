@@ -1,89 +1,79 @@
-# Checkout staging and launch gate
+# Pickup-only MVP: release gate and runbook
 
-Production deployment is NOT authorized until the owner says **go**. This branch is a draft, not launch-ready. Payment creation is deliberately blocked while the existing database and email service are identified and integrated.
+Updated November 24, 2026. This document supersedes earlier staging checklists.
 
-## Confirmed requirements
+**Production is NOT authorized until the owner says “go”.** The current implementation hard-blocks production payment creation. Do not merge this branch or publish its deploy as production. The runnable MVP is the sandbox preview in draft PR #17.
 
-- Five approved catalogue products, prices, and initial quantities are in `server/checkout/production-catalogue.json`. These quantities are seed instructions, not verified live database balances.
-- Free pickup: 8891 Christopher St, Washington, MI 48094 outside business hours; United Wholesale Mortgage campus parking lot during business hours.
-- UPS shipping coming soon; shipping checkout disabled. Michigan sales tax: 6%.
-- Approved: Netlify Database for stock/orders; Blobs only for files. The Blobs stock prototype has been removed.
-- Customer confirmations: From/Reply-To contact@crossbellvending.com. Internal alerts: contact@crossbellvending.com. Mailbox provider and transport authorization pending.
-- Reject sold-out items and excessive quantities before payment. If payment succeeds without fulfillable inventory, automatically void an unsettled transaction or refund a settled transaction. Durable retries, transaction verification, and idempotency must be implemented before enabling this.
+- Preview: https://deploy-preview-17--inspiring-kitsune-85ad70.netlify.app/checkout/
+- Draft PR: https://github.com/norbert586/crossbell-vending/pull/17
+- Admin: preview `/admin/orders/` (Google connection is still pending).
 
-## Validation status
+## Approved scope
 
-- Current unit suite: 17 tests (the 2 obsolete Blobs stock tests were removed). Includes signatures, approved and rejected payment reconciliation, duplicate submissions, ambiguous provider timeout, context routing, pricing, and pricing.
-- A preview-only, once-per-deploy `/api/checkout-validation` test runs 12 concurrent last-unit reservations using the actual Netlify Database adapter, checks rollback, duplicates and transactional email-outbox insertion. Its deployed result is still pending; do not report a real-store pass until it runs.
-- Actual sandbox approved/declined/timeout/refund/void journeys, real database last-unit race, email delivery, and requested confirmation/sold-out screenshots remain pending.
-- Context determines the API endpoint; CHECKOUT_MODE is only an activation guard. Unknown contexts fail closed.
-- Intended production webhook: https://crossbellvending.com/api/payment-webhook . Raw request bytes are HMAC-SHA512 verified before reconciliation; provider transaction details are independently fetched and matched against order/invoice, amount, type and status. Actual production webhook registration and delivery must still be checked.
+Six enabled products: 30th Celebration pack $10.99 (50 allocated), 30th ETB $109.99 (4), 30th six-pack bundle $55 (5), Riftbound pack $8.99 (10), Delta Reign ETB $70.99 (3), Prismatic Evolutions pack $13.99 (10). These are original allocations, not a promise of current available stock. Ascended Heroes is disabled while historical records remain intact.
 
-## Go-live checklist
+Free pickup at 8891 Christopher St, Washington, MI 48094 outside business hours, or United Wholesale Mortgage campus parking lot during business hours. Coordinate with 586-907-1861. Michigan tax is calculated on the server at 6%. Shipping and automated email are deferred for this pickup-only sandbox MVP. No flat shipping fees are enabled. Future shipping requires actual carrier rates and calibrated packaging.
 
-- [x] Storage choice approved: Netlify Database.
-- [ ] Verify the deployed preview database and its isolation from production.
-- [ ] Implement transactional stock reservation, unique order/payment identities, reservation lifecycle, reversal workflow and notification outbox.
-- [ ] Confirm email sender/provider and internal recipient; verify both deliveries.
-- [ ] Run the full suite and real-store last-unit race test; document actual outcomes.
-- [ ] Complete sandbox hosted-payment, declined, duplicate, timeout, void and refund journeys.
-- [ ] Capture all requested preview screenshots from real sandbox states.
-- [ ] Verify Netlify production/nonproduction secret scoping without displaying values.
-- [ ] Verify production webhook registration, domain, signature and event subscriptions without charging.
-- [ ] Scan source, generated assets and accessible logs for secret leakage using redacted results.
-- [ ] Record the currently published Netlify deploy ID and permalink before release.
-- [ ] Owner reviews preview and says go.
-- [ ] Deploy only the reviewed commit; conduct one owner-operated live $1 purchase and void. Do not introduce a public arbitrary-price checkout.
+Customer and internal email address: contact@crossbellvending.com. Email jobs are queued transactionally but are not sent; the preview tells customers to save their confirmation. Google admin allowlist: crossbellvending@gmail.com, naratiu@mtu.edu, alexma93ama@gmail.com. No credentials belong in this document.
 
-## Rollback plan
+Cancellation before carrier handoff/pickup: manual review and full eligible refund, no fee. Label creation is not shipment. No returns; damaged/incorrect orders reported within 7 days with order number/photos and reviewed individually; no return shipment required. Review/initiate approved remedies within 3 business days. Pickup hold: 14 days, contact customer, then manual cancellation/refund if uncollected. See order-management.md for operational details.
 
-1. Pause new checkout sessions immediately if payment, inventory or notification safety fails.
-2. Republish the exact pre-release Netlify production deploy recorded above. Its ID is not yet verified; do not substitute a Git commit for a Netlify deploy ID.
-3. Keep the order database, webhook processing and reversal records intact. Republishing code does not reverse charges or restore stock.
-4. Reconcile all in-flight sessions, received payments and stock reservations before reopening. Avoid destructive database rollback.
-5. The last known main Git commit is 4e6c8cf; this is reference information only, not a verified rollback deploy.
+## Payment and stock protections
 
-## Open risks
+Netlify Database (PostgreSQL via `@netlify/database`) stores stock, orders, operations, payment reversal intents and the email outbox. Blobs is for files only. Production scope is `production`; PR #17 uses `sandbox-17`. Validation races use disposable separate namespaces. Scope separation is implemented in database queries; it is not a claim that every Netlify context has a separately provisioned physical database.
 
-Database integration, real concurrency verification, automatic reversals and durable retries, notification delivery, abandoned reservations, production webhook configuration, secret/log audit, and exact rollback deploy remain unresolved. Do not enable payment creation or merge this draft until these are resolved.
+Stock is reserved with conditional row updates inside a database transaction. Multi-item failures roll back the entire reservation. Stable order identities and version checks prevent duplicate decrements. Payment recording locks the order, binds a unique provider transaction ID and atomically inserts notification jobs. This prevents two simultaneous buyers from reserving the last unit. It cannot prevent physical stock being removed outside this system; staff must keep online allocation accurate.
 
-## November 23 owner updates
+Unpaid holds expire after 30 minutes, lazily when checkout receives traffic. Expiry and payment processing lock the same order. A late or second capture queues a durable reversal rather than fulfilling stock twice. Unsettled payments are voided; settled payments use a linked full refund. An uncertain provider response is retained for reconciliation and is never blindly retried. Unknown refund responses without a returned transaction ID still require manual provider review; this is an explicit launch blocker until an operator can reliably handle it.
 
-Contact address confirmed as sender, reply-to and internal alert recipient: contact@crossbellvending.com. Owner will connect email later.
+Webhook: raw-body HMAC-SHA512 checked before processing; provider transaction fetched independently; invoice, transaction identity, USD currency, exact amount, type and successful status validated. Duplicate delivery is idempotent. Non-2xx failures permit provider retry. Production target is `https://crossbellvending.com/api/payment-webhook`; registration on the live merchant account has NOT been verified by the sandbox tests.
 
-30th ETB now $109.99; 30th pack $10.99; booster bundle $55; Riftbound pack $8.99; Delta Reign $70.99; Prismatic Evolutions pack $13.99. New bundle and Delta Reign entries are visible but blocked until exact product and stock are confirmed. Ascended Heroes is retained pending clarification, not silently removed. Existing stock is not reset.
+Endpoint selection is determined solely by Netlify deploy context; unknown contexts fail closed. The mode variable is an activation consistency check, not an endpoint override. Hosted payment keeps card entry at Authorize.net. Preview payment enablement requires the current deploy's sandbox validation and a verified signed webhook. A new deploy therefore requires a fresh validation run.
 
-Ground shipping is requested: $5 for individual bundles; $8.50 for orders larger than one ETB. Single-ETB orders, loose packs, mixed/multiple-bundle orders, per-order versus per-item charges, and destination coverage still need confirmation. Rates are recorded but shipping remains disabled until these rules are resolved.
+## Evidence and limits
 
-Real Netlify Database validation passed 4 checks on prior draft d9e1db6c: last-unit race (12 requests, one reservation), duplicate reservation, atomic multi-product rollback, and exactly two email outbox jobs. This does not validate payment reversals, abandoned reservation release, or actual email delivery.
+Verified on sandbox commit 3ff68674dbc807d6b6ea722d878324e567a3773f before the confirmation-UX follow-up:
 
-## Shipping decision superseding flat rates
+- 35 unit tests passed; Astro check and production build passed.
+- 11 checks against actual Netlify PostgreSQL passed, including 12 concurrent requests for one unit (one winner), multi-item rollback, duplicate order/payment, outbox idempotency, stock transfers, reversal/restock idempotency, and payment-versus-expiry races.
+- Actual sandbox authentication, hosted-session creation/reuse, approved payment, provider duplicate rejection, official decline trigger, verified void and stock restoration passed.
+- Real signed webhook delivery reached the preview and was verified; the readiness flag was refreshed after asynchronous delivery.
+- Refund/timeout logic is unit-tested; a provider-settled refund journey has NOT passed yet. Do not label mocked refund/timeout tests as real gateway evidence.
+- Source/generated browser assets were checked for payment-secret exposure; only a known HMAC test fixture matched the signature-shaped scan. This is not an exhaustive git-history or provider-log audit.
 
-Owner approved contiguous 48-state street-address delivery, live ground-carrier rate options with cheapest highlighted, and free pickup. Origin is 13023 Azure Dr, Shelby Township, MI 48315. The $5/$8.50 proposal is withdrawn. See shipping-research.md and server/checkout/shipping-profiles.json for researched product measurements and explicitly estimated parcel allowances. Rate-provider connection, actual packaging calibration, destination tax rules, and broader address validation remain pending; shipping is not enabled.
+The subsequent change adds a safe status refresh button, a longer verification window, a missing-session warning, and the server-recorded paid amount/tax to the confirmation. The draft PR contains the latest deploy and validation results. A hosted browser payment must be explicitly confirmed before its journey is marked passed.
 
-## Bundle confirmation — 2026-11-23
-User confirmed the 30th Celebration six-pack Booster Bundle: $55 each, five sealed bundles allocated for online sale. Catalogue enabled in staging; production remains gated. One-time migration seeds existing zero-stock bundle rows only where no bundle orders exist; new scopes use initialStock=5. No loose-pack inventory is changed.
+## High-priority launch checklist
 
-## Delta Reign confirmation — 2026-11-23
-User confirmed three Delta Reign Elite Trainer Boxes at $70.99 each for online sale. Enabled in staging only. One-time allocation migration updates existing zero-stock rows only where no Delta Reign orders exist; new scopes use initialStock=3.
+- [x] Implement actual database reservation, concurrency protection, expiry, identity checks and durable reversal intents.
+- [x] Pass real-database concurrency and sandbox approval/decline/duplicate/void checks.
+- [x] Verify real signed sandbox webhook delivery.
+- [x] Preserve no-production/no-real-charge gate.
+- [x] Add payment-status refresh and missing-session guidance.
+- [x] Record exact production rollback target below.
+- [ ] Complete hosted customer checkout and save confirmation evidence on the final preview.
+- [ ] Complete one actual settled sandbox refund, verify linked transaction and ledger result.
+- [ ] Connect and test approved-staff order access; establish manual reconciliation for uncertain refunds and daily pickup/order review. Email remains deferred, so operator visibility is essential before accepting real orders.
+- [ ] Verify production secret context/scope without showing values; owner replaces previously exposed credentials through a secure channel before live use. No credential changes in this run.
+- [ ] Verify live merchant USD/account mode and production webhook registration/signature configuration without charging. Review accessible production logs with redacted reporting.
+- [ ] Reconfirm physical online allocations; back up stock/order data and record pending payment/reversal counts.
+- [ ] Owner reviews final preview and says “go”. Then remove the explicit production block in a reviewed change, deploy that exact commit, and conduct an owner-operated $1 live purchase and void. A public arbitrary-price endpoint is prohibited.
 
-## Ascended Heroes paused — 2026-11-23
-Removed from the staged catalogue and checkout selector at user request. Server quotes reject the disabled SKU, including old cart links. Existing stock and order records retained. Production unchanged.
+## Rollback and incident plan
 
-## Dispatch timing — 2026-11-23
-User confirmed dispatch within 3 business days. Carrier transit time is additional; do not present this as delivery within 3 days. Shipping integration remains pending and production is unchanged.
+The currently published production deployment was verified in Netlify on November 24:
 
-## Returns policy — 2026-11-23
-User confirmed no returns. Damaged or incorrect orders handled separately via contact@crossbellvending.com. User confirmed reports within 7 days of delivery, including order number and photos. All damage/incorrect-item claims require manual review and approval before any replacement or refund. This does not change the separately authorized automated reversal for payment succeeding without fulfillable stock.
+- Deploy ID: `6aebd111e3a61e9fdcf95dd1`
+- Git commit: `4e6c8cffcaf5ac427fe8eed8c647d9d85d8b8904`
+- Netlify: https://app.netlify.com/projects/inspiring-kitsune-85ad70/deploys/6aebd111e3a61e9fdcf95dd1
+- Permalink: https://6aebd111e3a61e9fdcf95dd1--inspiring-kitsune-85ad70.netlify.app/
 
-## Cancellation policy — 2026-11-23
-User allows cancellation before shipment or pickup, not after shipment. Request channel, operational cutoff, refund scope and processing timing pending clarification.
+1. Stop new payment sessions first. Before any future launch, provide a production kill switch and verify it actually blocks create requests.
+2. Republish the above deploy to restore the pre-checkout storefront. Reverify this target immediately before launch in case someone publishes another release.
+3. The old deploy may not contain payment webhooks. Do not assume republishing keeps webhook processing alive: record in-flight sessions, preserve the payment-capable deployment, and manually reconcile provider transactions while recovery is arranged. Provider retries alone are not an operational recovery plan.
+4. Never roll back/delete the order database or reverse stock from a code rollback. A rollback neither refunds payments nor cancels sessions already issued.
+5. Reconcile every capture, void/refund and stock release exactly once before reopening. Retain audit history and unresolved reversal records. Do not repeatedly submit an uncertain refund.
 
-## Final order-support decisions — 2026-11-23
-Email cancellation requests to contact@crossbellvending.com for manual processing. Cancellation permitted until carrier handoff or pickup; label creation is not shipment. Eligible cancellations refund the full paid amount including tax/shipping, with no fee. No item returns required for any claim. Damage/incorrect-item remedies decided case by case after manual review; report within 7 days with order number/photos. Review requests and initiate approved refunds within 3 business days (bank posting additional). Missing parcels investigated with carrier, remedy reviewed manually. Hold pickup orders 14 days, contact customer, then manually cancel/refund if still uncollected. These policies do not implement automated financial actions or alter the separate oversell reversal authorization.
+## Deferred, not reopened in this run
 
-## Tax decisions — 2026-11-23
-User confirms active Michigan sales-tax registration and MTO access; all operations/inventory in Michigan; no interstate sales to date. Other-state registrations UNKNOWN and must be verified before final interstate tax configuration. Alex owns quarterly filing (user-reported schedule). Separately itemize merchandise, shipping and tax on receipts and matching books. Standard retail checkout only; exemption requests reviewed separately before purchase. Use confirmed-obligation configuration and sales/tax reporting with periodic interstate threshold review; no paid tax service selected. Do not infer zero obligations outside Michigan from unknown registration status. No production tax changes or filing/payment actions authorized by these answers.
-
-## Order management implementation — 2026-11-23
-Approved answers recorded in docs/order-management.md. Private dashboard, Google allowlist, manual provider reconciliation, dedicated stock adjustments, notification queue/reminders and one-way Inventory 2.0 projection implemented in staging. Google OAuth, sender delivery and Sheets service-account connection remain pending. Do not treat staged code as verified live integrations.
+Shipping carrier connections/rates, package calibration and interstate tax configuration; automated customer/internal email transport; Inventory 2.0 projection integration; visual redesign. These do not prevent sandbox pickup testing, but shipping must stay disabled and real-order operations must be workable before launch.

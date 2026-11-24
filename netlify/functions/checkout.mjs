@@ -27,7 +27,7 @@ export default async request => {
       const order = await store.get(`orders/${id}`, { type: 'json' });
       if (!order || request.headers.get('Authorization') !== `Bearer ${order.accessToken}`) fail('Order not found.', 404);
       const {rows}=await getDatabase().pool.query('SELECT fulfillment_status,reversal_id FROM checkout_operations WHERE scope=$1 AND order_key=$2',[policy.mode==='production'?'production':`sandbox-${env.REVIEW_ID||env.DEPLOY_ID}`,`orders/${id}`]);
-      return json({ orderId: id, status: rows[0]?.reversal_id?'reversed':order.status, fulfillment: order.quote.fulfillment, pickupDetails: order.quote.pickupDetails, pickupInstructions: policy.pickupInstructions });
+      return json({ orderId: id, status: rows[0]?.reversal_id?'reversed':order.status, totalCents: order.quote.totalCents, taxCents: order.quote.taxCents, fulfillment: order.quote.fulfillment, pickupDetails: order.quote.pickupDetails, pickupInstructions: policy.pickupInstructions });
     }
     if (request.method !== 'POST') return json({ error: 'Method not allowed.' }, 405);
     if (request.headers.get('Origin') !== origin) fail('Invalid checkout origin.', 403);
