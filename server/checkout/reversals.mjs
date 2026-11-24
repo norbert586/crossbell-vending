@@ -29,7 +29,7 @@ export async function reverseUnfulfillable(order, transactionId, store, callGate
     }
     transactionRequest={transactionType:'refundTransaction',amount:(order.quote.totalCents/100).toFixed(2),payment:{creditCard:{cardNumber:last4,expirationDate:'XXXX'}},refTransId:transactionId};
   } else { fail('Payment is not ready for reversal.',503); }
-  if(!await store.claimReversal(transactionId))return;
+  if(!await store.claimReversal(transactionId))fail('Reversal is already being reconciled.',503);
   try {
     const result=await callGateway('createTransactionRequest',{transactionRequest});
     const response=result.transactionResponse;

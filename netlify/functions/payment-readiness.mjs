@@ -22,7 +22,20 @@ export default async request => {
     });
     if (response.ok) {
       const hooks = await response.json();
-      checks.webhookRegistered = Array.isArray(hooks) && hooks.some(h => h.status === 'active' && h.url === `${new URL(env.DEPLOY_PRIME_URL).origin}/api/payment-webhook` && h.eventTypes?.includes('net.authorize.payment.authcapture.created'));
+      const hook=Array.isArray(hooks)&&hooks.find(h=>h.url===`${new URL(env.DEPLOY_PRIME_URL).origin}/api/payment-webhook`);
+      checks.webhookRegistered = Boolean(hook && hook.status==='active' && hook.eventTypes?.includes('net.authorize.payment.authcapture.created'));
+      if(hook){
+        const history=await fetch(`https://apitest.authorize.net/rest/v1/notifications?from_date=${new Date().toISOString().slice(0,10)}&limit=100`,{headers:{Authorization:`Basic ${Buffer.from(`${env.AUTHNET_API_LOGIN_ID}:${env.AUTHNET_TRANSACTION_KEY}`).toString('base64')}`},signal:AbortSignal.timeout(12000)});
+        if(history.ok){
+          const data=await history.json();
+          checks.recentDeliveries=[];
+          for(const notification of (data.notifications||[]).filter(n=>n.webhookId===hook.webhookId).slice(0,3)){
+            const detail=await fetch(`https://apitest.authorize.net/rest/v1/notifications/${encodeURIComponent(notification.notificationId)}`,{headers:{Authorization:`Basic ${Buffer.from(`${env.AUTHNET_API_LOGIN_ID}:${env.AUTHNET_TRANSACTION_KEY}`).toString('base64')}`},signal:AbortSignal.timeout(12000)});
+            const log=detail.ok?await detail.json():{};
+            checks.recentDeliveries.push({status:notification.deliveryStatus,event:notification.eventType,httpStatuses:(log.retryLog?.logs||[]).map(l=>l.statusCode)});
+          }
+        }
+      }
     }
   } catch { /* Only fixed readiness booleans leave this endpoint. */ }
   return Response.json(checks, { headers: { 'Cache-Control': 'no-store' } });

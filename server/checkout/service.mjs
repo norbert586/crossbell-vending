@@ -53,6 +53,12 @@ export async function reconcile(transactionId, store, callGateway, verifiedWebho
     if(pendingReversal) {
       await reverseUnfulfillable(order,String(transactionId),store,callGateway);return;
     }
+    // An auth-capture notification can arrive after a verified manual void.
+    // Acknowledge the original payment without changing fulfillment or stock.
+    if(order.status==='paid'&&order.transactionId===String(transactionId)&&String(transaction.transId)===String(transactionId)&&transaction.transactionStatus==='voided'){
+      if(verifiedWebhook&&store.markVerifiedWebhook)await store.markVerifiedWebhook(`orders/${id}`);
+      return;
+    }
     if (!verifyTransaction(order, transaction)) fail('Payment does not match the order.', 409);
     if(store.recordPayment) {
       if(String(transaction.transId)!==String(transactionId))fail('Payment transaction ID mismatch.',409);
