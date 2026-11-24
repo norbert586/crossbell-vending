@@ -41,7 +41,7 @@ Verified on sandbox commit 3ff68674dbc807d6b6ea722d878324e567a3773f before the c
 - Refund/timeout logic is unit-tested; a provider-settled refund journey has NOT passed yet. Do not label mocked refund/timeout tests as real gateway evidence.
 - Source/generated browser assets were checked for payment-secret exposure; only a known HMAC test fixture matched the signature-shaped scan. This is not an exhaustive git-history or provider-log audit.
 
-The subsequent change adds a safe status refresh button, a longer verification window, a missing-session warning, and the server-recorded paid amount/tax to the confirmation. The draft PR contains the latest deploy and validation results. A hosted browser payment must be explicitly confirmed before its journey is marked passed.
+The follow-up adds a safe status refresh button, a longer verification window, a missing-session warning, and the server-recorded paid amount/tax to the confirmation. The return view hides the fresh cart and default pickup selector to avoid contradicting the verified receipt. The draft PR contains the latest deploy and validation results. The hosted browser payment was explicitly confirmed by the merchant and then by the Crossbell order-status page.
 
 ## High-priority launch checklist
 
@@ -51,7 +51,7 @@ The subsequent change adds a safe status refresh button, a longer verification w
 - [x] Preserve no-production/no-real-charge gate.
 - [x] Add payment-status refresh and missing-session guidance.
 - [x] Record exact production rollback target below.
-- [ ] Complete hosted customer checkout and save confirmation evidence on the final preview.
+- [x] Complete hosted customer checkout: sandbox order `a46fd1253009c5eb143d`, provider transaction `120094501472`, $11.65, UWM pickup; automatically confirmed by signed webhook on November 24. No manual paid override. The test order is retained in sandbox for a future settled-refund check; sandbox pack availability is 49. No production stock or real money changed.
 - [ ] Complete one actual settled sandbox refund, verify linked transaction and ledger result.
 - [ ] Connect and test approved-staff order access; establish manual reconciliation for uncertain refunds and daily pickup/order review. Email remains deferred, so operator visibility is essential before accepting real orders.
 - [ ] Verify production secret context/scope without showing values; owner replaces previously exposed credentials through a secure channel before live use. No credential changes in this run.

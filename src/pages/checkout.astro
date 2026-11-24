@@ -75,6 +75,12 @@ form.addEventListener('submit',async event=>{
 async function checkReturnedOrder(){
  if(checkingStatus)return;
  if(!new URLSearchParams(location.search).has('returned')&&!new URLSearchParams(location.search).has('cancelled'))return;
+ document.querySelector('h1')!.textContent='Order status';
+ document.querySelector('.subtitle')!.textContent='Your payment status and pickup details.';
+ document.querySelector<HTMLElement>('aside')!.hidden=true;
+ document.querySelector<HTMLElement>('.steps')!.hidden=true;
+ for(const child of Array.from(form.children) as HTMLElement[]){if(!['status','check-status'].includes(child.id))child.hidden=true;}
+ form.classList.add('card');
  let saved:any;
  try{saved=JSON.parse(sessionStorage.getItem('crossbell-order')||'null');}catch{}
  if(!saved?.id||!saved?.accessToken){status('Your checkout session is unavailable in this browser. If you submitted payment, contact 586-907-1861 before paying again.');pay.disabled=true;creating=true;return;}
